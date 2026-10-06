@@ -79,6 +79,8 @@ class Axo:
 
 def shade(hexc, f):
     hexc = hexc.lstrip("#")
+    if len(hexc) == 3:
+        hexc = "".join(c * 2 for c in hexc)
     r, g, b = int(hexc[0:2], 16), int(hexc[2:4], 16), int(hexc[4:6], 16)
     r, g, b = [max(0, min(255, int(c * f))) for c in (r, g, b)]
     return f"#{r:02x}{g:02x}{b:02x}"
