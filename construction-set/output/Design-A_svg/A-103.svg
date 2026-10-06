@@ -1,0 +1,284 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="420.0mm" height="297.0mm" viewBox="0 0 420.0 297.0"><defs><g id="t-h-conc"><circle cx="0.6" cy="0.8" r="0.12" fill="#555"/><circle cx="2.7" cy="2.9" r="0.1" fill="#555"/>
+  <circle cx="3.4" cy="0.6" r="0.08" fill="#555"/>
+  <path d="M1.6 2.2 l0.45 -0.6 l0.3 0.7 z" fill="none" stroke="#555" stroke-width="0.07"/></g><g id="t-h-earth"><path d="M0 5 L5 0 M-1 1 L1 -1 M4 6 L6 4" stroke="#6b4b2a" stroke-width="0.12"/>
+  <path d="M0.5 2 h1.2 M3 4.3 h1" stroke="#6b4b2a" stroke-width="0.1"/></g><g id="t-h-soil"><circle cx="0.7" cy="0.7" r="0.18" fill="#5a3d1e"/><circle cx="2.2" cy="1.9" r="0.14" fill="#5a3d1e"/>
+  <circle cx="1.3" cy="2.6" r="0.1" fill="#5a3d1e"/></g><g id="t-h-gravel"><circle cx="0.8" cy="0.8" r="0.5" fill="none" stroke="#555" stroke-width="0.08"/>
+  <circle cx="2.3" cy="2.1" r="0.45" fill="none" stroke="#555" stroke-width="0.08"/>
+  <circle cx="2.4" cy="0.5" r="0.25" fill="none" stroke="#555" stroke-width="0.08"/></g><g id="t-h-subbase"><path d="M0.3 1 l0.8 -0.5 l0.6 0.6 l-0.7 0.5 z M2.3 3 l0.9 -0.4 l0.4 0.7 l-0.9 0.3 z" fill="none" stroke="#444" stroke-width="0.08"/>
+  <circle cx="3.2" cy="1.1" r="0.15" fill="#444"/><circle cx="1.1" cy="3.2" r="0.12" fill="#444"/></g><g id="t-h-sand"><circle cx="0.5" cy="0.5" r="0.08" fill="#777"/><circle cx="1.5" cy="1.4" r="0.08" fill="#777"/></g><g id="t-h-insul"><path d="M0 1 Q0.5 0 1 1 T2 1" fill="none" stroke="#888" stroke-width="0.08"/></g><g id="t-h-render"><circle cx="0.3" cy="0.3" r="0.07" fill="#888"/></g><g id="t-h-grass"><path d="M0.5 3 l0.3 -1 l0.3 1 M2.5 1.6 l0.3 -1 l0.3 1" fill="none" stroke="#4d7a3a" stroke-width="0.1"/></g></defs>
+<rect x="0" y="0" width="420" height="297" rx="0" fill="#ffffff" stroke="none" stroke-width="0"/>
+<rect x="10" y="5" width="405" height="287" rx="0" fill="none" stroke="#000" stroke-width="0.6"/>
+<line x1="343" y1="5" x2="343" y2="292" stroke="#000" stroke-width="0.6" stroke-linecap="butt"/>
+<text x="346" y="11" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="3.2" text-anchor="start" font-weight="bold" fill="#000">COURTYARD CANOPY &amp; GARDEN TERRACE</text>
+<text x="346" y="15" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.9" text-anchor="start" font-weight="normal" fill="#000">Private residence — rear courtyard (site address to be inserted)</text>
+<text x="346" y="17.6" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.9" text-anchor="start" font-weight="normal" fill="#000">Client: Owner / Client</text>
+<text x="346" y="20.2" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.9" text-anchor="start" font-weight="normal" fill="#000">Design &amp; drawings: Claude Code</text>
+<line x1="343" y1="23.6" x2="415" y2="23.6" stroke="#000" stroke-width="0.3" stroke-linecap="butt"/>
+<text x="346" y="28.25" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.65" text-anchor="start" font-weight="bold" fill="#000">DRAWING NOTES</text>
+<text x="346" y="30.652" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.65" text-anchor="start" font-weight="normal" fill="#000">1. Do not scale from this drawing. Use figured dimensions only.</text>
+<text x="346" y="33.23" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.65" text-anchor="start" font-weight="normal" fill="#000">2. All dimensions in millimetres; levels in metres relative to internal FFL</text>
+<text x="349" y="35.458" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.65" text-anchor="start" font-weight="normal" fill="#000">±0.000 (datum to be tied to site survey).</text>
+<text x="346" y="38.035" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.65" text-anchor="start" font-weight="normal" fill="#000">3. Contractor to verify all dimensions, levels &amp; existing structure on site</text>
+<text x="349" y="40.263" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.65" text-anchor="start" font-weight="normal" fill="#000">before fabrication or ordering.</text>
+<text x="346" y="42.84" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.65" text-anchor="start" font-weight="normal" fill="#000">4. Read with all other architectural, structural &amp; services drawings and the</text>
+<text x="349" y="45.068" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.65" text-anchor="start" font-weight="normal" fill="#000">specification notes (A-001).</text>
+<text x="346" y="47.645" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.65" text-anchor="start" font-weight="normal" fill="#000">5. Structural members are preliminary: final design, connections &amp;</text>
+<text x="349" y="49.873" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.65" text-anchor="start" font-weight="normal" fill="#000">calculations by a licensed structural engineer to local code before</text>
+<text x="349" y="52.1" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.65" text-anchor="start" font-weight="normal" fill="#000">construction.</text>
+<text x="346" y="54.678" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.65" text-anchor="start" font-weight="normal" fill="#000">6. Report any discrepancy to the designer before proceeding.</text>
+<line x1="343" y1="188" x2="415" y2="188" stroke="#000" stroke-width="0.3" stroke-linecap="butt"/>
+<text x="346" y="192" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.9" text-anchor="start" font-weight="bold" fill="#000">REVISIONS</text>
+<rect x="346" y="193.5" width="66" height="3.496" rx="0" fill="#e8e6e1" stroke="#000" stroke-width="0.25"/>
+<text x="346.8" y="195.932" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.6" text-anchor="start" font-weight="bold" fill="#000">Rev</text>
+<text x="354.8" y="195.932" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.6" text-anchor="start" font-weight="bold" fill="#000">Date</text>
+<text x="369.8" y="195.932" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.6" text-anchor="start" font-weight="bold" fill="#000">Description</text>
+<text x="346.8" y="199.185" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.6" text-anchor="start" font-weight="normal" fill="#000">C01</text>
+<text x="354.8" y="199.185" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.6" text-anchor="start" font-weight="normal" fill="#000">06.10.2026</text>
+<text x="369.8" y="199.185" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.6" text-anchor="start" font-weight="normal" fill="#000">Issued for construction / tender</text>
+<line x1="346" y1="200.036" x2="412" y2="200.036" stroke="#777" stroke-width="0.1" stroke-linecap="butt"/>
+<text x="346.8" y="202.225" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.6" text-anchor="start" font-weight="normal" fill="#000">P01</text>
+<text x="354.8" y="202.225" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.6" text-anchor="start" font-weight="normal" fill="#000">05.10.2026</text>
+<text x="369.8" y="202.225" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.6" text-anchor="start" font-weight="normal" fill="#000">Concept (client renders)</text>
+<line x1="346" y1="203.076" x2="412" y2="203.076" stroke="#777" stroke-width="0.1" stroke-linecap="butt"/>
+<line x1="346" y1="193.5" x2="346" y2="203.076" stroke="#777" stroke-width="0.1" stroke-linecap="butt"/>
+<line x1="354" y1="193.5" x2="354" y2="203.076" stroke="#777" stroke-width="0.1" stroke-linecap="butt"/>
+<line x1="369" y1="193.5" x2="369" y2="203.076" stroke="#777" stroke-width="0.1" stroke-linecap="butt"/>
+<rect x="346" y="193.5" width="66" height="9.576" rx="0" fill="none" stroke="#000" stroke-width="0.3"/>
+<rect x="343" y="213" width="72" height="11" rx="0" fill="#111" stroke="#000" stroke-width="0.3"/>
+<text x="346" y="216.6" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.8" text-anchor="start" font-weight="bold" fill="#fff">CONSTRUCTION ISSUE — subject to site survey &amp; local engineer sign-off</text>
+<text x="346" y="227" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.5" text-anchor="start" font-weight="normal" fill="#555">DRAWING TITLE</text>
+<text x="346" y="231.5" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="3.0" text-anchor="start" font-weight="bold" fill="#000">Reflected ceiling plan, lighting &amp; power</text>
+<line x1="343" y1="243.9" x2="415" y2="243.9" stroke="#000" stroke-width="0.3" stroke-linecap="butt"/>
+<rect x="343" y="243.9" width="36" height="8" rx="0" fill="none" stroke="#000" stroke-width="0.2"/>
+<text x="344.5" y="246.5" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.4" text-anchor="start" font-weight="normal" fill="#555">SCALE @ A3</text>
+<text x="344.5" y="250.4" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="2.2" text-anchor="start" font-weight="bold" fill="#000">1:25 / 1:100</text>
+<rect x="379" y="243.9" width="36" height="8" rx="0" fill="none" stroke="#000" stroke-width="0.2"/>
+<text x="380.5" y="246.5" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.4" text-anchor="start" font-weight="normal" fill="#555">DATE</text>
+<text x="380.5" y="250.4" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="2.2" text-anchor="start" font-weight="bold" fill="#000">06.10.2026</text>
+<rect x="343" y="251.9" width="36" height="8" rx="0" fill="none" stroke="#000" stroke-width="0.2"/>
+<text x="344.5" y="254.5" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.4" text-anchor="start" font-weight="normal" fill="#555">DRAWN / CHECKED</text>
+<text x="344.5" y="258.4" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="2.2" text-anchor="start" font-weight="bold" fill="#000">CC / —</text>
+<rect x="379" y="251.9" width="36" height="8" rx="0" fill="none" stroke="#000" stroke-width="0.2"/>
+<text x="380.5" y="254.5" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.4" text-anchor="start" font-weight="normal" fill="#555">SERIES</text>
+<text x="380.5" y="258.4" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="2.2" text-anchor="start" font-weight="bold" fill="#000">ARCHITECTURAL</text>
+<rect x="343" y="259.9" width="72" height="32.1" rx="0" fill="none" stroke="#000" stroke-width="0.3"/>
+<text x="346" y="262.9" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.4" text-anchor="start" font-weight="normal" fill="#555">DRAWING No.</text>
+<text x="346" y="272.9" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="7.5" text-anchor="start" font-weight="bold" fill="#000">A-103</text>
+<text x="412" y="262.9" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.4" text-anchor="end" font-weight="normal" fill="#555">REV</text>
+<text x="412" y="272.9" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="7.5" text-anchor="end" font-weight="bold" fill="#000">C01</text>
+<polygon points="12,46 276,46 276,34 12,34" fill="#f1ece4" stroke="none" stroke-width="0" stroke-linejoin="miter"/>
+<defs><clipPath id="c20"><polygon points="12,46 276,46 276,34 12,34"/></clipPath></defs><g clip-path="url(#c20)"><path d="M144.08 -148.576L332.576 39.92M143.267 -147.763L331.763 40.733M142.454 -146.949L330.949 41.546M141.641 -146.136L330.136 42.359M140.828 -145.323L329.323 43.172M140.015 -144.51L328.51 43.985M139.201 -143.697L327.697 44.799M138.388 -142.883L326.883 45.612M137.575 -142.07L326.07 46.425M136.762 -141.257L325.257 47.238M135.949 -140.444L324.444 48.051M135.136 -139.631L323.631 48.864M134.322 -138.818L322.818 49.678M133.509 -138.004L322.004 50.491M132.696 -137.191L321.191 51.304M131.883 -136.378L320.378 52.117M131.07 -135.565L319.565 52.93M130.256 -134.752L318.752 53.744M129.443 -133.939L317.939 54.557M128.63 -133.125L317.125 55.37M127.817 -132.312L316.312 56.183M127.004 -131.499L315.499 56.996M126.191 -130.686L314.686 57.809M125.377 -129.873L313.873 58.623M124.564 -129.06L313.06 59.436M123.751 -128.246L312.246 60.249M122.938 -127.433L311.433 61.062M122.125 -126.62L310.62 61.875M121.312 -125.807L309.807 62.688M120.498 -124.994L308.994 63.502M119.685 -124.181L308.181 64.315M118.872 -123.367L307.367 65.128M118.059 -122.554L306.554 65.941M117.246 -121.741L305.741 66.754M116.433 -120.928L304.928 67.567M115.619 -120.115L304.115 68.381M114.806 -119.301L303.301 69.194M113.993 -118.488L302.488 70.007M113.18 -117.675L301.675 70.82M112.367 -116.862L300.862 71.633M111.553 -116.049L300.049 72.447M110.74 -115.236L299.236 73.26M109.927 -114.422L298.422 74.073M109.114 -113.609L297.609 74.886M108.301 -112.796L296.796 75.699M107.488 -111.983L295.983 76.512M106.674 -111.17L295.17 77.326M105.861 -110.357L294.357 78.139M105.048 -109.543L293.543 78.952M104.235 -108.73L292.73 79.765M103.422 -107.917L291.917 80.578M102.609 -107.104L291.104 81.391M101.795 -106.291L290.291 82.205M100.982 -105.478L289.478 83.018M100.169 -104.664L288.664 83.831M99.356 -103.851L287.851 84.644M98.543 -103.038L287.038 85.457M97.73 -102.225L286.225 86.27M96.916 -101.412L285.412 87.084M96.103 -100.598L284.598 87.897M95.29 -99.785L283.785 88.71M94.477 -98.972L282.972 89.523M93.664 -98.159L282.159 90.336M92.851 -97.346L281.346 91.149M92.037 -96.533L280.533 91.963M91.224 -95.719L279.719 92.776M90.411 -94.906L278.906 93.589M89.598 -94.093L278.093 94.402M88.785 -93.28L277.28 95.215M87.971 -92.467L276.467 96.029M87.158 -91.654L275.654 96.842M86.345 -90.84L274.84 97.655M85.532 -90.027L274.027 98.468M84.719 -89.214L273.214 99.281M83.906 -88.401L272.401 100.094M83.092 -87.588L271.588 100.908M82.279 -86.775L270.775 101.721M81.466 -85.961L269.961 102.534M80.653 -85.148L269.148 103.347M79.84 -84.335L268.335 104.16M79.027 -83.522L267.522 104.973M78.213 -82.709L266.709 105.787M77.4 -81.896L265.896 106.6M76.587 -81.082L265.082 107.413M75.774 -80.269L264.269 108.226M74.961 -79.456L263.456 109.039M74.148 -78.643L262.643 109.852M73.334 -77.83L261.83 110.666M72.521 -77.016L261.016 111.479M71.708 -76.203L260.203 112.292M70.895 -75.39L259.39 113.105M70.082 -74.577L258.577 113.918M69.269 -73.764L257.764 114.731M68.455 -72.951L256.951 115.545M67.642 -72.137L256.137 116.358M66.829 -71.324L255.324 117.171M66.016 -70.511L254.511 117.984M65.203 -69.698L253.698 118.797M64.389 -68.885L252.885 119.611M63.576 -68.072L252.072 120.424M62.763 -67.258L251.258 121.237M61.95 -66.445L250.445 122.05M61.137 -65.632L249.632 122.863M60.324 -64.819L248.819 123.676M59.51 -64.006L248.006 124.49M58.697 -63.193L247.193 125.303M57.884 -62.379L246.379 126.116M57.071 -61.566L245.566 126.929M56.258 -60.753L244.753 127.742M55.445 -59.94L243.94 128.555M54.631 -59.127L243.127 129.369M53.818 -58.314L242.314 130.182M53.005 -57.5L241.5 130.995M52.192 -56.687L240.687 131.808M51.379 -55.874L239.874 132.621M50.566 -55.061L239.061 133.434M49.752 -54.248L238.248 134.248M48.939 -53.434L237.434 135.061M48.126 -52.621L236.621 135.874M47.313 -51.808L235.808 136.687M46.5 -50.995L234.995 137.5M45.686 -50.182L234.182 138.314M44.873 -49.369L233.369 139.127M44.06 -48.555L232.555 139.94M43.247 -47.742L231.742 140.753M42.434 -46.929L230.929 141.566M41.621 -46.116L230.116 142.379M40.807 -45.303L229.303 143.193M39.994 -44.49L228.49 144.006M39.181 -43.676L227.676 144.819M38.368 -42.863L226.863 145.632M37.555 -42.05L226.05 146.445M36.742 -41.237L225.237 147.258M35.928 -40.424L224.424 148.072M35.115 -39.611L223.611 148.885M34.302 -38.797L222.797 149.698M33.489 -37.984L221.984 150.511M32.676 -37.171L221.171 151.324M31.863 -36.358L220.358 152.137M31.049 -35.545L219.545 152.951M30.236 -34.731L218.731 153.764M29.423 -33.918L217.918 154.577M28.61 -33.105L217.105 155.39M27.797 -32.292L216.292 156.203M26.984 -31.479L215.479 157.016M26.17 -30.666L214.666 157.83M25.357 -29.852L213.852 158.643M24.544 -29.039L213.039 159.456M23.731 -28.226L212.226 160.269M22.918 -27.413L211.413 161.082M22.104 -26.6L210.6 161.896M21.291 -25.787L209.787 162.709M20.478 -24.973L208.973 163.522M19.665 -24.16L208.16 164.335M18.852 -23.347L207.347 165.148M18.039 -22.534L206.534 165.961M17.225 -21.721L205.721 166.775M16.412 -20.908L204.908 167.588M15.599 -20.094L204.094 168.401M14.786 -19.281L203.281 169.214M13.973 -18.468L202.468 170.027M13.16 -17.655L201.655 170.84M12.346 -16.842L200.842 171.654M11.533 -16.029L200.029 172.467M10.72 -15.215L199.215 173.28M9.907 -14.402L198.402 174.093M9.094 -13.589L197.589 174.906M8.281 -12.776L196.776 175.719M7.467 -11.963L195.963 176.533M6.654 -11.149L195.149 177.346M5.841 -10.336L194.336 178.159M5.028 -9.523L193.523 178.972M4.215 -8.71L192.71 179.785M3.402 -7.897L191.897 180.598M2.588 -7.084L191.084 181.412M1.775 -6.27L190.27 182.225M0.962 -5.457L189.457 183.038M0.149 -4.644L188.644 183.851M-0.664 -3.831L187.831 184.664M-1.478 -3.018L187.018 185.478M-2.291 -2.205L186.205 186.291M-3.104 -1.391L185.391 187.104M-3.917 -0.578L184.578 187.917M-4.73 0.235L183.765 188.73M-5.543 1.048L182.952 189.543M-6.357 1.861L182.139 190.357M-7.17 2.674L181.326 191.17M-7.983 3.488L180.512 191.983M-8.796 4.301L179.699 192.796M-9.609 5.114L178.886 193.609M-10.422 5.927L178.073 194.422M-11.236 6.74L177.26 195.236M-12.049 7.553L176.447 196.049M-12.862 8.367L175.633 196.862M-13.675 9.18L174.82 197.675M-14.488 9.993L174.007 198.488M-15.301 10.806L173.194 199.301M-16.115 11.619L172.381 200.115M-16.928 12.433L171.567 200.928M-17.741 13.246L170.754 201.741M-18.554 14.059L169.941 202.554M-19.367 14.872L169.128 203.367M-20.181 15.685L168.315 204.181M-20.994 16.498L167.502 204.994M-21.807 17.312L166.688 205.807M-22.62 18.125L165.875 206.62M-23.433 18.938L165.062 207.433M-24.246 19.751L164.249 208.246M-25.06 20.564L163.436 209.06M-25.873 21.377L162.623 209.873M-26.686 22.191L161.809 210.686M-27.499 23.004L160.996 211.499M-28.312 23.817L160.183 212.312M-29.125 24.63L159.37 213.125M-29.939 25.443L158.557 213.939M-30.752 26.256L157.744 214.752M-31.565 27.07L156.93 215.565M-32.378 27.883L156.117 216.378M-33.191 28.696L155.304 217.191M-34.004 29.509L154.491 218.004M-34.818 30.322L153.678 218.818M-35.631 31.136L152.864 219.631M-36.444 31.949L152.051 220.444M-37.257 32.762L151.238 221.257M-38.07 33.575L150.425 222.07M-38.883 34.388L149.612 222.883M-39.697 35.201L148.799 223.697M-40.51 36.015L147.985 224.51M-41.323 36.828L147.172 225.323M-42.136 37.641L146.359 226.136M-42.949 38.454L145.546 226.949M-43.763 39.267L144.733 227.763M-44.576 40.08L143.92 228.576" stroke="#444" stroke-width="0.09" fill="none"/></g>
+<polygon points="12,46 276,46 276,34 12,34" fill="none" stroke="#000" stroke-width="0.4" stroke-linejoin="miter"/>
+<polygon points="88,46 132,46 132,34 88,34" fill="#fff" stroke="#000" stroke-width="0.1" stroke-linejoin="miter"/>
+<polygon points="148,46 220,46 220,34 148,34" fill="#fff" stroke="#000" stroke-width="0.1" stroke-linejoin="miter"/>
+<polygon points="240,46 276,46 276,34 240,34" fill="#fff" stroke="#000" stroke-width="0.1" stroke-linejoin="miter"/>
+<polygon points="42,172 236,172 236,46 42,46" fill="#e9c99a" stroke="#000" stroke-width="0.5" stroke-linejoin="miter"/>
+<line x1="44" y1="47.6" x2="234" y2="47.6" stroke="#8a5a2b" stroke-width="0.06" stroke-linecap="butt"/>
+<line x1="44" y1="50.72" x2="234" y2="50.72" stroke="#8a5a2b" stroke-width="0.06" stroke-linecap="butt"/>
+<line x1="44" y1="53.84" x2="234" y2="53.84" stroke="#8a5a2b" stroke-width="0.06" stroke-linecap="butt"/>
+<line x1="44" y1="56.96" x2="234" y2="56.96" stroke="#8a5a2b" stroke-width="0.06" stroke-linecap="butt"/>
+<line x1="44" y1="60.08" x2="234" y2="60.08" stroke="#8a5a2b" stroke-width="0.06" stroke-linecap="butt"/>
+<line x1="44" y1="63.2" x2="234" y2="63.2" stroke="#8a5a2b" stroke-width="0.06" stroke-linecap="butt"/>
+<line x1="44" y1="66.32" x2="234" y2="66.32" stroke="#8a5a2b" stroke-width="0.06" stroke-linecap="butt"/>
+<line x1="44" y1="69.44" x2="234" y2="69.44" stroke="#8a5a2b" stroke-width="0.06" stroke-linecap="butt"/>
+<line x1="44" y1="72.56" x2="234" y2="72.56" stroke="#8a5a2b" stroke-width="0.06" stroke-linecap="butt"/>
+<line x1="44" y1="75.68" x2="234" y2="75.68" stroke="#8a5a2b" stroke-width="0.06" stroke-linecap="butt"/>
+<line x1="44" y1="78.8" x2="234" y2="78.8" stroke="#8a5a2b" stroke-width="0.06" stroke-linecap="butt"/>
+<line x1="44" y1="81.92" x2="234" y2="81.92" stroke="#8a5a2b" stroke-width="0.06" stroke-linecap="butt"/>
+<line x1="44" y1="85.04" x2="234" y2="85.04" stroke="#8a5a2b" stroke-width="0.06" stroke-linecap="butt"/>
+<line x1="44" y1="88.16" x2="234" y2="88.16" stroke="#8a5a2b" stroke-width="0.06" stroke-linecap="butt"/>
+<line x1="44" y1="91.28" x2="234" y2="91.28" stroke="#8a5a2b" stroke-width="0.06" stroke-linecap="butt"/>
+<line x1="44" y1="94.4" x2="234" y2="94.4" stroke="#8a5a2b" stroke-width="0.06" stroke-linecap="butt"/>
+<line x1="44" y1="97.52" x2="234" y2="97.52" stroke="#8a5a2b" stroke-width="0.06" stroke-linecap="butt"/>
+<line x1="44" y1="100.64" x2="234" y2="100.64" stroke="#8a5a2b" stroke-width="0.06" stroke-linecap="butt"/>
+<line x1="44" y1="103.76" x2="234" y2="103.76" stroke="#8a5a2b" stroke-width="0.06" stroke-linecap="butt"/>
+<line x1="44" y1="106.88" x2="234" y2="106.88" stroke="#8a5a2b" stroke-width="0.06" stroke-linecap="butt"/>
+<line x1="44" y1="110" x2="234" y2="110" stroke="#8a5a2b" stroke-width="0.06" stroke-linecap="butt"/>
+<line x1="44" y1="113.12" x2="234" y2="113.12" stroke="#8a5a2b" stroke-width="0.06" stroke-linecap="butt"/>
+<line x1="44" y1="116.24" x2="234" y2="116.24" stroke="#8a5a2b" stroke-width="0.06" stroke-linecap="butt"/>
+<line x1="44" y1="119.36" x2="234" y2="119.36" stroke="#8a5a2b" stroke-width="0.06" stroke-linecap="butt"/>
+<line x1="44" y1="122.48" x2="234" y2="122.48" stroke="#8a5a2b" stroke-width="0.06" stroke-linecap="butt"/>
+<line x1="44" y1="125.6" x2="234" y2="125.6" stroke="#8a5a2b" stroke-width="0.06" stroke-linecap="butt"/>
+<line x1="44" y1="128.72" x2="234" y2="128.72" stroke="#8a5a2b" stroke-width="0.06" stroke-linecap="butt"/>
+<line x1="44" y1="131.84" x2="234" y2="131.84" stroke="#8a5a2b" stroke-width="0.06" stroke-linecap="butt"/>
+<line x1="44" y1="134.96" x2="234" y2="134.96" stroke="#8a5a2b" stroke-width="0.06" stroke-linecap="butt"/>
+<line x1="44" y1="138.08" x2="234" y2="138.08" stroke="#8a5a2b" stroke-width="0.06" stroke-linecap="butt"/>
+<line x1="44" y1="141.2" x2="234" y2="141.2" stroke="#8a5a2b" stroke-width="0.06" stroke-linecap="butt"/>
+<line x1="44" y1="144.32" x2="234" y2="144.32" stroke="#8a5a2b" stroke-width="0.06" stroke-linecap="butt"/>
+<line x1="44" y1="147.44" x2="234" y2="147.44" stroke="#8a5a2b" stroke-width="0.06" stroke-linecap="butt"/>
+<line x1="44" y1="150.56" x2="234" y2="150.56" stroke="#8a5a2b" stroke-width="0.06" stroke-linecap="butt"/>
+<line x1="44" y1="153.68" x2="234" y2="153.68" stroke="#8a5a2b" stroke-width="0.06" stroke-linecap="butt"/>
+<line x1="44" y1="156.8" x2="234" y2="156.8" stroke="#8a5a2b" stroke-width="0.06" stroke-linecap="butt"/>
+<line x1="44" y1="159.92" x2="234" y2="159.92" stroke="#8a5a2b" stroke-width="0.06" stroke-linecap="butt"/>
+<line x1="44" y1="163.04" x2="234" y2="163.04" stroke="#8a5a2b" stroke-width="0.06" stroke-linecap="butt"/>
+<line x1="44" y1="166.16" x2="234" y2="166.16" stroke="#8a5a2b" stroke-width="0.06" stroke-linecap="butt"/>
+<line x1="44" y1="169.28" x2="234" y2="169.28" stroke="#8a5a2b" stroke-width="0.06" stroke-linecap="butt"/>
+<polygon points="42,172 236,172 236,170 42,170" fill="#fff" stroke="#000" stroke-width="0.2" stroke-linejoin="miter"/>
+<polygon points="42,172 44,172 44,46 42,46" fill="#fff" stroke="#000" stroke-width="0.2" stroke-linejoin="miter"/>
+<polygon points="234,172 236,172 236,46 234,46" fill="#fff" stroke="#000" stroke-width="0.2" stroke-linejoin="miter"/>
+<polyline points="50.8,47.2 50.8,163.2 227.2,163.2 227.2,47.2" fill="none" stroke="#f39c12" stroke-width="0.9" stroke-linejoin="miter"/>
+<polygon points="42.8,171.2 49.2,171.2 49.2,164.8 42.8,164.8" fill="#c39a6b" stroke="#000" stroke-width="0.2" stroke-linejoin="miter"/>
+<polygon points="42.8,105.2 49.2,105.2 49.2,98.8 42.8,98.8" fill="#c39a6b" stroke="#000" stroke-width="0.2" stroke-linejoin="miter"/>
+<circle cx="110" cy="86" r="2.4" fill="#fff3cd" stroke="#000" stroke-width="0.3"/>
+<line x1="106.4" y1="86" x2="113.6" y2="86" stroke="#000" stroke-width="0.15" stroke-linecap="butt"/>
+<line x1="110" y1="89.6" x2="110" y2="82.4" stroke="#000" stroke-width="0.15" stroke-linecap="butt"/>
+<circle cx="184" cy="86" r="2.4" fill="#fff3cd" stroke="#000" stroke-width="0.3"/>
+<line x1="180.4" y1="86" x2="187.6" y2="86" stroke="#000" stroke-width="0.15" stroke-linecap="butt"/>
+<line x1="184" y1="89.6" x2="184" y2="82.4" stroke="#000" stroke-width="0.15" stroke-linecap="butt"/>
+<circle cx="78" cy="48.4" r="2.8" fill="#fff3cd" stroke="#000" stroke-width="0.3"/>
+<polygon points="70.2,57.2 69.1,59.105 66.9,59.105 65.8,57.2 66.9,55.295 69.1,55.295" fill="#fff" stroke="#000" stroke-width="0.2" stroke-linejoin="miter"/>
+<text x="68" y="57.704" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.4" text-anchor="middle" font-weight="bold" fill="#000">WL1</text>
+<polygon points="122.2,94 121.1,95.905 118.9,95.905 117.8,94 118.9,92.095 121.1,92.095" fill="#fff" stroke="#000" stroke-width="0.2" stroke-linejoin="miter"/>
+<text x="120" y="94.504" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.4" text-anchor="middle" font-weight="bold" fill="#000">DL1</text>
+<polygon points="196.2,94 195.1,95.905 192.9,95.905 191.8,94 192.9,92.095 195.1,92.095" fill="#fff" stroke="#000" stroke-width="0.2" stroke-linejoin="miter"/>
+<text x="194" y="94.504" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.4" text-anchor="middle" font-weight="bold" fill="#000">DL1</text>
+<polygon points="144.2,160 143.1,161.905 140.9,161.905 139.8,160 140.9,158.095 143.1,158.095" fill="#fff" stroke="#000" stroke-width="0.2" stroke-linejoin="miter"/>
+<text x="142" y="160.504" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.4" text-anchor="middle" font-weight="bold" fill="#000">LS1</text>
+<polyline points="227.2,47.2 227.2,40 250,40 250,10" fill="none" stroke="#c0392b" stroke-width="0.3" stroke-linejoin="miter" stroke-dasharray="2,1"/>
+<text x="252" y="18" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.4" text-anchor="start" font-weight="normal" fill="#c0392b">→ LED drivers in UTILITY (behind D03)</text>
+<line x1="42" y1="172.8" x2="42" y2="181.9" stroke="#000" stroke-width="0.12" stroke-linecap="butt"/>
+<line x1="50.8" y1="172.8" x2="50.8" y2="181.9" stroke="#000" stroke-width="0.12" stroke-linecap="butt"/>
+<line x1="42" y1="181" x2="50.8" y2="181" stroke="#000" stroke-width="0.13" stroke-linecap="butt"/>
+<line x1="41.1" y1="181.9" x2="42.9" y2="180.1" stroke="#000" stroke-width="0.35" stroke-linecap="butt"/>
+<line x1="49.9" y1="181.9" x2="51.7" y2="180.1" stroke="#000" stroke-width="0.35" stroke-linecap="butt"/>
+<text x="46.4" y="180.3" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.6" text-anchor="middle" font-weight="normal" fill="#000">220</text>
+<line x1="50.8" y1="172.8" x2="50.8" y2="181.9" stroke="#000" stroke-width="0.12" stroke-linecap="butt"/>
+<line x1="110" y1="172.8" x2="110" y2="181.9" stroke="#000" stroke-width="0.12" stroke-linecap="butt"/>
+<line x1="50.8" y1="181" x2="110" y2="181" stroke="#000" stroke-width="0.13" stroke-linecap="butt"/>
+<line x1="49.9" y1="181.9" x2="51.7" y2="180.1" stroke="#000" stroke-width="0.35" stroke-linecap="butt"/>
+<line x1="109.1" y1="181.9" x2="110.9" y2="180.1" stroke="#000" stroke-width="0.35" stroke-linecap="butt"/>
+<text x="80.4" y="180.3" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.6" text-anchor="middle" font-weight="normal" fill="#000">1480</text>
+<line x1="110" y1="172.8" x2="110" y2="181.9" stroke="#000" stroke-width="0.12" stroke-linecap="butt"/>
+<line x1="184" y1="172.8" x2="184" y2="181.9" stroke="#000" stroke-width="0.12" stroke-linecap="butt"/>
+<line x1="110" y1="181" x2="184" y2="181" stroke="#000" stroke-width="0.13" stroke-linecap="butt"/>
+<line x1="109.1" y1="181.9" x2="110.9" y2="180.1" stroke="#000" stroke-width="0.35" stroke-linecap="butt"/>
+<line x1="183.1" y1="181.9" x2="184.9" y2="180.1" stroke="#000" stroke-width="0.35" stroke-linecap="butt"/>
+<text x="147" y="180.3" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.6" text-anchor="middle" font-weight="normal" fill="#000">1850</text>
+<line x1="184" y1="172.8" x2="184" y2="181.9" stroke="#000" stroke-width="0.12" stroke-linecap="butt"/>
+<line x1="227.2" y1="172.8" x2="227.2" y2="181.9" stroke="#000" stroke-width="0.12" stroke-linecap="butt"/>
+<line x1="184" y1="181" x2="227.2" y2="181" stroke="#000" stroke-width="0.13" stroke-linecap="butt"/>
+<line x1="183.1" y1="181.9" x2="184.9" y2="180.1" stroke="#000" stroke-width="0.35" stroke-linecap="butt"/>
+<line x1="226.3" y1="181.9" x2="228.1" y2="180.1" stroke="#000" stroke-width="0.35" stroke-linecap="butt"/>
+<text x="205.6" y="180.3" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.6" text-anchor="middle" font-weight="normal" fill="#000">1080</text>
+<line x1="227.2" y1="172.8" x2="227.2" y2="181.9" stroke="#000" stroke-width="0.12" stroke-linecap="butt"/>
+<line x1="236" y1="172.8" x2="236" y2="181.9" stroke="#000" stroke-width="0.12" stroke-linecap="butt"/>
+<line x1="227.2" y1="181" x2="236" y2="181" stroke="#000" stroke-width="0.13" stroke-linecap="butt"/>
+<line x1="226.3" y1="181.9" x2="228.1" y2="180.1" stroke="#000" stroke-width="0.35" stroke-linecap="butt"/>
+<line x1="235.1" y1="181.9" x2="236.9" y2="180.1" stroke="#000" stroke-width="0.35" stroke-linecap="butt"/>
+<text x="231.6" y="180.3" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.6" text-anchor="middle" font-weight="normal" fill="#000">220</text>
+<line x1="42" y1="172.8" x2="42" y2="186.9" stroke="#000" stroke-width="0.12" stroke-linecap="butt"/>
+<line x1="236" y1="172.8" x2="236" y2="186.9" stroke="#000" stroke-width="0.12" stroke-linecap="butt"/>
+<line x1="42" y1="186" x2="236" y2="186" stroke="#000" stroke-width="0.13" stroke-linecap="butt"/>
+<line x1="41.1" y1="186.9" x2="42.9" y2="185.1" stroke="#000" stroke-width="0.35" stroke-linecap="butt"/>
+<line x1="235.1" y1="186.9" x2="236.9" y2="185.1" stroke="#000" stroke-width="0.35" stroke-linecap="butt"/>
+<text x="139" y="185.3" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.6" text-anchor="middle" font-weight="normal" fill="#000">4850</text>
+<line x1="236.8" y1="46" x2="244.9" y2="46" stroke="#000" stroke-width="0.12" stroke-linecap="butt"/>
+<line x1="236.8" y1="86" x2="244.9" y2="86" stroke="#000" stroke-width="0.12" stroke-linecap="butt"/>
+<line x1="244" y1="46" x2="244" y2="86" stroke="#000" stroke-width="0.13" stroke-linecap="butt"/>
+<line x1="243.1" y1="46.9" x2="244.9" y2="45.1" stroke="#000" stroke-width="0.35" stroke-linecap="butt"/>
+<line x1="243.1" y1="86.9" x2="244.9" y2="85.1" stroke="#000" stroke-width="0.35" stroke-linecap="butt"/>
+<text x="243.3" y="66" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.6" text-anchor="middle" font-weight="normal" fill="#000" transform="rotate(-90 243.3 66)">1000</text>
+<line x1="236.8" y1="86" x2="244.9" y2="86" stroke="#000" stroke-width="0.12" stroke-linecap="butt"/>
+<line x1="236.8" y1="163.2" x2="244.9" y2="163.2" stroke="#000" stroke-width="0.12" stroke-linecap="butt"/>
+<line x1="244" y1="86" x2="244" y2="163.2" stroke="#000" stroke-width="0.13" stroke-linecap="butt"/>
+<line x1="243.1" y1="86.9" x2="244.9" y2="85.1" stroke="#000" stroke-width="0.35" stroke-linecap="butt"/>
+<line x1="243.1" y1="164.1" x2="244.9" y2="162.3" stroke="#000" stroke-width="0.35" stroke-linecap="butt"/>
+<text x="243.3" y="124.6" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.6" text-anchor="middle" font-weight="normal" fill="#000" transform="rotate(-90 243.3 124.6)">1930</text>
+<line x1="236.8" y1="163.2" x2="244.9" y2="163.2" stroke="#000" stroke-width="0.12" stroke-linecap="butt"/>
+<line x1="236.8" y1="172" x2="244.9" y2="172" stroke="#000" stroke-width="0.12" stroke-linecap="butt"/>
+<line x1="244" y1="163.2" x2="244" y2="172" stroke="#000" stroke-width="0.13" stroke-linecap="butt"/>
+<line x1="243.1" y1="164.1" x2="244.9" y2="162.3" stroke="#000" stroke-width="0.35" stroke-linecap="butt"/>
+<line x1="243.1" y1="172.9" x2="244.9" y2="171.1" stroke="#000" stroke-width="0.35" stroke-linecap="butt"/>
+<text x="243.3" y="167.6" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.6" text-anchor="middle" font-weight="normal" fill="#000" transform="rotate(-90 243.3 167.6)">220</text>
+<polyline points="94,114 106,126" fill="none" stroke="#000" stroke-width="0.13" stroke-linejoin="miter"/>
+<polygon points="94,114 94.84,115.592 95.592,114.84" fill="#000" stroke="none" stroke-width="0" stroke-linejoin="miter"/>
+<text x="106.8" y="125.616" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.6" text-anchor="start" font-weight="normal" fill="#000">Soffit: 68x20 thermo-ash slats, 10 mm gaps, run E-W,</text>
+<text x="106.8" y="127.504" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.6" text-anchor="start" font-weight="normal" fill="#000">underside +2.650 — see D6/A-501</text>
+<polyline points="50.8,106 26,94" fill="none" stroke="#000" stroke-width="0.13" stroke-linejoin="miter"/>
+<polygon points="50.8,106 49.484,104.772 49.02,105.73" fill="#000" stroke="none" stroke-width="0" stroke-linejoin="miter"/>
+<text x="25.2" y="93.64" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.5" text-anchor="end" font-weight="normal" fill="#000">LS1 LED strip in recessed</text>
+<text x="25.2" y="95.41" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.5" text-anchor="end" font-weight="normal" fill="#000">alu profile, 60 from fascia</text>
+<circle cx="26.5" cy="154" r="4.2" fill="#fff" stroke="#000" stroke-width="0.35"/>
+<line x1="22.3" y1="154" x2="30.7" y2="154" stroke="#000" stroke-width="0.2" stroke-linecap="butt"/>
+<text x="26.5" y="153.2" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="2.6" text-anchor="middle" font-weight="bold" fill="#000">1</text>
+<text x="26.5" y="156.7" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.4" text-anchor="middle" font-weight="normal" fill="#000">A-103</text>
+<text x="33" y="153.4" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="3.0" text-anchor="start" font-weight="bold" fill="#000">REFLECTED CEILING PLAN — CANOPY SOFFIT</text>
+<line x1="33" y1="154.5" x2="97.6" y2="154.5" stroke="#000" stroke-width="0.45" stroke-linecap="butt"/>
+<text x="33" y="157.6" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.8" text-anchor="start" font-weight="normal" fill="#000">1:25 @ A3</text>
+<polygon points="273,114 335,114 335,30 273,30" fill="#f6f1e8" stroke="#000" stroke-width="0.2" stroke-linejoin="miter"/>
+<polygon points="263,114 273.4,114 273.4,30 263,30" fill="#e5d6bf" stroke="#000" stroke-width="0.2" stroke-linejoin="miter"/>
+<polygon points="260.5,116 263,116 263,30 260.5,30" fill="#ccc" stroke="#000" stroke-width="0.2" stroke-linejoin="miter"/>
+<polygon points="260.5,30 338,30 338,27 260.5,27" fill="#ccc" stroke="#000" stroke-width="0.2" stroke-linejoin="miter"/>
+<polygon points="335,84 338,84 338,30 335,30" fill="#ccc" stroke="#000" stroke-width="0.2" stroke-linejoin="miter"/>
+<polygon points="268,61.5 316.5,61.5 316.5,30 268,30" fill="none" stroke="#000" stroke-width="0.2" stroke-linejoin="miter" stroke-dasharray="2,1"/>
+<circle cx="268.6" cy="58" r="0.9" fill="#f39c12" stroke="#000" stroke-width="0.25"/>
+<text x="270.2" y="58.5" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.3" text-anchor="start" font-weight="normal" fill="#000">UL1</text>
+<circle cx="268.6" cy="41.5" r="0.9" fill="#f39c12" stroke="#000" stroke-width="0.25"/>
+<text x="270.2" y="42" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.3" text-anchor="start" font-weight="normal" fill="#000">UL2</text>
+<circle cx="267.2" cy="73" r="0.9" fill="#f39c12" stroke="#000" stroke-width="0.25"/>
+<text x="268.8" y="73.5" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.3" text-anchor="start" font-weight="normal" fill="#000">UL3</text>
+<circle cx="267.2" cy="87" r="0.9" fill="#f39c12" stroke="#000" stroke-width="0.25"/>
+<text x="268.8" y="87.5" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.3" text-anchor="start" font-weight="normal" fill="#000">UL4</text>
+<circle cx="267.2" cy="101" r="0.9" fill="#f39c12" stroke="#000" stroke-width="0.25"/>
+<text x="268.8" y="101.5" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.3" text-anchor="start" font-weight="normal" fill="#000">UL5</text>
+<circle cx="266" cy="36" r="0.9" fill="#f39c12" stroke="#000" stroke-width="0.25"/>
+<text x="267.6" y="36.5" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.3" text-anchor="start" font-weight="normal" fill="#000">UL6</text>
+<circle cx="333.5" cy="33.5" r="0.8" fill="#2ecc71" stroke="#000" stroke-width="0.25"/>
+<text x="332.5" y="36.5" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.3" text-anchor="end" font-weight="normal" fill="#000">SO1</text>
+<polyline points="268.6,34 268.6,103" fill="none" stroke="#c0392b" stroke-width="0.25" stroke-linejoin="miter" stroke-dasharray="1.5,0.8"/>
+<text x="250" y="118" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="2.0" text-anchor="start" font-weight="bold" fill="#000">2/A-103  SITE LIGHTING &amp; POWER 1:100</text>
+<rect x="18" y="160" width="212" height="3.387" rx="0" fill="#e8e6e1" stroke="#000" stroke-width="0.25"/>
+<text x="18.8" y="162.356" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.55" text-anchor="start" font-weight="bold" fill="#000">Ref</text>
+<text x="30.8" y="162.356" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.55" text-anchor="start" font-weight="bold" fill="#000">Description</text>
+<text x="200.8" y="162.356" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.55" text-anchor="start" font-weight="bold" fill="#000">Qty</text>
+<text x="214.8" y="162.356" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.55" text-anchor="start" font-weight="bold" fill="#000">Load</text>
+<text x="18.8" y="165.507" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.55" text-anchor="start" font-weight="normal" fill="#000">LS1</text>
+<text x="30.8" y="165.507" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.55" text-anchor="start" font-weight="normal" fill="#000">LED strip 24 V DC, 14.4 W/m, 2700 K, CRI ≥ 90, IP67, in 25x20 recessed alu profile, opal diffuser, mitred corners</text>
+<text x="200.8" y="165.507" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.55" text-anchor="start" font-weight="normal" fill="#000">10.6 m</text>
+<text x="214.8" y="165.507" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.55" text-anchor="start" font-weight="normal" fill="#000">153 W</text>
+<line x1="18" y1="166.332" x2="230" y2="166.332" stroke="#777" stroke-width="0.1" stroke-linecap="butt"/>
+<text x="18.8" y="168.452" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.55" text-anchor="start" font-weight="normal" fill="#000">DL1</text>
+<text x="30.8" y="168.452" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.55" text-anchor="start" font-weight="normal" fill="#000">Recessed soffit downlight, 7 W LED, 2700 K, 36°, IP65, Ø68 cut-out, black trim</text>
+<text x="200.8" y="168.452" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.55" text-anchor="start" font-weight="normal" fill="#000">2</text>
+<text x="214.8" y="168.452" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.55" text-anchor="start" font-weight="normal" fill="#000">14 W</text>
+<line x1="18" y1="169.277" x2="230" y2="169.277" stroke="#777" stroke-width="0.1" stroke-linecap="butt"/>
+<text x="18.8" y="171.397" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.55" text-anchor="start" font-weight="normal" fill="#000">WL1</text>
+<text x="30.8" y="171.397" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.55" text-anchor="start" font-weight="normal" fill="#000">Wall sconce up/down, 2 x 4 W, 2700 K, IP54, bronze, c/l +2.100</text>
+<text x="200.8" y="171.397" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.55" text-anchor="start" font-weight="normal" fill="#000">1</text>
+<text x="214.8" y="171.397" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.55" text-anchor="start" font-weight="normal" fill="#000">8 W</text>
+<line x1="18" y1="172.222" x2="230" y2="172.222" stroke="#777" stroke-width="0.1" stroke-linecap="butt"/>
+<text x="18.8" y="174.342" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.55" text-anchor="start" font-weight="normal" fill="#000">UL1–6</text>
+<text x="30.8" y="174.342" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.55" text-anchor="start" font-weight="normal" fill="#000">Spike spotlight 12 V, 3 W, 2700 K, 40°, IP67, adjustable, bronze; 1 m cable to junction box</text>
+<text x="200.8" y="174.342" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.55" text-anchor="start" font-weight="normal" fill="#000">6</text>
+<text x="214.8" y="174.342" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.55" text-anchor="start" font-weight="normal" fill="#000">18 W</text>
+<line x1="18" y1="175.167" x2="230" y2="175.167" stroke="#777" stroke-width="0.1" stroke-linecap="butt"/>
+<text x="18.8" y="177.287" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.55" text-anchor="start" font-weight="normal" fill="#000">SO1</text>
+<text x="30.8" y="177.287" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.55" text-anchor="start" font-weight="normal" fill="#000">Twin switched socket 16 A, IP66 weatherproof, RCD 30 mA, on E wall +0.450</text>
+<text x="200.8" y="177.287" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.55" text-anchor="start" font-weight="normal" fill="#000">1</text>
+<text x="214.8" y="177.287" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.55" text-anchor="start" font-weight="normal" fill="#000">—</text>
+<line x1="18" y1="178.112" x2="230" y2="178.112" stroke="#777" stroke-width="0.1" stroke-linecap="butt"/>
+<text x="18.8" y="180.232" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.55" text-anchor="start" font-weight="normal" fill="#000">DRV</text>
+<text x="30.8" y="180.232" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.55" text-anchor="start" font-weight="normal" fill="#000">LED drivers: 2 x 100 W 24 V constant voltage (DALI/phase-cut dimmable) + 60 W 12 V for UL</text>
+<text x="200.8" y="180.232" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.55" text-anchor="start" font-weight="normal" fill="#000">3</text>
+<text x="214.8" y="180.232" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.55" text-anchor="start" font-weight="normal" fill="#000">in UTILITY</text>
+<line x1="18" y1="181.057" x2="230" y2="181.057" stroke="#777" stroke-width="0.1" stroke-linecap="butt"/>
+<text x="18.8" y="183.177" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.55" text-anchor="start" font-weight="normal" fill="#000">CTRL</text>
+<text x="30.8" y="183.177" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.55" text-anchor="start" font-weight="normal" fill="#000">Astronomical time-switch + scene dimmer (dusk-on, 23:30 50%, off 01:00), smart-home ready</text>
+<text x="200.8" y="183.177" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.55" text-anchor="start" font-weight="normal" fill="#000">1</text>
+<text x="214.8" y="183.177" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.55" text-anchor="start" font-weight="normal" fill="#000">in UTILITY</text>
+<line x1="18" y1="184.002" x2="230" y2="184.002" stroke="#777" stroke-width="0.1" stroke-linecap="butt"/>
+<line x1="18" y1="160" x2="18" y2="184.002" stroke="#777" stroke-width="0.1" stroke-linecap="butt"/>
+<line x1="30" y1="160" x2="30" y2="184.002" stroke="#777" stroke-width="0.1" stroke-linecap="butt"/>
+<line x1="200" y1="160" x2="200" y2="184.002" stroke="#777" stroke-width="0.1" stroke-linecap="butt"/>
+<line x1="214" y1="160" x2="214" y2="184.002" stroke="#777" stroke-width="0.1" stroke-linecap="butt"/>
+<rect x="18" y="160" width="212" height="24.002" rx="0" fill="none" stroke="#000" stroke-width="0.3"/>
+<text x="250" y="125.55" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.55" text-anchor="start" font-weight="bold" fill="#000">ELECTRICAL NOTES</text>
+<text x="250" y="127.817" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.55" text-anchor="start" font-weight="normal" fill="#000">1. New circuits from existing consumer unit: C1 lighting (RCBO 6 A, 30 mA, Type A); C2 external socket (RCBO</text>
+<text x="253" y="129.91" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.55" text-anchor="start" font-weight="normal" fill="#000">16 A, 30 mA). Installer to verify capacity, earthing &amp; bonding.</text>
+<text x="250" y="132.352" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.55" text-anchor="start" font-weight="normal" fill="#000">2. All external work to IEC 60364-7-714 / local wiring regulations; certificate on completion.</text>
+<text x="250" y="134.795" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.55" text-anchor="start" font-weight="normal" fill="#000">3. LV cables: 1.5 mm² H07RN-F in 20 mm conduit inside canopy void; through façade in sleeved hole, sealed. 12</text>
+<text x="253" y="136.887" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.55" text-anchor="start" font-weight="normal" fill="#000">V garden cable in 25 mm flexible duct 300 deep in planter.</text>
+<text x="250" y="139.33" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.55" text-anchor="start" font-weight="normal" fill="#000">4. Driver location must be ventilated &amp; accessible (utility, behind lattice door D03).</text>
+<text x="250" y="141.772" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.55" text-anchor="start" font-weight="normal" fill="#000">5. Voltage drop on LS1 &lt; 3%: feed from 2 points (NE corner &amp; mid-front via void).</text>
+<text x="250" y="144.215" font-family="Liberation Sans, Arial, Helvetica, sans-serif" font-size="1.55" text-anchor="start" font-weight="normal" fill="#000">6. Install draw-wires before soffit slats are fixed; test &amp; label all circuits.</text>
+</svg>
