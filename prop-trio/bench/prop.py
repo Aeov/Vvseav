@@ -15,6 +15,7 @@ A challenge walks those days:
 """
 from __future__ import annotations
 
+import itertools
 from dataclasses import dataclass, asdict
 
 import numpy as np
@@ -86,7 +87,7 @@ class DayPaths:
                         ok = (mm >= 0) & (mm < W)
                         seg = np.full(m1 - m0 + 1, np.nan)
                         seg[mm[ok] - m0] = val[ok]
-                        seg = pd.Series(seg).ffill().fillna(-entry_cost).to_numpy()
+                        seg = pd.Series(seg).ffill().fillna(-entry_cost).to_numpy(copy=True)
                     else:
                         seg = np.full(m1 - m0 + 1, -entry_cost)
                     # exit minute: realized, plus any dip inside that bar below the exit price
@@ -145,11 +146,63 @@ def run_challenge(close, dmin, traded, start: int, prof: Profile):
     return "open", n - start
 
 
+_RUN, _PASS, _FAIL, _EXP, _OPEN = 0, 1, 2, 3, 4
+_NAMES = {_PASS: "pass", _FAIL: "fail", _EXP: "expired", _OPEN: "open"}
+
+
+def _vec_sim(close, dmin, traded, prof: Profile, day_index, m: int):
+    """Run m challenges in parallel; day_index(rows, t) -> flat day index or -1 (no more days).
+
+    Same rules as run_challenge, vectorised across challenges.
+    """
+    bal = np.zeros(m)
+    peak = np.zeros(m)
+    best = np.zeros(m)
+    qual = np.zeros(m, np.int64)
+    status = np.zeros(m, np.int8)
+    used = np.zeros(m, np.int64)
+    t = 0
+    while True:
+        rows = np.flatnonzero(status == _RUN)
+        if rows.size == 0:
+            break
+        kk = day_index(rows, t)
+        gone = kk < 0
+        status[rows[gone]] = _OPEN
+        used[rows[gone]] = t
+        rows, kk = rows[~gone], kk[~gone]
+        if rows.size == 0:
+            break
+        fail = bal[rows] + dmin[kk] <= peak[rows] - prof.trail_dd
+        status[rows[fail]] = _FAIL
+        used[rows[fail]] = t + 1
+        r, k = rows[~fail], kk[~fail]
+        bal[r] += close[k]
+        peak[r] = np.maximum(peak[r], bal[r])
+        best[r] = np.maximum(best[r], close[k])
+        qual[r] += (traded[k] & (close[k] >= prof.min_day_profit))
+        ok = (bal[r] >= prof.target) & (qual[r] >= prof.min_days)
+        if prof.consistency is not None:
+            ok &= best[r] <= prof.consistency * bal[r]
+        status[r[ok]] = _PASS
+        used[r[ok]] = t + 1
+        if prof.max_days is not None and t + 1 >= prof.max_days:
+            still = r[~ok]
+            status[still] = _EXP
+            used[still] = t + 1
+        t += 1
+    return [(_NAMES[s], int(u)) for s, u in zip(status, used)]
+
+
 def rolling(close, dmin, traded, prof: Profile, starts=None) -> dict:
     """A challenge started on every trading day; overlapping, so not independent."""
-    starts = range(len(close)) if starts is None else starts
-    res = [run_challenge(close, dmin, traded, s, prof) for s in starts]
-    return summarize(res)
+    n = len(close)
+    S = np.arange(n) if starts is None else np.asarray(starts)
+
+    def day_index(rows, t):
+        k = S[rows] + t
+        return np.where(k < n, k, -1)
+    return summarize(_vec_sim(close, dmin, traded, prof, day_index, len(S)))
 
 
 def back_to_back(close, dmin, traded, prof: Profile, fee: float = 0.0) -> dict:
@@ -171,16 +224,16 @@ def bootstrap(close, dmin, traded, prof: Profile, sims: int = 4000, block: float
     """Stationary block bootstrap of trading days -> independent synthetic challenges."""
     rng = np.random.default_rng(seed)
     n = len(close)
-    res = []
-    for _ in range(sims):
-        idx = np.empty(horizon, int)
-        k = rng.integers(n)
-        for t in range(horizon):
-            idx[t] = k
-            k = rng.integers(n) if rng.random() < 1.0 / block else (k + 1) % n
-        out, used = run_challenge(close[idx], dmin[idx], traded[idx], 0, prof)
-        res.append((out, used))
-    return summarize(res)
+    idx = np.empty((sims, horizon), np.int64)
+    idx[:, 0] = rng.integers(0, n, sims)
+    jump = rng.random((sims, horizon)) < 1.0 / block
+    fresh = rng.integers(0, n, (sims, horizon))
+    for t in range(1, horizon):
+        idx[:, t] = np.where(jump[:, t], fresh[:, t], (idx[:, t - 1] + 1) % n)
+
+    def day_index(rows, t):
+        return idx[rows, t] if t < horizon else np.full(len(rows), -1)
+    return summarize(_vec_sim(close, dmin, traded, prof, day_index, sims))
 
 
 def summarize(res) -> dict:
@@ -204,7 +257,6 @@ def optimize_sizing(paths: DayPaths, prof: Profile, grid=(0, 1, 2, 3, 4, 5, 6, 8
     """Every sizing mix on the grid, scored by rolling-start pass rate."""
     names = names or paths.names
     rows = []
-    import itertools
     for combo in itertools.product(grid, repeat=len(names)):
         if sum(combo) < min_total or sum(combo) > prof.max_micros:
             continue
