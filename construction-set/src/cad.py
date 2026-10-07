@@ -12,8 +12,8 @@ PROJECT = {
     "site": "Private residence — rear courtyard (site address to be inserted)",
     "client": "Owner / Client",
     "by": "Design & drawings: Claude Code",
-    "date": "06.10.2026",
-    "rev": "C01",
+    "date": "07.10.2026",
+    "rev": "C02",
     "status": "CONSTRUCTION ISSUE — subject to site survey & local engineer sign-off",
 }
 
@@ -377,8 +377,9 @@ class Sheet:
         self.line(X, ry - 4, W - 5, ry - 4, w=0.3)
         self.text(x0, ry, "REVISIONS", size=1.9, weight="bold")
         self.table(x0, ry + 1.5, [("Rev", 8), ("Date", 15), ("Description", w - 23)],
-                   [["C01", p["date"], "Issued for construction / tender"],
-                    ["P01", "05.10.2026", "Concept (client renders)"]], size=1.6)
+                   [["C02", "07.10.2026", "Canopy to client sketch: 8.00x3.44, u/s 2.36, fascia 0.43"],
+                    ["C01", "06.10.2026", "Issued for construction / tender"],
+                    ["P01", "05.10.2026", "Concept (client renders)"]], size=1.5)
         # status
         sy = 213
         self.rect(X, sy, W - 5 - X, 11, lw=0.3, fill="#111")

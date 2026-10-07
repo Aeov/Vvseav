@@ -71,14 +71,22 @@ def plan_planter(v, soil=True, label=True):
         v.text(420, -7900, "RAISED PLANTER", size=1.6, anchor="middle", rot=90, color="#5a3d1e")
 
 
-def plan_posts(v, alt=True, clad=True):
+def plan_pb2(v, label=False):
+    """Raised planter box PB2 (700x700, h 400) around the east post P2."""
+    x0, x1, y0, y1 = PB2
+    v.rect(x0, y0, x1 - x0, y1 - y0, w=0.3, fill="#f3efe6")
+    v.rect(x0 + 100, y0 + 100, x1 - x0 - 200, y1 - y0 - 200, w=0.15, mat="soil", opacity=0.6)
+    if label:
+        v.text((x0 + x1) / 2, y0 - 180, "PB2", size=1.4, anchor="middle", weight="bold")
+
+
+def plan_posts(v, alt=False, clad=True, pb2=True):
+    if pb2:
+        plan_pb2(v)
     for (x, y) in (P1, P2):
         if clad:
             v.rect(x - POST_CLAD / 2, y - POST_CLAD / 2, POST_CLAD, POST_CLAD, w=0.2, fill="#e7c79a")
         v.rect(x - POST / 2, y - POST / 2, POST, POST, w=0.3, fill="#222", layer="S-STEEL")
-    if alt:
-        x, y = P3
-        v.rect(x - POST / 2, y - POST / 2, POST, POST, w=0.2, dash="1,0.6", color="#c0392b")
 
 
 def plan_canopy_outline(v, color="#000", w=0.3):
@@ -257,6 +265,6 @@ def ground(v, u0, u1, z, depth=300, mat="earth"):
 
 def paving_level(x):
     """Finished paving level (m) at plan x (cross fall)."""
-    if x <= 6600:
-        return LV_KERB + (LV_VALLEY - LV_KERB) * (x - PAV_X0) / (6600 - PAV_X0)
-    return LV_VALLEY + (LV_EASTWALL - LV_VALLEY) * (x - 6600) / (PAV_X1 - 6600)
+    if x <= DRAIN_X:
+        return LV_KERB + (LV_VALLEY - LV_KERB) * (x - PAV_X0) / (DRAIN_X - PAV_X0)
+    return LV_VALLEY + (LV_EASTWALL - LV_VALLEY) * (x - DRAIN_X) / (PAV_X1 - DRAIN_X)
