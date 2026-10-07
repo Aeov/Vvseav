@@ -479,8 +479,10 @@ def axo_view(s, c, bx0, by0, bx1, by1, beta=60, elev=36, eye=False):
                "#3b2c22", stroke="#3b2c22", w=0.03, layer=3.35 + tr * 0.1)
     # GARDEN: planter in front of the facade, left of the door; kerb in line with the door jamb (under the roof)
     wl = 1 if mir else 4.6                                  # boundary + return wall: far side / near side
-    B(RET[0], LW[0], 0, XR - RET[0], LW[1] - LW[0], LW_H, "#f1ede6", layer=wl, w=0.2)
-    B(RET[0], LW[1], 0, RET[1] - RET[0], 0 - LW[1], LW_H, "#f1ede6", layer=wl - 0.05, w=0.2)
+    wx0 = RET[0] if LW[1] < 0 else HOUSE_L                 # wall in line with the annex side: no return
+    B(wx0, LW[0], 0, XR - wx0, LW[1] - LW[0], LW_H, "#f1ede6", layer=wl, w=0.2)
+    if LW[1] < 0:
+        B(RET[0], LW[1], 0, RET[1] - RET[0], 0 - LW[1], LW_H, "#f1ede6", layer=wl - 0.05, w=0.2)
     B(GARDEN_X0, PL[0], 0, GARDEN_X1 - GARDEN_X0, PL[1] - PL[0], KERB_H - 30, "#7d5f42", layer=4)
     B(GARDEN_X0, KERB[0], 0, GARDEN_X1 - GARDEN_X0, KERB[1] - KERB[0], KERB_H, "#f4f1ea", layer=4.1 if mir else 4.05,
       w=0.2)
