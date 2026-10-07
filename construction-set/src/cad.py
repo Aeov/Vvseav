@@ -377,6 +377,7 @@ class Sheet:
         self.line(X, ry - 4, W - 5, ry - 4, w=0.3)
         self.text(x0, ry, "REVISIONS", size=1.9, weight="bold")
         self.table(x0, ry + 1.5, [("Rev", 8), ("Date", 15), ("Description", w - 23)],
+                   p.get("revs") or
                    [["C02", "07.10.2026", "Canopy to client sketch: 8.00x3.44, u/s 2.36, fascia 0.43"],
                     ["C01", "06.10.2026", "Issued for construction / tender"],
                     ["P01", "05.10.2026", "Concept (client renders)"]], size=1.5)
