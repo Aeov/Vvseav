@@ -88,9 +88,12 @@ def xend(c):
     return TIP if c["tri"] else RX1
 
 
+EDGE_Y = 0          # plants-side roof edge (Y); 0 = in line with the annex side (C02..C06)
+
+
 def roof_poly(c):
     RD = c["roof_d"]
-    return [(RX0, 0), (xend(c), 0), (RX1, RD), (RX0, RD)]
+    return [(RX0, EDGE_Y), (xend(c), EDGE_Y), (RX1, RD), (RX0, RD)]
 
 
 def rake_len(c):
@@ -492,8 +495,9 @@ def axo_view(s, c, bx0, by0, bx1, by1, beta=60, elev=36, eye=False):
         i += 1
     # roof: side fascias first (back-facing ones end up under the top), then the top
     poly = roof_poly(c)
-    P3([(RX0, 0, SOFFIT), (XE, 0, SOFFIT), (XE, 0, FTOP), (RX0, 0, FTOP)], "#ffffff", w=0.3, layer=5.95)
-    P3([(XE, 0, SOFFIT), (RX1, RD, SOFFIT), (RX1, RD, FTOP), (XE, 0, FTOP)], "#f2f3f4", w=0.3, layer=5.96)
+    ey = EDGE_Y
+    P3([(RX0, ey, SOFFIT), (XE, ey, SOFFIT), (XE, ey, FTOP), (RX0, ey, FTOP)], "#ffffff", w=0.3, layer=5.95)
+    P3([(XE, ey, SOFFIT), (RX1, RD, SOFFIT), (RX1, RD, FTOP), (XE, ey, FTOP)], "#f2f3f4", w=0.3, layer=5.96)
     if RD < WALL_Y0:
         P3([(RX0, RD, SOFFIT), (RX1, RD, SOFFIT), (RX1, RD, FTOP), (RX0, RD, FTOP)], "#ffffff", w=0.3, layer=5.94)
     P3([(x_, y_, FTOP) for (x_, y_) in poly], "#e3e8ec", w=0.3, layer=6)
@@ -502,9 +506,9 @@ def axo_view(s, c, bx0, by0, bx1, by1, beta=60, elev=36, eye=False):
             xf = xc + sgn * CLAD / 2
             if (sgn > 0 and xf > XE - 250) or (sgn < 0 and xf < RX0 + 250):
                 continue
-            arc = [(xf + sgn * (200 - 200 * math.sin(math.radians(90 * k_ / 8))), 100,
+            arc = [(xf + sgn * (200 - 200 * math.sin(math.radians(90 * k_ / 8))), yc,
                     SOFFIT - 200 + 200 * math.cos(math.radians(90 * k_ / 8))) for k_ in range(9)]
-            P3([(xf, 100, SOFFIT), (xf + sgn * 200, 100, SOFFIT)] + arc, "#c9d0d6", w=0.15, layer=6.5)
+            P3([(xf, yc, SOFFIT), (xf + sgn * 200, yc, SOFFIT)] + arc, "#c9d0d6", w=0.15, layer=6.5)
         B(xc - CLAD / 2, yc - CLAD / 2, 0, CLAD, CLAD, COL_TOP, "#c99a62", layer=6.6, w=0.2)
     if c["rods"]:
         rl = 7 if mir else 5.5                              # near side (courtyard view) / behind the roof edge
