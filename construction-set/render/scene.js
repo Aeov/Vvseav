@@ -15,7 +15,7 @@
   const ENTR = [0.25, 2.29], HEAD = 2.2, SLIDES = [[1.23, 2.29, 0], [1.17, 2.23, 1]];
   const LATTICE = [HOUSE_W + 0.05, WALL_Y0 - 0.05];
   const KERB = [0.10, 0.25], KERB_H = 0.25, WI = -0.75, LW = [-0.95, -0.75], LW_H = 1.40;
-  const GX0 = HOUSE_L + 0.60;                                   // planter starts after the 0.60 paved entry space ...
+  const GX0 = HOUSE_L + 1.00;                                   // planter starts after the 1.00 paved entry space ...
   const ROOF_L = 3.22, TRI = 1.26, RX0 = HOUSE_L, RX1 = HOUSE_L + ROOF_L, TIP = RX1 + TRI;
   const SOFFIT = 2.36, FASCIA = 0.43, FTOP = SOFFIT + FASCIA, COL_TOP = FTOP + 0.13;
   const XE_ALL = TIP;
