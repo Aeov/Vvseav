@@ -34,6 +34,7 @@ LW_H = 1400
 RET = (HOUSE_L - WALL, HOUSE_L)      # low return wall in the facade line, annex corner -> boundary wall (X range)
 GARDEN_X0 = HOUSE_L                  # planter starts at the annex end facade ...
 GARDEN_X1 = HOUSE_L + 4100           # ... and runs ~4.1 m out into the courtyard (from site photo — CONFIRM)
+GARDEN_OPEN_END = False              # True: planter continues beyond the drawing (no end kerb)
 ROOF_L = 3220
 TRI = 1260                           # triangular extension along the plants edge (client sketch)
 RX0, RX1 = HOUSE_L, HOUSE_L + ROOF_L
@@ -483,7 +484,10 @@ def axo_view(s, c, bx0, by0, bx1, by1, beta=60, elev=36, eye=False):
     B(GARDEN_X0, PL[0], 0, GARDEN_X1 - GARDEN_X0, PL[1] - PL[0], KERB_H - 30, "#7d5f42", layer=4)
     B(GARDEN_X0, KERB[0], 0, GARDEN_X1 - GARDEN_X0, KERB[1] - KERB[0], KERB_H, "#f4f1ea", layer=4.1 if mir else 4.05,
       w=0.2)
-    B(GARDEN_X1 - 150, PL[0], 0, 150, KERB[1] - PL[0], KERB_H, "#f4f1ea", layer=4.2, w=0.2)
+    if not GARDEN_OPEN_END:
+        B(GARDEN_X1 - 150, PL[0], 0, 150, KERB[1] - PL[0], KERB_H, "#f4f1ea", layer=4.2, w=0.2)
+    if GARDEN_X0 > HOUSE_L:                                 # near-end kerb: paved entry space at the door
+        B(GARDEN_X0, PL[0], 0, 150, KERB[1] - PL[0], KERB_H, "#f4f1ea", layer=4.15, w=0.2)
     rnd = random.Random(5)
     x = GARDEN_X0 + 300
     i = 0
