@@ -485,7 +485,8 @@ def axo_view(s, c, bx0, by0, bx1, by1, beta=60, elev=36, eye=False):
     x = GARDEN_X0 + 300
     i = 0
     while x < GARDEN_X1 - 300:
-        BL(x, -480 + rnd.uniform(-150, 150), KERB_H + 520 + rnd.uniform(0, 600), 480 + rnd.uniform(0, 160),
+        BL(x, (PL[0] + PL[1]) / 2 - 30 + rnd.uniform(-150, 150), KERB_H + 520 + rnd.uniform(0, 600),
+           480 + rnd.uniform(0, 160),
            fill="#9cc47f" if i % 3 else "#86b56a", stroke="#4f7a3d", layer=4.3, seed=20 + i, flowers=4)
         x += rnd.uniform(420, 620)
         i += 1
