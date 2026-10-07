@@ -1,0 +1,137 @@
+[IntrabarOrderGeneration = true]
+{ PT_S2_VwapAdxPullback  -  Matteo's VWAP pullback with ADX gate, long only.   Rules: SPEC.md, S2.
+
+  CHART : NQ or MNQ, 1 MINUTE, 24-hour CME Globex session, Time Zone = Exchange (Central).
+  Intrabar order generation is ON only so that the target (high of the last 5 bars) and the stop
+  (low of the last 20 bars) are live from the entry bar itself. Every decision is still taken at the
+  bar CLOSE (BarStatus(1) = 2); entries fill at the next bar's open.
+
+  Defaults = the interview:  opening range 08:30-09:00 (NOT 08:45). After 09:00:
+    1. a bar closes above the OR high (arms the day)
+    2. price touches VWAP (bar low <= VWAP, VWAP from midnight)
+    3. a bar closes back above VWAP
+    4. ADX(14) > 20 and not rising vs the previous bar (if only this is missing, wait for it)
+  -> buy next bar. Target = highest high of 5 bars, stop = lowest low of 20 bars, both fixed at the
+  signal bar. Out at 15:55. One trade a day, entries until 15:00 (both assumptions, see SPEC).
+  Variants:  S2-v1 VWAPAnchor = 830     S2-v2 DynamicExits = true     S2-v3 MaxTrades = 3        }
+
+Inputs:
+    ORStart(830), OREnd(900), VWAPAnchor(0),
+    ADXLen(14), ADXMin(20),
+    TPBars(5), SLBars(20), DynamicExits(false),
+    EntryCutoff(1500), TimeExit(1555), MaxTrades(1);
+
+Vars:
+    ORStartMin(0), OREndMin(0), AnchorMin(0), CutoffMin(0), ExitMin(0),
+    CloseMin(0), OpenMin(0), CloseJD(0), OpenJD(0), DayKey(0), NewDay(false),
+    BarVol(0), CumPV(0), CumV(0), VWAPv(0), AnchorDone(false),
+    ORH(0), ORBars(0), Armed(false), Touched(false), TradesToday(0),
+    TRv(0), UpM(0), DnM(0), DMp(0), DMm(0), sTRv(0), sDMp(0), sDMm(0), DIp(0), DIm(0),
+    DXv(0), ADXv(0), PrevADX(0), NADX(0),
+    TPpx(0), SLpx(0);
+
+once begin
+    if BarType <> 1 or BarInterval <> 1 then RaiseRunTimeError("PT_S2 needs a 1-minute chart");
+    ORStartMin = IntPortion(ORStart / 100) * 60 + Mod(ORStart, 100);
+    OREndMin   = IntPortion(OREnd / 100) * 60 + Mod(OREnd, 100);
+    AnchorMin  = IntPortion(VWAPAnchor / 100) * 60 + Mod(VWAPAnchor, 100);
+    CutoffMin  = IntPortion(EntryCutoff / 100) * 60 + Mod(EntryCutoff, 100);
+    ExitMin    = IntPortion(TimeExit / 100) * 60 + Mod(TimeExit, 100);
+end;
+
+if BarStatus(1) = 2 then begin
+
+    { ---- clock ---- }
+    CloseMin = IntPortion(Time / 100) * 60 + Mod(Time, 100);
+    OpenMin  = Mod(CloseMin - 1 + 1440, 1440);
+    CloseJD  = DateToJulian(Date);
+    if CloseMin = 0 then OpenJD = CloseJD - 1 else OpenJD = CloseJD;
+    DayKey = OpenJD;
+    NewDay = (CurrentBar = 1) or (DayKey <> DayKey[1]);
+
+    if NewDay then begin
+        ORH = 0;
+        ORBars = 0;
+        Armed = false;
+        Touched = false;
+        TradesToday = 0;
+        AnchorDone = false;
+        CumPV = 0;
+        CumV = 0;
+    end;
+
+    { ---- VWAP anchored at AnchorMin (0 = midnight) ---- }
+    BarVol = MaxList(Volume, Ticks);
+    if (not AnchorDone) and OpenMin >= AnchorMin then begin
+        AnchorDone = true;
+        CumPV = 0;
+        CumV = 0;
+    end;
+    if AnchorDone then begin
+        CumPV = CumPV + (High + Low + Close) / 3 * BarVol;
+        CumV  = CumV + BarVol;
+        if CumV > 0 then VWAPv = CumPV / CumV else VWAPv = Close;
+    end;
+
+    { ---- Wilder ADX on 1-minute bars ---- }
+    if CurrentBar > 1 then begin
+        TRv = MaxList(High, Close[1]) - MinList(Low, Close[1]);
+        UpM = High - High[1];
+        DnM = Low[1] - Low;
+        DMp = 0;
+        DMm = 0;
+        if UpM > DnM and UpM > 0 then DMp = UpM;
+        if DnM > UpM and DnM > 0 then DMm = DnM;
+        if NADX = 0 then begin
+            sTRv = TRv; sDMp = DMp; sDMm = DMm;
+        end else begin
+            sTRv = sTRv + (TRv - sTRv) / ADXLen;
+            sDMp = sDMp + (DMp - sDMp) / ADXLen;
+            sDMm = sDMm + (DMm - sDMm) / ADXLen;
+        end;
+        if sTRv > 0 then begin DIp = 100 * sDMp / sTRv; DIm = 100 * sDMm / sTRv; end
+        else begin DIp = 0; DIm = 0; end;
+        if DIp + DIm > 0 then DXv = 100 * AbsValue(DIp - DIm) / (DIp + DIm) else DXv = 0;
+        PrevADX = ADXv;
+        if NADX = 0 then ADXv = DXv else ADXv = ADXv + (DXv - ADXv) / ADXLen;
+        NADX = NADX + 1;
+    end;
+
+    { ---- opening range 08:30-09:00 ---- }
+    if OpenMin >= ORStartMin and OpenMin < OREndMin then begin
+        if ORBars = 0 then ORH = High else ORH = MaxList(ORH, High);
+        ORBars = ORBars + 1;
+    end;
+
+    { ---- arm / touch / trigger, only while flat ---- }
+    { OpenMin, not CloseMin: the bar closing at midnight has Time = 0000 and must not pass the cutoff }
+    if MarketPosition = 0 and ORBars >= 10 and OpenMin >= OREndMin and OpenMin < CutoffMin
+       and TradesToday < MaxTrades then begin
+        if (not Armed) and Close > ORH then Armed = true;
+        if Armed then begin
+            if Low <= VWAPv then Touched = true;
+            if Touched and Close > VWAPv and NADX > 1 and ADXv > ADXMin and ADXv <= PrevADX then begin
+                TPpx = Highest(High, TPBars);
+                SLpx = Lowest(Low, SLBars);
+                Buy ("S2 VWAP") next bar at market;
+                TradesToday = TradesToday + 1;
+                Touched = false;
+            end;
+        end;
+    end;
+
+    { ---- rolling exits (variant S2-v2): levels recomputed at each bar close in the trade ---- }
+    if MarketPosition = 1 and DynamicExits then begin
+        TPpx = Highest(High, TPBars);
+        SLpx = Lowest(Low, SLBars);
+    end;
+
+    if MarketPosition = 1 and CloseMin >= ExitMin and CloseMin <= 960 then
+        Sell ("S2 Time") next bar at market;
+end;
+
+{ ---- target and stop, live intrabar from the entry bar on ---- }
+if MarketPosition = 1 then begin
+    Sell ("S2 TP") next bar at TPpx limit;
+    Sell ("S2 SL") next bar at SLpx stop;
+end;

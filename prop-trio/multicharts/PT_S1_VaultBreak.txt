@@ -1,0 +1,129 @@
+{ PT_S1_VaultBreak  -  Matteo's "Vault Break", long only.            Rules: SPEC.md, S1.
+
+  CHART : NQ or MNQ, 1 MINUTE, 24-hour CME Globex session,
+          Format Instrument > Settings > Time Zone = Exchange (Central).
+  The 30-minute signal is evaluated on the 1-minute bar that closes at :00 or :30, so VWAP,
+  stops and targets are exact at 1-minute resolution. Daily ATR is built here from the
+  17:00-16:00 CT sessions - no Data2 needed.
+  Stops/targets are in POINTS x BigPointValue, so the same code is right on NQ ($20) and MNQ ($2).
+
+  Defaults = the interview:  barrier = midnight price + 30% of ATR(15 sessions); bar closes above
+  barrier and above midnight-anchored VWAP between 10:00 and 14:00 -> buy next bar; target 40 pts
+  ($800/NQ), stop 75 pts ($1,500/NQ), out at 14:30; up to 3 entries a day.
+  Variants:  S1-v1 UseATRExits = true (TargetATR/StopATR from the Python report)
+             S1-v2 UseTODBand  = true (time-of-day noise band, 14 days)                          }
+
+Inputs:
+    NoisePct(0.30), ATRLen(15),
+    TargetPts(40), StopPts(75),
+    UseATRExits(false), TargetATR(0), StopATR(0),
+    UseTODBand(false), TODDays(14),
+    FirstSignal(1000), LastSignal(1400), TimeExit(1430),
+    MaxTrades(3), SigMins(30);
+
+Vars:
+    FirstMin(0), LastMin(0), ExitMin(0),
+    CloseMin(0), OpenMin(0), CloseJD(0), OpenJD(0), DayKey(0), SessKey(0),
+    NewDay(false), NewSess(false),
+    SessHi(0), SessLo(0), SessCl(0), LastSessCl(0), TRv(0), TRIdx(0), TRCount(0), SumTR(0), ATRd(0),
+    BarVol(0), CumPV(0), CumV(0), VWAPv(0),
+    RefPx(0), NoiseUp(0), Barrier(0), TradesToday(0), IsSig(false),
+    Ring(0), SlotN(0), DayRecorded(false), SumMv(0), CntMv(0), SigmaT(0), BandOK(false),
+    k(0), dd(0);
+Arrays:
+    TRBuf[100](0), Mv[40, 60](0), MvSet[40, 60](false);
+
+once begin
+    if BarType <> 1 or BarInterval <> 1 then RaiseRunTimeError("PT_S1 needs a 1-minute chart");
+    FirstMin = IntPortion(FirstSignal / 100) * 60 + Mod(FirstSignal, 100);
+    LastMin  = IntPortion(LastSignal / 100) * 60 + Mod(LastSignal, 100);
+    ExitMin  = IntPortion(TimeExit / 100) * 60 + Mod(TimeExit, 100);
+end;
+
+{ ---- clock: minute of the bar's OPEN, calendar day and Globex session of that open ---- }
+CloseMin = IntPortion(Time / 100) * 60 + Mod(Time, 100);
+OpenMin  = Mod(CloseMin - 1 + 1440, 1440);
+CloseJD  = DateToJulian(Date);
+if CloseMin = 0 then OpenJD = CloseJD - 1 else OpenJD = CloseJD;
+DayKey  = OpenJD;
+if OpenMin >= 1020 then SessKey = OpenJD + 1 else SessKey = OpenJD;
+NewDay  = (CurrentBar = 1) or (DayKey <> DayKey[1]);
+NewSess = (CurrentBar = 1) or (SessKey <> SessKey[1]);
+
+{ ---- ATR of the last ATRLen completed sessions (simple average = AvgTrueRange on daily bars) ---- }
+if NewSess and CurrentBar > 1 then begin
+    if LastSessCl > 0 then TRv = MaxList(SessHi, LastSessCl) - MinList(SessLo, LastSessCl)
+    else TRv = SessHi - SessLo;
+    LastSessCl = SessCl;
+    TRBuf[TRIdx] = TRv;
+    TRIdx = Mod(TRIdx + 1, ATRLen);
+    if TRCount < ATRLen then TRCount = TRCount + 1;
+    if TRCount >= ATRLen then begin
+        SumTR = 0;
+        for k = 0 to ATRLen - 1 begin SumTR = SumTR + TRBuf[k]; end;
+        ATRd = SumTR / ATRLen;
+    end;
+end;
+if NewSess then begin SessHi = High; SessLo = Low; end
+else begin SessHi = MaxList(SessHi, High); SessLo = MinList(SessLo, Low); end;
+SessCl = Close;
+
+{ ---- day reset, midnight reference, VWAP from midnight ---- }
+BarVol = MaxList(Volume, Ticks);
+if NewDay then begin
+    RefPx = Open;
+    TradesToday = 0;
+    DayRecorded = false;
+    CumPV = 0;
+    CumV = 0;
+end;
+CumPV = CumPV + (High + Low + Close) / 3 * BarVol;
+CumV  = CumV + BarVol;
+if CumV > 0 then VWAPv = CumPV / CumV else VWAPv = Close;
+NoiseUp = RefPx + NoisePct * ATRd;
+
+IsSig = (Mod(CloseMin, SigMins) = 0) and (CloseMin >= FirstMin) and (CloseMin <= LastMin);
+
+{ ---- S1-v2: time-of-day noise band = mean |close/midnight - 1| at this minute, previous TODDays days ---- }
+if UseTODBand and IsSig and RefPx > 0 then begin
+    SlotN = IntPortion((CloseMin - FirstMin) / SigMins);
+    if not DayRecorded then begin
+        Ring = Mod(Ring + 1, 40);
+        for k = 0 to 59 begin MvSet[Ring, k] = false; end;
+        DayRecorded = true;
+    end;
+    SumMv = 0;
+    CntMv = 0;
+    for dd = 1 to TODDays begin
+        k = Mod(Ring - dd + 40, 40);
+        if MvSet[k, SlotN] then begin SumMv = SumMv + Mv[k, SlotN]; CntMv = CntMv + 1; end;
+    end;
+    BandOK = (CntMv = TODDays);
+    if BandOK then SigmaT = SumMv / TODDays;
+    Mv[Ring, SlotN] = AbsValue(Close / RefPx - 1);
+    MvSet[Ring, SlotN] = true;
+end;
+
+{ ---- entry ---- }
+if IsSig and MarketPosition = 0 and TradesToday < MaxTrades and ATRd > 0 and RefPx > 0 then begin
+    if UseTODBand then begin
+        if BandOK then Barrier = RefPx * (1 + SigmaT) else Barrier = 99999999;
+    end else
+        Barrier = NoiseUp;
+    if Close > Barrier and Close > VWAPv then begin
+        Buy ("S1 VaultBreak") next bar at market;
+        TradesToday = TradesToday + 1;
+    end;
+end;
+
+{ ---- exits: per contract, in points ---- }
+SetStopContract;
+if UseATRExits and ATRd > 0 and TargetATR > 0 and StopATR > 0 then begin
+    SetProfitTarget(TargetATR * ATRd * BigPointValue);
+    SetStopLoss(StopATR * ATRd * BigPointValue);
+end else begin
+    SetProfitTarget(TargetPts * BigPointValue);
+    SetStopLoss(StopPts * BigPointValue);
+end;
+if MarketPosition = 1 and CloseMin >= ExitMin and CloseMin <= 960 then
+    Sell ("S1 Time") next bar at market;
