@@ -14,7 +14,7 @@
   const TW_T = 0.25, TW_H = 5.6;
   const ENTR = [0.20, 2.29], HEAD = 2.2, SLIDES = [[1.23, 2.29, 0], [1.17, 2.23, 1]];
   const LATTICE = [HOUSE_W + 0.05, WALL_Y0 - 0.05];
-  const LW = [0.0, 0.20], WI = LW[1], KERB = [WI + 0.85, WI + 1.00], KERB_H = 0.25, LW_H = 1.40;   // garden wall = annex side line
+  const LW = [0.0, 0.20], WI = LW[1], KERB = [WI + 0.55, WI + 0.70], KERB_H = 0.25, LW_H = 1.40;   // garden wall = annex side line
   const GX0 = HOUSE_L + 1.00;                                   // planter starts after the 1.00 paved entry space ...
   const ROOF_L = 3.22, TRI = 1.26, RX0 = HOUSE_L, RX1 = HOUSE_L + ROOF_L, TIP = RX1 + TRI;
   const SOFFIT = 2.36, FASCIA = 0.43, FTOP = SOFFIT + FASCIA, COL_TOP = FTOP + 0.13;
@@ -296,22 +296,12 @@
   // passage + lattice door
   box(HOUSE_L - 0.12, HOUSE_L - 0.06, LATTICE[0], LATTICE[1], 0, HEAD, M.woodDark);
 
-  // ------------------------------------------------------------------ garden: kerb -> 1.00 planter -> low white wall
+  // ------------------------------------------------------------------ garden: kerb -> 0.70 planter (soil only, no bushes) -> low white wall
   box(HOUSE_L, GX1, LW[0], LW[1], -0.5, LW_H, M.white, 1.2);                          // low white wall (annex line)
   cyl([HOUSE_L, (LW[0] + LW[1]) / 2, LW_H], [GX1, (LW[0] + LW[1]) / 2, LW_H], 0.1, M.white);   // rounded coping
-  box(GX0, GX1, WI, KERB[0], -0.12, KERB_H - 0.03, M.soil);
+  box(GX0, GX1, WI, KERB[0], -0.12, KERB_H - 0.03, M.soil, 0.6);                  // soil only, no bushes
   box(GX0, GX1, KERB[0], KERB[1], -0.12, KERB_H, M.kerb);
   box(GX0, GX0 + 0.15, WI, KERB[1], -0.12, KERB_H, M.kerb);
-  {
-    const R = rnd(21);
-    for (let x = GX0 + 0.35; x < GX1 - 0.25; x += 0.45 + R() * 0.25) {
-      const kind = R();
-      if (kind < 0.45) foliage(x, WI + 0.45 + R() * 0.2, KERB_H + 0.45 + R() * 0.3, 0.42 + R() * 0.2, 100 + x * 10, ['#4c7a3a', '#5d8b43', '#3f6b32', '#6e9a4e'], 28, 0.9);   // lantana
-      else if (kind < 0.75) foliage(x, WI + 0.35 + R() * 0.2, KERB_H + 0.9 + R() * 0.6, 0.5 + R() * 0.2, 200 + x * 10, ['#4a7b3f', '#3b6a35', '#5b8c47'], 0, 1.1);          // shrub
-      else foliage(x, WI + 0.5, KERB_H + 0.6 + R() * 0.3, 0.38, 300 + x * 10, ['#8fb55a', '#a3c464', '#7aa64d'], 0, 1.2);                                               // ficus
-    }
-    foliage(GX0 + 0.5, WI + 0.4, 2.0, 0.75, 77, ['#4f8240', '#3e6e35', '#5f9149'], 6, 1.0);         // bougainvillea by the door
-  }
 
   // ------------------------------------------------------------------ the new roof
   prism(roofPoly, SOFFIT + 0.02, FTOP - 0.04, M.roofTop);
