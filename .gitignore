@@ -4,4 +4,4 @@ construction-set/preview/
 construction-set/render/node_modules/
 prop-trio/data/*
 !prop-trio/data/README.md
-prop-trio/results/*/trades_*.csv
+prop-trio/results/synthetic/
