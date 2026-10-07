@@ -7,6 +7,7 @@
   const Q = new URLSearchParams(location.search);
   const VER = Q.get('v') || 'V1';
   const VIEW = Q.get('view') || 'eye';
+  const DUSK = Q.get('light') === 'dusk';
   const W = +(Q.get('w') || 1800), H = +(Q.get('h') || 1200);
 
   // ------------------------------------------------------------------ geometry (from the drawings, m)
@@ -45,22 +46,22 @@
   {
     const g = new THREE.SphereGeometry(400, 32, 16);
     const cols = [];
-    const top = new THREE.Color('#5d8fd6'), hor = new THREE.Color('#dbe8f3');
+    const top = new THREE.Color(DUSK ? '#2e3e66' : '#5d8fd6'), hor = new THREE.Color(DUSK ? '#ff9f55' : '#dbe8f3');
     const p = g.attributes.position;
     for (let i = 0; i < p.count; i++) {
-      const t = Math.max(0, Math.min(1, p.getY(i) / 400));
+      const t = Math.max(0, Math.min(1, p.getY(i) / (DUSK ? 260 : 400)));
       const c = hor.clone().lerp(top, Math.pow(t, 0.55));
       cols.push(c.r, c.g, c.b);
     }
     g.setAttribute('color', new THREE.Float32BufferAttribute(cols, 3));
     scene.add(new THREE.Mesh(g, new THREE.MeshBasicMaterial({ vertexColors: true, side: THREE.BackSide, fog: false })));
   }
-  scene.fog = new THREE.Fog('#dfe9f2', 45, 160);
+  scene.fog = new THREE.Fog(DUSK ? '#e9a875' : '#dfe9f2', 45, 160);
 
   // lights: Athens afternoon sun from the south-west, soft sky
-  scene.add(new THREE.HemisphereLight('#dcebff', '#b9a68c', 0.45));
-  const sun = new THREE.DirectionalLight('#fff1d6', 2.9);
-  sun.position.set(22, 17, -10);
+  scene.add(new THREE.HemisphereLight(DUSK ? '#ffc996' : '#dcebff', DUSK ? '#3a2c22' : '#b9a68c', DUSK ? 0.2 : 0.45));
+  const sun = new THREE.DirectionalLight(DUSK ? '#ff9442' : '#fff1d6', DUSK ? 1.25 : 2.9);
+  if (DUSK) sun.position.set(30, 6, 16); else sun.position.set(22, 17, -10);
   sun.target.position.set(9, 0, -1);
   sun.castShadow = true;
   sun.shadow.mapSize.set(4096, 4096);
@@ -68,7 +69,7 @@
   sun.shadow.bias = -0.0006;
   sun.shadow.normalBias = 0.035;
   scene.add(sun, sun.target);
-  scene.add(new THREE.AmbientLight('#ffffff', 0.12));
+  scene.add(new THREE.AmbientLight(DUSK ? '#ffd9b0' : '#ffffff', DUSK ? 0.06 : 0.12));
 
   // ------------------------------------------------------------------ textures (procedural canvases)
   function rnd(seed) { let s = seed >>> 0; return () => ((s = (s * 1664525 + 1013904223) >>> 0) / 4294967296); }
@@ -205,7 +206,7 @@
     m.position.set(xf, SOFFIT, -(y + 0.006));
     return add(m);
   }
-  function foliage(x, y, z, r, seed, cols, flowers, squash = 1) {
+  function foliage(x, y, z, r, seed, cols, flowers, squash = 1, fcols = null) {
     const R = rnd(Math.floor(seed * 7919) + 13), grp = new THREE.Group();
     const core = new THREE.Mesh(new THREE.SphereGeometry(r * 0.72, 16, 12),
       new THREE.MeshStandardMaterial({ color: new THREE.Color(cols[0]).multiplyScalar(0.38), roughness: 1 }));
@@ -240,7 +241,8 @@
         d.position.set(x + rr * s2 * Math.cos(th), z + u * rr * squash, -(y + rr * s2 * Math.sin(th)));
         d.rotation.set(0, 0, 0); const sc = 0.8 + R() * 0.8; d.scale.set(sc, sc, sc);
         d.updateMatrix(); fi.setMatrixAt(i, d.matrix);
-        c.set(['#ff8a3d', '#f25c8a', '#ffd23f', '#ff6f61', '#fbe7ef', '#e8508a'][Math.floor(R() * 6)]);
+        const FC = fcols || ['#ff8a3d', '#f25c8a', '#ffd23f', '#ff6f61', '#fbe7ef', '#e8508a'];
+        c.set(FC[Math.floor(R() * FC.length)]);
         fi.setColorAt(i, c);
       }
       grp.add(fi);
@@ -303,6 +305,103 @@
   box(GX0, GX1, KERB[0], KERB[1], -0.12, KERB_H, M.kerb);
   box(GX0, GX0 + 0.15, WI, KERB[1], -0.12, KERB_H, M.kerb);
 
+  // ------------------------------------------------------------------ planting per client reference (P1..P4, L1)
+  const leafGeo = new THREE.IcosahedronGeometry(0.022, 0);
+  const starSh = new THREE.Shape();
+  for (let k = 0; k <= 10; k++) {
+    const a = Math.PI / 2 + k * Math.PI / 5, rr = k % 2 ? 0.006 : 0.016;
+    if (k === 0) starSh.moveTo(rr * Math.cos(a), rr * Math.sin(a)); else starSh.lineTo(rr * Math.cos(a), rr * Math.sin(a));
+  }
+  const starGeo = new THREE.ShapeGeometry(starSh);
+  const jasLeaf = new THREE.MeshStandardMaterial({ roughness: 0.45, metalness: 0.05, flatShading: true });
+  const jasFl = new THREE.MeshStandardMaterial({ color: '#fbfbf6', roughness: 0.6, side: THREE.DoubleSide,
+    emissive: '#fff8e8', emissiveIntensity: DUSK ? 0.12 : 0.05 });
+  function strand(pts, r, perM, flPerM, seed) {   // P1 star jasmine: leafy strand along a model polyline
+    const R = rnd(seed), segs = [];
+    let L = 0;
+    for (let i = 1; i < pts.length; i++) { const d = Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1], pts[i][2] - pts[i - 1][2]); segs.push(d); L += d; }
+    const n = Math.round(L * perM), nf = Math.round(L * flPerM);
+    const pick = () => {
+      let t = R() * L, i = 0;
+      while (i < segs.length - 1 && t > segs[i]) { t -= segs[i]; i++; }
+      const a = pts[i], b = pts[i + 1], f = t / segs[i];
+      return [a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f, a[2] + (b[2] - a[2]) * f];
+    };
+    const im = new THREE.InstancedMesh(leafGeo, jasLeaf, n), fi = new THREE.InstancedMesh(starGeo, jasFl, nf);
+    const d = new THREE.Object3D(), c = new THREE.Color(), cols = ['#1f4a26', '#2a5a2e', '#33622f', '#24502a', '#3b6b34'];
+    for (let i = 0; i < n; i++) {
+      const q = pick(), th = R() * 6.283, rr = r * Math.sqrt(R());
+      d.position.set(q[0] + rr * Math.cos(th), q[2] + (R() - 0.5) * r, -(q[1] + rr * Math.sin(th)));
+      d.rotation.set(R() * 6, R() * 6, R() * 6); const sc = 0.8 + R() * 0.9; d.scale.set(sc * 1.4, sc * 0.5, sc);
+      d.updateMatrix(); im.setMatrixAt(i, d.matrix);
+      c.set(cols[Math.floor(R() * cols.length)]).multiplyScalar(0.85 + R() * 0.4); im.setColorAt(i, c);
+    }
+    for (let i = 0; i < nf; i++) {
+      const q = pick(), th = R() * 6.283, rr = r * (0.7 + 0.4 * R());
+      d.position.set(q[0] + rr * Math.cos(th), q[2] + (R() - 0.5) * r, -(q[1] + rr * Math.sin(th)));
+      d.rotation.set(R() * 6, R() * 6, R() * 6); d.scale.setScalar(0.9 + R() * 0.5);
+      d.updateMatrix(); fi.setMatrixAt(i, d.matrix);
+    }
+    im.castShadow = true; im.receiveShadow = true;
+    scene.add(im, fi);
+  }
+  const nearCol = x => COLS.some(cx => Math.abs(cx - x) < 0.28);
+  {
+    const R = rnd(31);
+    // P2 dwarf pittosporum mounds @ 0.60, middle row
+    for (let x = GX0 + 0.45; x < GX1 - 0.3; x += 0.6) {
+      if (nearCol(x)) continue;
+      foliage(x, 0.45 + (R() - 0.5) * 0.06, KERB_H + 0.12, 0.24 + R() * 0.04, 400 + x * 10, ['#3d6b35', '#4a7a3c', '#355f2f', '#55843f'], 0, 0.85);
+    }
+    // P3 white lavender / gaura @ 0.40, front row: grey-green cushions with white flower spikes
+    for (let x = GX0 + 0.3; x < GX1 - 0.3; x += 0.4) {
+      foliage(x, 0.63, KERB_H + 0.1, 0.13 + R() * 0.03, 500 + x * 10, ['#8fa58a', '#9cb394', '#7f9878'], 0, 0.9);
+      const st = new THREE.InstancedMesh(new THREE.CylinderGeometry(0.003, 0.003, 1, 4), new THREE.MeshStandardMaterial({ color: '#7f9878' }), 9);
+      const fl = new THREE.InstancedMesh(new THREE.CylinderGeometry(0.003, 0.007, 1, 6), jasFl, 9);
+      const d = new THREE.Object3D();
+      for (let k = 0; k < 9; k++) {
+        const h = 0.28 + R() * 0.2, ox = (R() - 0.5) * 0.2, oy = (R() - 0.5) * 0.1;
+        d.position.set(x + ox, KERB_H + 0.08 + h / 2, -(0.63 + oy)); d.rotation.set((R() - 0.5) * 0.3, 0, (R() - 0.5) * 0.3); d.scale.set(1, h, 1);
+        d.updateMatrix(); st.setMatrixAt(k, d.matrix);
+        d.position.set(x + ox, KERB_H + 0.08 + h + 0.05, -(0.63 + oy)); d.scale.set(1, 0.13, 1); d.updateMatrix(); fl.setMatrixAt(k, d.matrix);
+      }
+      scene.add(st, fl);
+    }
+    // P4 Erigeron cushions trailing over the kerb @ 0.30
+    for (let x = GX0 + 0.2; x < GX1 - 0.2; x += 0.3)
+      foliage(x, 0.77, KERB_H + 0.04, 0.085, 600 + x * 10, ['#4f7d40', '#5d8b48'], 5, 0.6, ['#ffffff', '#fbe3ea', '#ffffff']);
+    // P1 star jasmine: up both posts (3 SS wires) to the soffit + along the plants-edge beam
+    COLS.forEach((cx, i) => {
+      const sp = [];
+      for (let k = 0; k <= 40; k++) {
+        const t = k / 40, a = t * Math.PI * 5 + i;
+        sp.push([cx + 0.125 * Math.cos(a), CY + 0.06 + 0.07 * Math.abs(Math.sin(a)), KERB_H + t * (SOFFIT - KERB_H - 0.05)]);
+      }
+      strand(sp, 0.06, 900, 120, 700 + i);
+      strand([[cx - 0.12, CY + 0.1, KERB_H], [cx - 0.12, CY + 0.12, SOFFIT - 0.1]], 0.05, 500, 60, 710 + i);
+    });
+    strand([[RX0 + 0.5, 0.26, SOFFIT - 0.06], [COLS[0], 0.24, SOFFIT - 0.08], [COLS[1], 0.24, SOFFIT - 0.06], [XE - 0.6, 0.24, SOFFIT - 0.08]], 0.07, 520, 70, 720);
+    // P1 on the low garden wall: fans @ 1.00 on SS wires (+0.60 / +1.00 / +1.35), spilling over the coping
+    for (let x = GX0 + 0.5, k = 0; x < GX1 - 0.3; x += 1.0, k++) {
+      const yw = WI + 0.04;
+      strand([[x, yw, KERB_H], [x - 0.12, yw, 0.8], [x - 0.3, yw, 1.38], [x - 0.36, 0.1, LW_H + 0.07]], 0.07, 650, 110, 800 + k);
+      strand([[x, yw, KERB_H], [x + 0.02, yw, 0.9], [x + 0.06, yw, 1.38], [x + 0.08, 0.1, LW_H + 0.07]], 0.07, 650, 110, 850 + k);
+      strand([[x, yw, KERB_H], [x + 0.14, yw, 0.8], [x + 0.32, yw, 1.38]], 0.07, 650, 110, 870 + k);
+      strand([[x - 0.5, yw, 1.0], [x + 0.5, yw, 1.0]], 0.05, 380, 60, 900 + k);
+      strand([[x - 0.5, yw, 0.6], [x + 0.5, yw, 0.6]], 0.05, 300, 40, 950 + k);
+    }
+    // L1 uplights: 1 per column + 1 per 1.20 m along the wall
+    const ups = COLS.map(cx => [cx, CY + 0.2, 'post']);
+    for (let x = GX0 + 0.6; x < XE + 2.5; x += 1.2) if (!nearCol(x)) ups.push([x, WI + 0.12, 'wall']);
+    for (const [ux, uy] of ups) cyl([ux, uy, KERB_H - 0.03], [ux, uy, KERB_H + 0.08], 0.022, M.dark);
+    if (DUSK) for (const [ux, uy, kind] of ups) {
+      const sl = new THREE.SpotLight('#ffbe7a', kind === 'post' ? 3.4 : 2.6, 3.4, 0.45, 0.8, 2);
+      sl.position.set(ux, KERB_H + 0.1, -uy);
+      sl.target.position.set(ux, kind === 'post' ? 2.2 : 1.6, -(kind === 'post' ? CY : WI - 0.05));
+      scene.add(sl, sl.target);
+    }
+  }
+
   // ------------------------------------------------------------------ the new roof
   prism(roofPoly, SOFFIT + 0.02, FTOP - 0.04, M.roofTop);
   // fascia 0.43 on the free edges (white aluminium)
@@ -339,6 +438,20 @@
   cypress(-3.0, -9.0, 11, 8); cypress(-1.5, -10.5, 12, 9); cypress(0.5, -11.0, 10, 10);
   foliage(13.5, -2.4, 1.2, 1.3, 55, ['#4c7a3a', '#5d8b43', '#3f6b32'], 40, 0.8);            // lantana outside the wall
   foliage(16.0, -1.9, 1.0, 1.0, 56, ['#4c7a3a', '#5d8b43', '#6e9a4e'], 30, 0.8);
+
+  // ------------------------------------------------------------------ evening: LED strip in the soffit perimeter + warm interior
+  if (DUSK) {
+    renderer.toneMappingExposure = 0.9;
+    const led = new THREE.MeshBasicMaterial({ color: '#ffd59a' });
+    const inset = 0.05, z = SOFFIT - 0.012;
+    plate([RX0 + 0.05, EDGE + inset], [XE - 0.12, EDGE + inset], z - 0.012, z, 0.035, led);
+    plate([XE - 0.12, EDGE + inset], [RX1 - 0.02, RD - inset], z - 0.012, z, 0.035, led);
+    plate([RX0 + 0.05, RD - inset], [RX1 - 0.02, RD - inset], z - 0.012, z, 0.035, led);
+    const pts = [[RX0 + 0.6, 0.35], [RX0 + 2.0, 0.35], [RX0 + 3.4, 0.35], [RX0 + 0.8, RD - 0.35], [RX0 + 2.4, RD - 0.35], [RX1 + 0.4, 1.3]];
+    for (const [x, y] of pts) { const pl = new THREE.PointLight('#ffb56b', 1.7, 3.8, 2); pl.position.set(x, SOFFIT - 0.25, -y); scene.add(pl); }
+    box(HOUSE_L - 0.6, HOUSE_L - 0.3, ENTR[0] + 0.05, ENTR[1] - 0.05, 0.0, HEAD, new THREE.MeshBasicMaterial({ color: '#f3b874' }));
+    const inl = new THREE.PointLight('#ffb067', 1.2, 4, 2); inl.position.set(HOUSE_L + 0.4, 1.6, -(ENTR[0] + 0.6)); scene.add(inl);
+  }
 
   // ------------------------------------------------------------------ camera
   const cam = new THREE.PerspectiveCamera(VIEW === 'aerial' ? 38 : 58, W / H, 0.05, 600);
