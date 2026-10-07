@@ -199,7 +199,8 @@ def site_plan(v, c, labels=True):
     v.rect(gx0, PL[0], GARDEN_END - gx0, PL[1] - PL[0], w=0.15, fill="#efe4d0", color="#bba")
     v.rect(gx0, PL[1], GARDEN_END - gx0, 100, w=0.25, fill="#efe9dd")
     v.rect(GARDEN_END - 100, PL[0], 100, PL[1] - PL[0], w=0.25, fill="#efe9dd")
-    plants(v, -200, GARDEN_END - 120, PL[0], PL[1], seed=3)
+    plants(v, -200, 2850, PL[0], PL[1], seed=3)
+    plants(v, 4500, GARDEN_END - 120, PL[0], PL[1], seed=4)
     v.rect(gx0, LW[0], GARDEN_END - gx0, LW[1] - LW[0], mat="masonry", w=0.35)
     v.line(GARDEN_END, LW[0] - 250, GARDEN_END, 0, w=0.18, dash="3,1.2", color="#4f7a3d")
     # tall wall (top)
@@ -211,9 +212,6 @@ def site_plan(v, c, labels=True):
     mid = (ENTR[0] + ENTR[1]) / 2
     v.rect(HOUSE_L - 140, ENTR[0], 25, mid - ENTR[0] + 40, w=0.15, fill="#cfe3ef")      # glass sliding door
     v.rect(HOUSE_L - 110, mid - 40, 25, ENTR[1] - mid + 40, w=0.15, fill="#cfe3ef")
-    for (a, b, tr) in SLIDES:                                                          # brown louvred slides
-        v.rect(HOUSE_L + 10 + tr * 45, a, 35, b - a, w=0.25, fill="#6e5544")
-    v.line(HOUSE_L + 5, ENTR[0] - 150, HOUSE_L + 5, ENTR[1] + 150, w=0.15, dash="1.5,0.8")
     # passage + lattice door
     v.rect(0, HOUSE_W, HOUSE_L, STRIP, w=0.1, fill="#f6f3ec", color="#bbb")
     v.rect(HOUSE_L - 120, LATTICE[0], 60, LATTICE[1] - LATTICE[0], w=0.25, fill="#b07a45")
@@ -222,18 +220,24 @@ def site_plan(v, c, labels=True):
         v.text(HOUSE_L / 2, 950, "8.00 m long", size=1.8, anchor="middle", color="#777")
         v.text(HOUSE_L / 2, HOUSE_W + STRIP / 2 - 80, "PASSAGE 0.90 (lattice door at end)", size=1.5,
                anchor="middle", color="#555")
-        v.text(HOUSE_L / 2, WALL_Y0 + 70, "TALL HOUSE WALL (exist., AC units)", size=1.5, anchor="middle",
+        v.text(6000, WALL_Y0 + TW_T + 120, "TALL HOUSE WALL (exist., AC units)", size=1.5, anchor="middle",
                weight="bold", color="#333")
-        v.text(3500, (PL[0] + PL[1]) / 2 - 80, "GARDEN / PLANTER (plants side)", size=1.5, color="#4f7a3d",
+        v.text(2950, (PL[0] + PL[1]) / 2 - 80, "GARDEN / PLANTER (plants side)", size=1.5, color="#4f7a3d",
                weight="bold")
-        v.text(3500, LW[0] + 45, "LOW BOUNDARY WALL (exist.)", size=1.3, color="#333", weight="bold")
+        v.text(3500, LW[0] - 260, "LOW BOUNDARY WALL (exist.)", size=1.3, color="#333", weight="bold")
         v.text(RX0 + 150, (PL[0] + PL[1]) / 2 - 60, "◄ garden ends at the door / slider line", size=1.35,
                color="#4f7a3d", weight="bold")
         v.text(RX0 + 150, LW[0] + 120, "OPEN COURTYARD (paving)", size=1.3, color="#8a7f6c")
     # roof
     poly = roof_poly(c)
-    v.pl(poly, w=0, fill="#dfe5ea", opacity=0.9)
+    v.pl(poly, w=0, fill="#dfe5ea", opacity=0.75)
+    for (a, b, tr) in SLIDES:                                                          # brown louvred slides
+        v.rect(HOUSE_L + 10 + tr * 45, a, 35, b - a, w=0.25, fill="#6e5544")
+    v.line(HOUSE_L + 5, ENTR[0] - 150, HOUSE_L + 5, ENTR[1] + 150, w=0.15, dash="1.5,0.8")
     v.pl(poly, w=0.5, dash="4,1.5")
+    if labels:
+        v.text(HOUSE_L + 260, (ENTR[0] + ENTR[1]) / 2, "entrance: brown sliders", size=1.2, anchor="middle",
+               rot=90, color="#5f4838", weight="bold")
     for (lb, x, y) in c["cols"]:
         col(v, x, y, lb if labels else None)
     if c["rods"]:
@@ -260,15 +264,15 @@ def sheet_plans(vk):
         v.text(RX0 + 120, HOUSE_W + STRIP / 2 - 60, "0.90 VOID — 2 Ø16 SS rods to wall", size=1.4, color=RED,
                weight="bold")
     xs = [0, HOUSE_L, RX1] + ([TIP] if c["tri"] else [])
-    v.chain(xs, "x", LW[0], -5, size=1.6)
+    v.chain(xs, "x", LW[0], -12, size=1.6)
     cs = [RX0] + [x for (_, x, _) in c["cols"]] + [XE] if c["tri"] else [RX0, XM, RX1]
-    v.chain(cs, "x", LW[0], -12 if not c["tri"] else -15, size=1.4, overall=False)
+    v.chain(cs, "x", LW[0], -5, size=1.4, overall=False)
     v.chain([0, HOUSE_W, WALL_Y0], "y", XE + 1200, -6, size=1.7)
     if c["tri"]:
         adim(v, (TIP, 0), (RX1, RD), -4, f"{rake_len(c):.0f}", size=1.4)
         v.text(TIP + 150, 120, f"{tip_angle(c):.1f}°", size=1.4)
-    v.title(40, 134, f"1/{vk}-01", "TOP VIEW — ANNEX, GARDEN & ROOF", "1:50 @ A3",
-            sub="garden ends at the door line; trees = background")
+    v.title(40, 135, f"1/{vk}-01", "TOP VIEW — ANNEX, GARDEN & ROOF", "1:50 @ A3",
+            sub="— garden ends at the door line; trees = background")
     # ---- framing plan 1:30
     w = View(s, 15 - (RX0 - 1000) / 30, 268, 30)
     w.rect(RX0 - 1000, 0, 1000, HOUSE_W, mat="masonry", w=0.4)
@@ -279,11 +283,16 @@ def sheet_plans(vk):
     w.pl(roof_poly(c), w=0.45, fill="#eef0f2")
     beam = dict(w=0.35, fill="#7d8790")
     w.rect(RX0, 150, 75, HOUSE_W - 300, w=0.3, fill="#5c6670")                     # ledger on annex
+    if RD > HOUSE_W:                                                               # trimmer over the passage
+        w.rect(RX0, HOUSE_W - 150, 100, WALL_Y0 - 75 - (HOUSE_W - 150), w=0.3, fill="#7d8790")
+        w.leader([(RX0 + 50, HOUSE_W + 450), (RX0 - 600, HOUSE_W + 250)], ["RHS trimmer over passage", "annex → wall ledger"],
+                 size=1.2, anchor="end")
     if not c["tri"]:
         if RD > HOUSE_W:
             w.rect(RX0 + 75, WALL_Y0 - 75, ROOF_L - 75, 75, w=0.3, fill="#5c6670")  # ledger on tall wall
         w.rect(RX0 + 75, 50, ROOF_L - 275, 100, **beam)                              # plants edge beam
-        w.rect(RX0 + 75, RD - 150 - (75 if RD > HOUSE_W else 0), ROOF_L - 175, 100, **beam)
+        if RD == HOUSE_W:
+            w.rect(RX0 + 75, RD - 150, ROOF_L - 175, 100, **beam)                    # void edge beam
         w.rect(RX1 - 150, 200, 100, RD - 350, **beam)                                # end beam
     else:
         w.pl(band(c, 50, 150, 0, 150, x_from=RX0 + 75), **beam)                      # plants edge beam
@@ -304,7 +313,7 @@ def sheet_plans(vk):
     for (lb, x, y) in c["cols"]:
         w.rect(x - CLAD / 2, y - CLAD / 2, CLAD, CLAD, w=0.3, fill="#e7c79a")
         w.rect(x - POST / 2, y - POST / 2, POST, POST, w=0.3, fill="#222")
-        w.text(x, y + 190, lb, size=1.5, anchor="middle", weight="bold")
+        w.text(x - 130, y + 200, lb, size=1.5, anchor="end", weight="bold")
     if c["rods"]:
         for x in RODS_X:
             w.line(x, RD - 100, x, WALL_Y0, w=0.5, color=RED)
@@ -316,11 +325,12 @@ def sheet_plans(vk):
         w.chain([RX0, RX1], "x", RD, 4, size=1.4)
     yc = [0, HOUSE_W, WALL_Y0]
     w.chain(yc, "y", XE, -8, size=1.4, overall=False)
-    s.text(16, 145.5, f"2/{vk}-01  ROOF FRAMING PLAN — 1:30", size=2.1, weight="bold")
+    s.text(160 if (c["tri"] and RD > HOUSE_W) else 16, 145.5, f"2/{vk}-01  ROOF FRAMING PLAN — 1:30", size=2.1,
+           weight="bold")
     items = [("B", "THIS VERSION"), c["short"] + "."]
     if RD > HOUSE_W:
         items += ["Roof fixed to the annex end façade AND to the tall house wall (steel ledgers, resin anchors); "
-                  "covers the passage in front of the lattice door."]
+                  "covers the passage in front of the lattice door (RHS trimmer over the passage, annex → wall ledger)."]
     else:
         items += ["Roof fixed to the annex end façade (ledger). The 0.90 m passage to the lattice door stays open.",
                   "Void edge hung from the tall house wall on 2 Ø16 stainless rods (turnbuckles, wall plates) — "
@@ -341,8 +351,8 @@ def sheet_plans(vk):
               "Falls 1:70 to the concealed gutter at the free edge; rainwater down C2."]
     s.textblock(214, 146, 126, items, size=1.5, gap=0.3)
     s.north_arrow(334, 28, 4.5)
-    s.scale_bar(262, 280, 50)
-    s.text(262, 278, "SCALE BAR 1:50 (top view)", size=1.3)
+    s.scale_bar(236, 280, 50)
+    s.text(236, 278, "SCALE BAR 1:50 (top view)", size=1.3)
     return s
 
 
@@ -386,7 +396,7 @@ def axo_view(s, c, bx0, by0, bx1, by1):
     """3D view from the courtyard, same direction as the site photo (plants LEFT, tall wall RIGHT)."""
     RD = c["roof_d"]
     XE = xend(c)
-    XA, XR = 3800, XE + 900
+    XA, XR = 0, XE + 900
     a = Axo(beta=46, elev=40)
     a.poly3([(XA - 600, LW[0] - 500, 0), (XR, LW[0] - 500, 0), (XR, WALL_Y0, 0), (XA - 600, WALL_Y0, 0)],
             "#efe9de", layer=0, w=0.1)
@@ -400,7 +410,7 @@ def axo_view(s, c, bx0, by0, bx1, by1):
     for i, x in enumerate(range(XA + 700, XR, 1900)):
         a.blob(x, WALL_Y0 + 1300, 4300 + (i % 2) * 350, 1000, fill="#b7d1a3", stroke="#6b8f5a", layer=1, seed=i)
     for i, y in enumerate((-200, 1400)):
-        a.blob(XA - 900, y, 3500 + i * 250, 1000, fill="#b7d1a3", stroke="#6b8f5a", layer=1, seed=7 + i)
+        a.blob(XA - 1300, y, 3500 + i * 250, 1000, fill="#b7d1a3", stroke="#6b8f5a", layer=1, seed=7 + i)
     mbox(a, XA - 600, WALL_Y0, 0, XR - XA + 600, TW_T, 4300, "#d9ab8f", layer=1.5, w=0.15)
     mbox(a, 6200, WALL_Y0 - 300, 2900, 800, 300, 600, "#f2f2f2", layer=1.6)          # AC unit (exist.)
     mbox(a, HOUSE_L - 120, LATTICE[0], 0, 60, LATTICE[1] - LATTICE[0], HEAD, "#b07a45", layer=1.7)
@@ -439,6 +449,13 @@ def axo_view(s, c, bx0, by0, bx1, by1):
     a.poly3([(XE, 0, SOFFIT), (RX1, RD, SOFFIT), (RX1, RD, FTOP), (XE, 0, FTOP)], "#f2f3f4", w=0.3, layer=6.1)
     # columns (pass the fascia, 0.13 above the roof)
     for (lb, x, y) in c["cols"]:
+        for sg in (-1, 1):                                       # curved brackets under the junction (plants face)
+            xf = x + sg * CLAD / 2
+            if (sg > 0 and xf > XE - 250) or (sg < 0 and xf < RX0 + 250):
+                continue
+            arc = [(xf + sg * (200 - 200 * math.sin(math.radians(90 * k_ / 8))), -1,
+                    SOFFIT - 200 + 200 * math.cos(math.radians(90 * k_ / 8))) for k_ in range(9)]
+            a.poly3([(xf, -1, SOFFIT), (xf + sg * 200, -1, SOFFIT)] + arc, "#c9d0d6", w=0.15, layer=6.5)
         mbox(a, x - CLAD / 2, y - CLAD / 2, 0, CLAD, CLAD, COL_TOP, "#c99a62", layer=7, w=0.2)
 
     # fit into the box
@@ -475,10 +492,14 @@ def axo_view(s, c, bx0, by0, bx1, by1):
         p = tp(TIP + 250, -250, SOFFIT - 300)
         s.text(p[0], p[1], "+1.26 triangle", size=1.5, anchor="start", weight="bold", color="#1f4e79")
     if RD < WALL_Y0:
-        p = tp(RX1 + 250, (RD + WALL_Y0) / 2, FTOP + 250)
-        s.text(p[0], p[1], "0.90 void + 2 rods", size=1.4, anchor="start", color="#555", weight="bold")
-    p = tp(GARDEN_END - 1500, LW[0] - 700, 0)
-    s.text(p[0], p[1], "garden ends at the door line", size=1.4, anchor="middle", color="#3f6b2e", weight="bold")
+        p = tp(RX1 + 900, WALL_Y0, ROD_WALL_Z + 750)
+        s.text(p[0], p[1], "0.90 void + 2 rods", size=1.4, anchor="start", color="#222", weight="bold")
+    p0 = tp(GARDEN_END, LW[0], 0)
+    p1 = tp(GARDEN_END - 300, LW[0] - 1500, 0)
+    s.line(p0[0], p0[1], p1[0], p1[1], w=0.15, color="#3f6b2e")
+    s.circle(p0[0], p0[1], 0.5, w=0, fill="#3f6b2e")
+    s.text(p1[0] - 0.5, p1[1] + 2.2, "garden ends at the door line", size=1.4, anchor="end", color="#3f6b2e",
+           weight="bold")
 
 
 # ===================================================================== SHEET 2: VIEWS + 3D
@@ -491,18 +512,18 @@ def sheet_views(vk):
     s.text(16, 14, c["name"], size=3.2, weight="bold", color=RED)
     # ---- 1: view towards annex façade, same direction as the site photo (plants LEFT). u = Y
     e = View(s, 66, 134, 50)
-    for k_, tx in enumerate((-900, 400, 1700, 2900)):
-        e.circle(tx, HOUSE_TOP + 1000 + (k_ % 2) * 250, 700, w=0.15, color="#7fa86a", fill="#e9f2e1")
-    e.text(1000, HOUSE_TOP + 2050, "existing trees (background)", size=1.3, anchor="middle", color="#6b8f5a")
+    for k_, tx in enumerate((-700, 600, 1800)):                    # background trees: beyond the annex only
+        e.circle(tx, HOUSE_TOP + 1450 + (k_ % 2) * 200, 650, w=0.15, color="#7fa86a", fill="#e9f2e1")
+    e.text(600, HOUSE_TOP + 2350, "existing trees (background)", size=1.3, anchor="middle", color="#6b8f5a")
     ground(e, LW[0] - 100, WALL_Y0 + TW_T + 200, 0, depth=200)
     e.rect(LW[0], 0, LW[1] - LW[0], LW_H, mat="masonry", w=0.35)
-    e.rect(PL[1], 0, 100, 450, w=0.3, fill="#efe9dd")
     for i in range(3):
         shrub(e, PL[0] + 150 + i * 300, 380, 420, 900 + i * 200, seed=90 + i, flowers=5)
+    e.rect(PL[0], 0, PL[1] - PL[0] + 100, 450, w=0.3, fill="#efe9dd")              # planter END kerb at door line
     e.rect(WALL_Y0, 0, TW_T, 4300, w=0.4, fill="#c98b6b")
     break_line(e, WALL_Y0, 4300, WALL_Y0 + TW_T, 4300)
-    e.rect(HOUSE_W + 50, 2900, 800, 600, w=0.2, fill="#f2f2f2")
-    e.text(HOUSE_W + 450, 3200, "AC", size=1.3, anchor="middle")
+    e.rect(WALL_Y0 - 300, 2900, 300, 600, w=0.2, fill="#f2f2f2")
+    e.text(WALL_Y0 - 150, 3150, "AC", size=1.2, anchor="middle")
     e.rect(LATTICE[0], 0, LATTICE[1] - LATTICE[0], HEAD, w=0.3, fill="#b07a45")
     e.rect(0, 0, HOUSE_W, HOUSE_TOP, w=0.4, fill="#f7f3ea")
     e.rect(ENTR[0], 0, ENTR[1] - ENTR[0], HEAD, w=0.35, fill="#2b2f33")                # opening
@@ -516,9 +537,10 @@ def sheet_views(vk):
         z += 60
     e.line(SLIDES[0][0], 10, SLIDES[0][0], HEAD, w=0.25, color="#2e2219")
     e.rect(400, HOUSE_TOP, 1600, 1000, w=0.15, dash="2,1", color="#888")
-    e.text(1200, HOUSE_TOP + 400, "solar heater / AC (exist.)", size=1.2, anchor="middle", color="#888")
+    e.text(1200, HOUSE_TOP + 150, "solar heater / AC (exist.)", size=1.2, anchor="middle", color="#888")
     e.rect(0, SOFFIT, RD, FASCIA, w=0.45, fill="#ffffff")
     e.rect(0, 0, CLAD, COL_TOP, w=0.35, mat="timber")
+    bracket(e, CLAD, SOFFIT, 1)
     e.text(100, COL_TOP + 100, "C2 (C1 behind)", size=1.3, anchor="start", weight="bold")
     if c["rods"]:
         e.line(HOUSE_W - 60, ROD_Z, WALL_Y0, ROD_WALL_Z, w=0.5, color=RED)
@@ -526,14 +548,17 @@ def sheet_views(vk):
     e.chain([LW[1], 0, HOUSE_W, WALL_Y0], "x", 0, -7, size=1.4)
     ladder(e, WALL_Y0 + TW_T, [(0, "±0.000"), (HEAD, "+2.200"), (SOFFIT, "+2.360"), (FTOP, "+2.790"),
                                (COL_TOP, "+2.920")], 152, size=1.3, inside=False)
-    lab(e, (ENTR[1] - 400, 900), 112, 152,
-        ["Entrance: brown louvred SLIDING shutters (2 panels, top track) + glass slider behind — as site photo"],
+    lab(e, (ENTR[1] - 400, 900), 158, 112,
+        ["Entrance (as site photo):", "brown louvred SLIDING", "shutters, 2 panels on top", "track + glass slider behind"],
         size=1.3)
     s.text(16, 26, f"1/{vk}-02  VIEW TO ANNEX FAÇADE (as site photo) — 1:50", size=1.9, weight="bold")
 
     # ---- 2: plants-side elevation along X (viewer on the plants side), X to the right
     xo = 4000 if not c["tri"] else 5200
     p = View(s, 22, 234, 50, origin=(xo, 0))
+    p.rect(xo, 0, XE + 500 - xo, 3400, w=0.2, fill="#efdfd4")                      # tall wall beyond (background)
+    break_line(p, xo, 3400, XE + 500, 3400)
+    p.text(XE + 450, 3150, "tall house wall beyond", size=1.2, anchor="end", color="#8a6a5a")
     ground(p, xo, XE + 500, 0, depth=200)
     p.rect(xo, 0, HOUSE_L - xo, HOUSE_TOP, w=0.4, fill="#f7f3ea")
     break_line(p, xo, 0, xo, HOUSE_TOP)
@@ -550,7 +575,7 @@ def sheet_views(vk):
     p.chain([RX0] + [x for (_, x, _) in c["cols"]] + [XE] if c["tri"] else [RX0, XM, RX1], "x", 0, -7, size=1.35)
     p.dim((XE, 0), (XE, SOFFIT), -4, size=1.3)
     p.dim((XE, SOFFIT), (XE, FTOP), -4, size=1.3)
-    lab(p, (GARDEN_END - 150, 900), 84, 170, ["garden + low wall end here (door / slider line)"], size=1.3)
+    lab(p, (GARDEN_END - 150, 900), 84, 163, ["garden + low wall end here (door / slider line)"], size=1.3)
     s.text(16, 158, f"2/{vk}-02  PLANTS-SIDE ELEVATION — C1 + C2 — 1:50" +
            ("   (plants edge 3.22 + 1.26 = 4.48)" if c["tri"] else ""), size=1.9, weight="bold")
 
@@ -614,43 +639,64 @@ def corner_plan(s, c, vk):
     break_line(q, x_l, -60, x_l, ytop + 40)
     # beams (RHS 200x100 in plan = 100 wide)
     q.pl(band(c, 50, 150, 0, 150, x_from=x_l), w=0.3, fill="#9aa3ab")
-    q.pl(band(c, 50, ytop, 50, 150), w=0.3, fill="#9aa3ab")
+    yb = 50 if c["tri"] else CLAD
+    q.pl(band(c, yb, ytop, 50, 150), w=0.3, fill="#9aa3ab")
     q.pl(band(c, 56, 144, 0, 156, x_from=x_l + 6), w=0.1, fill="#e9ecef")
-    q.pl(band(c, 56, ytop, 56, 144), w=0.1, fill="#e9ecef")
+    q.pl(band(c, yb + 6, ytop, 56, 144), w=0.1, fill="#e9ecef")
     nj = 3 if RD < 3000 else 4
     y1 = 150 + (RD - 300) / (nj + 1)
     q.pl(band(c, y1 - 32, y1 + 32, 0, 150, x_from=x_l), w=0.2, fill="#c9d0d6")
-    # concealed box gutter (above the beams) along the free edge, turning along the plants edge to C2
+    # concealed box gutter (above the beams) along the free edge; side outlet into C2 (post runs on above roof)
     cx2 = c["cols"][-1][1]
-    g = [(cx2 - 100, 25), (inset_x(c, 25, 25), 25), (inset_x(c, ytop, 25), ytop), (inset_x(c, ytop, 145), ytop),
-         (inset_x(c, 145, 145), 145), (cx2 - 100, 145)]
-    q.pl(g, w=0.3, dash="2,0.8", color="#1f6fb2")
+    if c["tri"]:
+        g = [(cx2 + CLAD / 2, 25), (inset_x(c, 25, 25), 25), (inset_x(c, ytop, 25), ytop),
+             (inset_x(c, ytop, 145), ytop), (inset_x(c, 145, 145), 145), (cx2 + CLAD / 2, 145)]
+    else:
+        g = [(inset_x(c, CLAD, 25), CLAD), (inset_x(c, ytop, 25), ytop), (inset_x(c, ytop, 145), ytop),
+             (inset_x(c, CLAD, 145), CLAD)]
+    q.pl(g, w=0.3, dash="2,0.8", color="#1f6fb2", closed=True)
     for yy in (ytop - 250, ytop - 650):
         xa = inset_x(c, yy, 85)
         xb = inset_x(c, yy - 220, 85)
         q.line(xa, yy, xb, yy - 220, w=0.25, color="#1f6fb2")
         q.pl([(xb, yy - 220), (xb - 15, yy - 170), (xb + 15, yy - 170)], w=0, fill="#1f6fb2")
-    # C2: cladding + SHS + downpipe
+    # C2: cladding + SHS + downpipe inside + side spigot from the gutter through the SHS wall
     q.rect(cx2 - CLAD / 2, 0, CLAD, CLAD, w=0.3, mat="timber")
     q.rect(cx2 - POST / 2, 25, POST, POST, w=0.3, fill="#5c6670")
     q.rect(cx2 - POST / 2 + 8, 33, POST - 16, POST - 16, w=0.15, fill="#fff")
-    q.circle(cx2, 100, 50, w=0.3, color="#1f6fb2", fill="#dbe9f6")
-    q.circle(cx2, 100, 37, w=0.2, color="#1f6fb2")
+    q.circle(cx2, 100, 37, w=0.3, color="#1f6fb2", fill="#dbe9f6")
+    if c["tri"]:
+        q.rect(cx2 + 20, 85 - 38, CLAD / 2 - 20 + 20, 76, w=0.3, color="#1f6fb2", fill="#dbe9f6")
+    else:
+        q.rect(inset_x(c, 0, 85) - 38, 110, 76, CLAD - 110 + 20, w=0.3, color="#1f6fb2", fill="#dbe9f6")
     # dims
     if c["tri"]:
         q.dim((cx2, 0), (TIP, 0), -5, text="600", size=1.3)
         q.text(TIP - 330, 60, f"{tip_angle(c):.1f}°", size=1.3)
-    q.dim((XE, 25), (XE, 145), -3, text="120", size=1.2) if not c["tri"] else None
-    for tgt, py, lines in (((inset_x(c, ytop - 120, 85), ytop - 120), 207, ["Box gutter 120 w, 1.2 SS, falls to C2"]),
-                           ((x_l + 300, y1), 215, ["C200 joist, cleat to edge beam"]),
-                           ((inset_x(c, ytop - 450, 100), ytop - 450), 223,
-                            ["RHS 200x100x6.3 " + ("raked" if c["tri"] else "end") + " edge beam"]),
-                           ((cx2 - 90, 180), 231, ["C2 SHS 150x150x8 + 25 thermo-ash"]),
-                           ((cx2, 100), 239, ["Outlet Ø100 → downpipe Ø75 inside C2"]),
-                           ((x_l + 250, 100), 247, ["RHS 200x100x6.3 plants edge beam"]),
-                           ((x_l + 300, 0), 255, ["Fascia 3 mm alu RAL 9010, 0.43 high" +
-                                                  (", mitred at the tip" if c["tri"] else "")])):
-        lab(q, tgt, 292, py, lines, size=1.25)
+        nx_, ny_ = -RD / rake_len(c), -TRI / rake_len(c)
+    else:
+        nx_, ny_ = -1.0, 0.0
+    yd = ytop - 170
+    p25 = (inset_x(c, yd, 25), yd)
+    p145 = (p25[0] + 120 * nx_, p25[1] + 120 * ny_)
+    adim(q, p145, p25, 3, "120", size=1.2)
+    fasc = ["Fascia 3 mm alu RAL 9010, 0.43 high" + (", mitred at the tip" if c["tri"] else "")]
+    rows = [((inset_x(c, ytop - 120, 85), ytop - 120), ["Box gutter 120 w, 1.2 SS, falls to C2"]),
+            ((inset_x(c, y1, 150) - 120, y1), ["C200 joist, cleat to edge beam"]),
+            ((inset_x(c, ytop - 560, 140), ytop - 560),
+             ["RHS 200x100x6.3 " + ("raked" if c["tri"] else "end") + " edge beam"])]
+    if c["tri"]:
+        rows += [((cx2 - 90, 180), ["C2 SHS 150x150x8 + 25 thermo-ash"]),
+                 ((cx2 - 300, 100), ["RHS 200x100x6.3 plants edge beam"]),
+                 ((cx2 + 60, 85), ["Side outlet Ø75 through SHS → downpipe in C2"]),
+                 ((cx2 + 300, 0), fasc)]
+    else:
+        rows += [((XE, 450), fasc),
+                 ((cx2 - 90, 180), ["C2 SHS 150x150x8 + 25 thermo-ash"]),
+                 ((cx2 - 300, 100), ["RHS 200x100x6.3 plants edge beam"]),
+                 ((inset_x(c, 0, 85), 150), ["Outlet Ø75 through SHS wall → downpipe in C2"])]
+    for i, (tgt, lines) in enumerate(rows):
+        lab(q, tgt, 292, 207 + 8 * i, lines, size=1.25)
     if c["tri"]:
         s.text(292, 263, "Tip cantilevers 0.60 beyond C2;", size=1.25)
         s.text(292, 265.5, "edge beams mitred + 12 mm end plate.", size=1.25)
@@ -679,7 +725,6 @@ def sheet_details(vk):
     v.rect(u(100 + 400), -900, 800, 700, w=0.3, mat="rc")
     v.rect(u(100 + 150), -200, 300, 140, w=0.3, mat="rc")
     # roof structure
-    rhs(v, u(150), BOS, 100, 200, 6.3)
     nj = 3 if RD < 3000 else 4
     for i in range(1, nj + 1):
         y = 150 + (RD - 300) * i / (nj + 1)
@@ -711,7 +756,7 @@ def sheet_details(vk):
     v.chain(cc, "x", -900, -4, size=1.35, overall=True)
     labels = [((u(RD * 0.45), TOS + 50), (118, 106), ["1.5 TPO / 18 ply / firrings / C200 joists"]),
               ((u(RD * 0.25), SOFFIT + 10), (118, 113), ["68x20 thermo-ash slats on battens, LED in edge profile"]),
-              ((u(150), BOS + 100), (118, 120), ["RHS 200x100x6.3 plants edge beam (frames into C1)"]),
+              ((u(100), BOS + 100), (118, 120), ["RHS 200x100x6.3 plants edge beams frame into C1 each side (D2)"]),
               ((u(CLAD) - 80, SOFFIT - 90), (118, 127), ["Steel bracket R200 (10 mm), welded / bolted"]),
               ((u(100), 1300), (118, 150), ["C1 SHS 150x150x8 + 25 thermo-ash = 200x200"]),
               ((u(300), -500), (118, 224), ["Pad 800x800x700 C30/37 below the paving, 4 M16 cast-in"])]
@@ -741,7 +786,7 @@ def sheet_details(vk):
         for tgt, py, lines in (((40, TOS + 200), 40, ["Membrane up 150 + alu counter-flashing"]),
                                ((400, TOS + 50), 48, ["Deck & membrane"]),
                                ((40, BOS + 100), 64, ["UPN 200 HDG, M12 resin anchors @ 400"]),
-                               ((90, BOS - 90), 80, ["Curved bracket R180, 10 mm, @ 1.0 m"])):
+                               ((25, BOS - 25), 80, ["Curved bracket R180, 10 mm, @ 1.0 m"])):
             lab(d, tgt, 292, py, lines, size=1.25)
         s.text(222, 26, "D1  ROOF TO WALL (client sketch A) — 1:15", size=1.8, weight="bold")
     else:
@@ -765,8 +810,8 @@ def sheet_details(vk):
         d.dim((0, 2200), (STRIP, 2200), -3, size=1.2)
         for tgt, py, lines in (((6, ROD_WALL_Z + 80), 40, ["Wall plate 200x150x12 SS, 4 M12 resin"]),
                                ((mxl, mzl), 52, ["Ø16 SS 316 rod + turnbuckle"]),
-                               ((STRIP + 40, ROD_Z), 72, ["Fork end on 10 mm lug, edge beam"]),
-                               ((STRIP, 2600), 84, ["Fascia 0.43 at the void edge"])):
+                               ((STRIP, 2650), 72, ["Fascia 0.43 at the void edge"]),
+                               ((STRIP + 40, ROD_Z), 84, ["Fork end on 10 mm lug, edge beam"])):
             lab(d, tgt, 300, py, lines, size=1.25)
         s.text(222, 26, "D1  ROD TO WALL (client sketch B) — 1:20", size=1.8, weight="bold")
 
@@ -784,7 +829,7 @@ def sheet_details(vk):
     bracket(q, 0, SOFFIT, 1, r=200)
     roof_layers_y(q, 0, 500)
     q.pl([(0, TOS + 58), (0, TOS + 210)], w=0.5, closed=False, color="#111")
-    q.rect(-230, TOS + 190, 30, 30, w=0.2, fill="#7f8c8d")
+    q.rect(0, TOS + 190, 30, 30, w=0.2, fill="#7f8c8d")
     for tgt, py, lines in (((-100, COL_TOP - 5), 136, ["Cap plate, +0.13 above roof"]),
                            ((50, BOS + 100), 148, ["FP 12 + 2 M16 to edge beam"]),
                            ((-100, 2300), 168, ["Column SHS 150 + cladding"]),
