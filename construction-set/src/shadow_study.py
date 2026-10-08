@@ -2,7 +2,8 @@
 (option D, 2.20 x 3.44), both supported by the tall wall.
 
 Sun position: NOAA solar-position equations, Athens 37.98 N / 23.73 E, 21st of each month, 09:00 / 12:00 / 15:00 / 18:00
-local summer time (EEST = UTC+3). Assumed orientation: plan north = up (tall wall on the north side, garden wall on the
+local summer time (EEST = UTC+3). Orientation (client 08.10.2026): NORTH points to the UPPER-LEFT corner of the plan,
+i.e. the plan's 'up' (towards the tall wall) is true bearing 45 deg (NE). Previously assumed: plan north = up (tall wall on the north side, garden wall on the
 south side — the solar water heaters on the annex face the garden side); verify on site.
 Shadows are real 3D shadows (three.js renderer, top-down view; the roof is hidden from the camera but casts its shadow);
 roof, annex, tall wall, low garden wall, posts and planting cast shadows, the existing trees are left out.
@@ -21,8 +22,9 @@ import build
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, "..", "output")
 REN = os.path.join(HERE, "..", "render")
-IMG = os.path.join(OUT, "Shadow_Study")
+IMG = os.path.join(OUT, "Shadow_Study_C19")
 LAT, LON = 37.98, 23.73
+PLAN_UP = 45.0                  # true bearing of the plan's "up" (north = upper-left corner of the plan)
 MONTHS = [(5, "21 MAY"), (6, "21 JUNE"), (7, "21 JULY"), (8, "21 AUGUST")]
 TIMES = [(9, "09:00"), (12, "12:00"), (15, "15:00"), (18, "18:00")]
 X0, X1, Y0, Y1, W, H = 6.6, 14.6, -1.2, 3.9, 1600, 1020          # plan window (m) and image size (px)
@@ -101,11 +103,16 @@ def overlay(path, ver, alt, az):
     d.rectangle([cxr - tw / 2 - 10, cyr - 6, cxr + tw / 2 + 10, cyr + 50], fill=(255, 255, 255), outline=(200, 30, 30), width=3)
     d.text((cxr - tw / 2, cyr), "ROOF", fill=(200, 30, 30), font=fb)
     # sun direction arrow (towards the sun) in the corner
-    cx, cy, R = W - 95, 95, 62
+    cx, cy, R = W - 105, 110, 62
     d.ellipse([cx - R, cy - R, cx + R, cy + R], fill=(255, 255, 255), outline=(60, 60, 60), width=3)
-    d.text((cx - 9, cy - R - 2), "N", fill=(0, 0, 0), font=ImageFont.truetype(
-        "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf", 22))
-    sx, sy = cx + math.sin(math.radians(az)) * (R - 12), cy - math.cos(math.radians(az)) * (R - 12)
+    fn = ImageFont.truetype("/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf", 24)
+    nb = math.radians(-PLAN_UP)                                     # true north on the plan: upper-left
+    tx, ty = cx + math.sin(nb) * (R - 4), cy - math.cos(nb) * (R - 4)
+    d.polygon([(tx, ty), (cx + math.sin(nb + 0.35) * (R - 26), cy - math.cos(nb + 0.35) * (R - 26)),
+               (cx + math.sin(nb - 0.35) * (R - 26), cy - math.cos(nb - 0.35) * (R - 26))], fill=(0, 0, 0))
+    d.text((cx + math.sin(nb) * (R + 14) - 8, cy - math.cos(nb) * (R + 14) - 14), "N", fill=(0, 0, 0), font=fn)
+    pb = math.radians(az - PLAN_UP)                                 # sun bearing on the plan
+    sx, sy = cx + math.sin(pb) * (R - 12), cy - math.cos(pb) * (R - 12)
     d.line([(cx, cy), (sx, sy)], fill=(230, 150, 0), width=6)
     d.ellipse([sx - 13, sy - 13, sx + 13, sy + 13], fill=(255, 190, 0), outline=(180, 110, 0), width=2)
     im.save(path.replace(".png", "_ov.jpg"), quality=86)
@@ -120,7 +127,7 @@ def render_all():
             for h, _ in TIMES:
                 alt, az = sun[(m, h)]
                 jobs.append(dict(out=os.path.join(IMG, f"{key}_{m:02d}_{h:02d}.png"), v=ver["v"], L=ver["L"], T=ver["T"],
-                                 az=round(az, 2), alt=round(alt, 2)))
+                                 az=round((az - PLAN_UP) % 360, 2), alt=round(alt, 2)))
     jp = os.path.join(IMG, "jobs.json")
     os.makedirs(IMG, exist_ok=True)
     json.dump(jobs, open(jp, "w"))
@@ -141,7 +148,7 @@ def render_3d(sun):
         for h, _ in TIMES:
             alt, az = sun[(6, h)]
             jobs.append(dict(out=os.path.join(IMG, f"3D_{key}_06_{h:02d}.png"), v=ver["v"], L=ver["L"], T=ver["T"],
-                             az=round(az, 2), alt=round(alt, 2), view="close"))
+                             az=round((az - PLAN_UP) % 360, 2), alt=round(alt, 2), view="close"))
     jp = os.path.join(IMG, "jobs3d.json")
     json.dump(jobs, open(jp, "w"))
     subprocess.run(["node", os.path.join(REN, "shadow.js"), jp], check=True, cwd=REN)
@@ -187,13 +194,14 @@ def embed(s, path, x, y, w, h):
 
 def project(key):
     p = dict(PROJECT)
-    p.update(rev="C18", date="08.10.2026", name="COURTYARD ROOF — SHADOW STUDY",
+    p.update(rev="C19", date="08.10.2026", name="COURTYARD ROOF — SHADOW STUDY",
              site=f"Sun & shadow, 21 May - 21 August, Athens 37.98 N; {VERSIONS[key]['title']}; roof supported by the tall "
                   "wall, no void",
-             status="SHADOW STUDY — assumed orientation: north = up (tall wall north, garden wall south); verify on site",
-             revs=[["C18", "08.10.2026", "Shadow study May-Aug: triangle C2 / square D"],
+             status="SHADOW STUDY — orientation per client: NORTH towards the upper-left corner of the plan (tall wall faces NE)",
+             revs=[["C19", "08.10.2026", "Shadow study re-run: north towards the upper-left of the plan"],
+                   ["C18", "08.10.2026", "Shadow study May-Aug: triangle C2 / square D"],
                    ["C17", "08.10.2026", "Option C2: tip at the AC line"],
-                   ["C16", "08.10.2026", "Roof supported by the tall wall (C / D)"]])
+])
     return p
 
 
@@ -203,7 +211,7 @@ def sheet(key, sun, num):
               project=project(key))
     s.frame()
     s.text(16, 14, f"WHERE THE SHADOW FALLS — {ver['title']}", size=3.2, weight="bold", color="#c0392b")
-    s.text(16, 19.5, "Top views (north up). ROOF = see-through white with red outline; dark = shade on the ground (roof + annex + walls); "
+    s.text(16, 19.5, "Top views as the drawings — NORTH = upper-left (dial). ROOF = see-through white with red outline; dark = shade on the ground (roof + annex + walls); "
                      "sun dial top-right of each view shows where the sun is.", size=1.7)
     cw, ch, gx, gy = 76, 76 * H / W, 2, 7.5
     xs = [30 + i * (cw + gx) for i in range(4)]
@@ -220,15 +228,17 @@ def sheet(key, sun, num):
             s.text(xs[i], y + ch + 3.2, f"sun height {alt:.0f}°, from {compass(az)} ({az:.0f}°)", size=1.45)
     s.textblock(16, 262, 322, [
         ("B", "HOW TO READ (both versions behave the same way; only the size of the shaded patch changes)"),
-        "09:00 — sun low in the EAST (25-32°): it shines in under the roof; the roof's shade lands on the annex facade, "
-        "so the paving under the roof is mostly in sun (only a strip at the facade is shaded).",
-        "12:00 — sun high in the SOUTH-EAST (57-66°): the shade lies under the roof, shifted ~1 m towards the annex and "
-        "the tall wall; the planter strip along the garden wall stays in sun.   15:00 — sun high in the SOUTH-WEST: the "
-        "shade shifts towards the tall wall and further along the courtyard; the annex shades the door area too.",
-        "18:00 — sun low in the WEST: the annex and the tall wall shade almost the whole courtyard; the roof adds little.  "
-        f"{'Triangle C2: 3.06 along the planter, 1.75 at the wall — longer shade along the planter side.' if key == 'C2' else 'Square D: 2.20 along the planter and 2.20 at the wall — more shade at the tall-wall side, less along the planter.'}",
-        "Assumptions: Athens 37.98 N, 21st of each month, summer time (EEST); plan north = up (tall wall north) — if the "
-        "real orientation differs, the pattern rotates with it. Existing trees not included (they add shade)."], size=1.45,
+        "09:00 — sun low in the EAST (25-32°), coming over the TALL WALL: the tall wall shades the whole courtyard, "
+        "roof included — cool, shaded mornings in all four months.",
+        "12:00 — sun high (57-66°) from the SOUTH-EAST = from the open end of the courtyard: the roof's shade falls under "
+        "it, shifted ~1 m towards the annex door; the rest of the paving is in sun.   15:00 — sun high from the "
+        "SOUTH-WEST = over the low garden wall: the shade shifts ~1 m towards the tall wall; the planter is partly "
+        "shaded by the low wall.",
+        "18:00 — sun low in the WEST, over the annex and the garden wall: they shade most of the courtyard, with sunny "
+        "diagonal strips further along.  "
+        f"{'Triangle C2: 3.06 along the planter, 1.75 at the wall — longer shade along the planter / columns side.' if key == 'C2' else 'Square D: 2.20 along the planter and 2.20 at the wall — more shade at the tall-wall side, less along the planter.'}",
+        "Assumptions: Athens 37.98 N, 21st of each month, summer time (EEST); NORTH towards the upper-left corner of the "
+        "plan (client) — the tall wall faces north-east, the garden wall south-west. Existing trees not included (they add shade)."], size=1.45,
         gap=0.25)
     return s
 
@@ -242,8 +252,8 @@ if __name__ == "__main__":
     if not os.environ.get("SKIP_RENDER"):
         render_3d(sun)
     ss = [sheet_3d(sun, "SH-01"), sheet("C2", sun, "SH-02"), sheet("D", sun, "SH-03")]
-    pdf = build.to_pdf(ss, "Rev-C18_Shadow-Study_May-Aug")
-    d = os.path.join(OUT, "Rev-C18_png")
+    pdf = build.to_pdf(ss, "Rev-C19_Shadow-Study_May-Aug_North-upper-left")
+    d = os.path.join(OUT, "Rev-C19_png")
     os.makedirs(d, exist_ok=True)
     subprocess.run(["pdftoppm", "-r", "110", "-png", pdf, os.path.join(d, "SH")], check=True)
     for (m, h), (alt, az) in sorted(sun.items()):
