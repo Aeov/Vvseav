@@ -8,6 +8,8 @@
   const VER = Q.get('v') || 'V1';
   const VIEW = Q.get('view') || 'eye';
   const DUSK = Q.get('light') === 'dusk';
+  const SUNAZ = Q.get('sunaz'), SUNALT = Q.get('sunalt');      // shadow study: sun azimuth (from N, clockwise) / altitude, deg
+  const NOTREES = Q.get('notrees') === '1', PLAN = VIEW === 'plan';   // plan = top-down orthographic shadow view
   const W = +(Q.get('w') || 1800), H = +(Q.get('h') || 1200);
 
   // ------------------------------------------------------------------ geometry (from the drawings, m)
@@ -68,6 +70,11 @@
   Object.assign(sun.shadow.camera, { left: -16, right: 16, top: 16, bottom: -16, near: 1, far: 80 });
   sun.shadow.bias = -0.0006;
   sun.shadow.normalBias = 0.035;
+  if (SUNAZ !== null && SUNALT !== null) {                  // model: +x east, +y north (plan north = up), z up
+    const A = SUNAZ * Math.PI / 180, h = SUNALT * Math.PI / 180;
+    const d = new THREE.Vector3(Math.sin(A) * Math.cos(h), Math.sin(h), -Math.cos(A) * Math.cos(h));
+    sun.position.copy(sun.target.position).addScaledVector(d, 40);
+  }
   scene.add(sun, sun.target);
   scene.add(new THREE.AmbientLight(DUSK ? '#ffd9b0' : '#ffffff', DUSK ? 0.06 : 0.12));
 
@@ -403,6 +410,7 @@
   }
 
   // ------------------------------------------------------------------ the new roof
+  const roofFrom = scene.children.length;
   prism(roofPoly, SOFFIT + 0.02, FTOP - 0.04, M.roofTop);
   // fascia 0.43 on the free edges (white aluminium)
   plate([RX0, EDGE], [XE, EDGE], SOFFIT, FTOP, 0.03, M.whiteSmooth);
@@ -413,6 +421,7 @@
     const xEnd = tri ? TIP - TRI * (y - EDGE) / (RD - EDGE) : RX1;
     box(RX0 + 0.01, xEnd - 0.04, y, y + 0.068, SOFFIT, SOFFIT + 0.02, M.soffit);
   }
+  const roofTo = scene.children.length;
   // columns (SHS clad in thermo-ash 200x200, 0.13 above roof) against the low wall + brackets
   for (const x of COLS) {
     box(x - 0.1, x + 0.1, CY - 0.1, CY + 0.1, 0, COL_TOP, M.wood);
@@ -430,17 +439,19 @@
     box(xr - 0.1, xr + 0.1, WALL_Y0 - 0.012, WALL_Y0, 2.95, 3.15, M.ss);
   }
   // V1 / V1T: ledger flashing line at the tall wall
-  if (!rods) box(RX0, RX1, WALL_Y0 - 0.04, WALL_Y0, FTOP - 0.05, FTOP + 0.12, M.frame);
+  const flash = !rods ? box(RX0, RX1, WALL_Y0 - 0.04, WALL_Y0, FTOP - 0.05, FTOP + 0.12, M.frame) : null;
 
   // option renders (L given): existing AC box on the tall wall right after the void edge end (verify on site)
   if (Q.get('L')) box(HOUSE_L + 2.26, HOUSE_L + 3.06, WALL_Y0 - 0.30, WALL_Y0, 2.45, 3.05, M.ac);
 
   // ------------------------------------------------------------------ background trees (existing, behind)
-  pine(5.5, -5.0, 12, 1); pine(10.5, -6.5, 11, 2); pine(12.5, -9.0, 10, 3); pine(1.5, -3.5, 9, 4);
-  eucalyptus(3.0, 7.0, 15, 5); eucalyptus(9.0, 8.5, 16, 6); eucalyptus(-2.0, 3.0, 14, 7);
-  cypress(-3.0, -9.0, 11, 8); cypress(-1.5, -10.5, 12, 9); cypress(0.5, -11.0, 10, 10);
-  foliage(13.5, -2.4, 1.2, 1.3, 55, ['#4c7a3a', '#5d8b43', '#3f6b32'], 40, 0.8);            // lantana outside the wall
-  foliage(16.0, -1.9, 1.0, 1.0, 56, ['#4c7a3a', '#5d8b43', '#6e9a4e'], 30, 0.8);
+  if (!NOTREES) {
+    pine(5.5, -5.0, 12, 1); pine(10.5, -6.5, 11, 2); pine(12.5, -9.0, 10, 3); pine(1.5, -3.5, 9, 4);
+    eucalyptus(3.0, 7.0, 15, 5); eucalyptus(9.0, 8.5, 16, 6); eucalyptus(-2.0, 3.0, 14, 7);
+    cypress(-3.0, -9.0, 11, 8); cypress(-1.5, -10.5, 12, 9); cypress(0.5, -11.0, 10, 10);
+    foliage(13.5, -2.4, 1.2, 1.3, 55, ['#4c7a3a', '#5d8b43', '#3f6b32'], 40, 0.8);          // lantana outside the wall
+    foliage(16.0, -1.9, 1.0, 1.0, 56, ['#4c7a3a', '#5d8b43', '#6e9a4e'], 30, 0.8);
+  }
 
   // ------------------------------------------------------------------ evening: LED strip in the soffit perimeter + warm interior
   if (DUSK) {
@@ -457,9 +468,20 @@
   }
 
   // ------------------------------------------------------------------ camera
-  const cam = new THREE.PerspectiveCamera(VIEW === 'aerial' ? 38 : 58, W / H, 0.05, 600);
+  let cam = new THREE.PerspectiveCamera(VIEW === 'aerial' ? 38 : 58, W / H, 0.05, 600);
   const P = (x, y, z) => new THREE.Vector3(x, z, -y);
-  if (VIEW === 'aerial') { cam.position.copy(P(21.5, -3.0, 8.0)); cam.lookAt(P(9.9, 1.2, 1.1)); }
+  if (PLAN) {     // top-down orthographic: the roof is hidden from the camera but still casts its shadow
+    const X0 = +(Q.get('x0') || 6.6), X1 = +(Q.get('x1') || 14.6), Y0 = +(Q.get('y0') || -1.2), Y1 = +(Q.get('y1') || 3.9);
+    cam = new THREE.OrthographicCamera(-(X1 - X0) / 2, (X1 - X0) / 2, (Y1 - Y0) / 2, -(Y1 - Y0) / 2, 0.1, 200);
+    cam.position.set((X0 + X1) / 2, 60, -(Y0 + Y1) / 2); cam.up.set(0, 0, -1); cam.lookAt((X0 + X1) / 2, 0, -(Y0 + Y1) / 2);
+    const hide = scene.children.slice(roofFrom, roofTo).concat(flash ? [flash] : []);
+    for (const o of hide) o.traverse(q => {        // invisible to the camera, still in the shadow map
+      if (q.material) { q.material = q.material.clone(); q.material.colorWrite = false; q.material.depthWrite = false; }
+    });
+    scene.fog = null;
+    scene.traverse(o => { if (o.isHemisphereLight) o.intensity = 0.22; if (o.isAmbientLight) o.intensity = 0.03; });
+  }
+  else if (VIEW === 'aerial') { cam.position.copy(P(21.5, -3.0, 8.0)); cam.lookAt(P(9.9, 1.2, 1.1)); }
   else if (VIEW === 'under') { cam.position.copy(P(12.8, 2.9, 1.6)); cam.lookAt(P(8.4, 0.6, 1.6)); }
   else { cam.position.copy(P(16.8, 2.55, 1.6)); cam.lookAt(P(8.0, 0.75, 1.4)); }    // as the site photo
 
