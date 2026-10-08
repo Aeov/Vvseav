@@ -92,7 +92,14 @@ def overlay(path, ver, alt, az):
     im = Image.open(path).convert("RGB")
     d = ImageDraw.Draw(im)
     f = ImageFont.truetype("/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf", 34)
-    dashed(d, ver["poly"], (200, 30, 30), width=6)
+    pts = [px(*q) for q in ver["poly"]]
+    d.line(pts + pts[:1], fill=(200, 30, 30), width=6, joint="curve")
+    cxr = sum(p[0] for p in pts) / len(pts)
+    cyr = sum(p[1] for p in pts) / len(pts) - 120
+    fb = ImageFont.truetype("/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf", 44)
+    tw = d.textlength("ROOF", font=fb)
+    d.rectangle([cxr - tw / 2 - 10, cyr - 6, cxr + tw / 2 + 10, cyr + 50], fill=(255, 255, 255), outline=(200, 30, 30), width=3)
+    d.text((cxr - tw / 2, cyr), "ROOF", fill=(200, 30, 30), font=fb)
     # sun direction arrow (towards the sun) in the corner
     cx, cy, R = W - 95, 95, 62
     d.ellipse([cx - R, cy - R, cx + R, cy + R], fill=(255, 255, 255), outline=(60, 60, 60), width=3)
@@ -102,6 +109,7 @@ def overlay(path, ver, alt, az):
     d.line([(cx, cy), (sx, sy)], fill=(230, 150, 0), width=6)
     d.ellipse([sx - 13, sy - 13, sx + 13, sy + 13], fill=(255, 190, 0), outline=(180, 110, 0), width=2)
     im.save(path.replace(".png", "_ov.jpg"), quality=86)
+    os.remove(path)
 
 
 def render_all():
@@ -124,6 +132,47 @@ def render_all():
                 alt, az = sun[(m, h)]
                 overlay(os.path.join(IMG, f"{key}_{m:02d}_{h:02d}.png"), ver, alt, az)
     return sun
+
+
+def render_3d(sun):
+    """3D views of BOTH roofs with the sun of 21 June at the four times."""
+    jobs = []
+    for key, ver in VERSIONS.items():
+        for h, _ in TIMES:
+            alt, az = sun[(6, h)]
+            jobs.append(dict(out=os.path.join(IMG, f"3D_{key}_06_{h:02d}.png"), v=ver["v"], L=ver["L"], T=ver["T"],
+                             az=round(az, 2), alt=round(alt, 2), view="close"))
+    jp = os.path.join(IMG, "jobs3d.json")
+    json.dump(jobs, open(jp, "w"))
+    subprocess.run(["node", os.path.join(REN, "shadow.js"), jp], check=True, cwd=REN)
+    os.remove(jp)
+    for j in jobs:
+        Image.open(j["out"]).convert("RGB").save(j["out"].replace(".png", ".jpg"), quality=86)
+        os.remove(j["out"])
+
+
+def sheet_3d(sun, num):
+    s = Sheet(num, "SHADOW STUDY\nboth roofs in 3D (21 June)", "NTS", series="SUN / SHADOW", project=project("C2"))
+    s.frame()
+    s.text(16, 14, "THE TWO ROOFS — TRIANGLE (C2) and SQUARE (D) — with their shadow on 21 JUNE", size=3.2,
+           weight="bold", color="#c0392b")
+    s.text(16, 19.5, "Same 3D model as the drawings (roof to the tall wall, no void); sun of 21 June, Athens; view from "
+                     "the garden side over the low wall. Month-by-month top views: next two sheets.", size=1.7)
+    cw, ch, gx = 76, 76 * H / W, 2
+    xs = [30 + i * (cw + gx) for i in range(4)]
+    for i, (h, tl) in enumerate(TIMES):
+        s.text(xs[i] + cw / 2, 33, tl, size=2.4, anchor="middle", weight="bold")
+    for r, key in enumerate(("C2", "D")):
+        y = 37 + r * (ch + 22)
+        s.text(22, y + ch / 2 + 1, ("TRIANGLE C2" if key == "C2" else "SQUARE D"), size=2.3, anchor="middle",
+               weight="bold", rot=-90)
+        for i, (h, _) in enumerate(TIMES):
+            embed(s, os.path.join(IMG, f"3D_{key}_06_{h:02d}.jpg"), xs[i], y, cw, ch)
+            alt, az = sun[(6, h)]
+            s.text(xs[i], y + ch + 3.2, f"sun height {alt:.0f}°, from {compass(az)}", size=1.45)
+        s.text(30, y + ch + 8.5, VERSIONS[key]["title"] + (": plants edge 3.06, 1.75 at the tall wall" if key == "C2"
+               else ": 2.20 along the planter, 2.20 at the tall wall"), size=1.8, weight="bold")
+    return s
 
 
 def embed(s, path, x, y, w, h):
@@ -154,7 +203,7 @@ def sheet(key, sun, num):
               project=project(key))
     s.frame()
     s.text(16, 14, f"WHERE THE SHADOW FALLS — {ver['title']}", size=3.2, weight="bold", color="#c0392b")
-    s.text(16, 19.5, "Top views (north up). Red dashed = roof outline; dark = shade on the ground (roof + annex + walls); "
+    s.text(16, 19.5, "Top views (north up). ROOF = see-through white with red outline; dark = shade on the ground (roof + annex + walls); "
                      "sun dial top-right of each view shows where the sun is.", size=1.7)
     cw, ch, gx, gy = 76, 76 * H / W, 2, 7.5
     xs = [30 + i * (cw + gx) for i in range(4)]
@@ -190,7 +239,9 @@ def compass(az):
 
 if __name__ == "__main__":
     sun = sun_table() if os.environ.get("SKIP_RENDER") else render_all()
-    ss = [sheet("C2", sun, "SH-01"), sheet("D", sun, "SH-02")]
+    if not os.environ.get("SKIP_RENDER"):
+        render_3d(sun)
+    ss = [sheet_3d(sun, "SH-01"), sheet("C2", sun, "SH-02"), sheet("D", sun, "SH-03")]
     pdf = build.to_pdf(ss, "Rev-C18_Shadow-Study_May-Aug")
     d = os.path.join(OUT, "Rev-C18_png")
     os.makedirs(d, exist_ok=True)

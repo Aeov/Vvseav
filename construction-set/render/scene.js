@@ -468,19 +468,25 @@
   }
 
   // ------------------------------------------------------------------ camera
-  let cam = new THREE.PerspectiveCamera(VIEW === 'aerial' ? 38 : 58, W / H, 0.05, 600);
+  let cam = new THREE.PerspectiveCamera(VIEW === 'aerial' ? 38 : VIEW === 'close' ? 44 : 58, W / H, 0.05, 600);
   const P = (x, y, z) => new THREE.Vector3(x, z, -y);
   if (PLAN) {     // top-down orthographic: the roof is hidden from the camera but still casts its shadow
     const X0 = +(Q.get('x0') || 6.6), X1 = +(Q.get('x1') || 14.6), Y0 = +(Q.get('y0') || -1.2), Y1 = +(Q.get('y1') || 3.9);
     cam = new THREE.OrthographicCamera(-(X1 - X0) / 2, (X1 - X0) / 2, (Y1 - Y0) / 2, -(Y1 - Y0) / 2, 0.1, 200);
     cam.position.set((X0 + X1) / 2, 60, -(Y0 + Y1) / 2); cam.up.set(0, 0, -1); cam.lookAt((X0 + X1) / 2, 0, -(Y0 + Y1) / 2);
     const hide = scene.children.slice(roofFrom, roofTo).concat(flash ? [flash] : []);
-    for (const o of hide) o.traverse(q => {        // invisible to the camera, still in the shadow map
-      if (q.material) { q.material = q.material.clone(); q.material.colorWrite = false; q.material.depthWrite = false; }
-    });
+    // roof top: see-through so the shade under it shows; fascias stay solid; slats hidden — all still cast shadows
+    const nPlates = rods ? 3 : 2;
+    hide.forEach((o, i) => o.traverse(q => {
+      if (!q.material) return;
+      q.material = q.material.clone();
+      if (i === 0) Object.assign(q.material, { transparent: true, opacity: 0.42, depthWrite: false, color: new THREE.Color('#f7f7f5') });
+      else if (i > nPlates) Object.assign(q.material, { colorWrite: false, depthWrite: false });
+    }));
     scene.fog = null;
     scene.traverse(o => { if (o.isHemisphereLight) o.intensity = 0.22; if (o.isAmbientLight) o.intensity = 0.03; });
   }
+  else if (VIEW === 'close') { cam.position.copy(P(14.2, -3.4, 5.6)); cam.lookAt(P(9.5, 1.5, 1.0)); }   // roof close-up from above the garden wall
   else if (VIEW === 'aerial') { cam.position.copy(P(21.5, -3.0, 8.0)); cam.lookAt(P(9.9, 1.2, 1.1)); }
   else if (VIEW === 'under') { cam.position.copy(P(12.8, 2.9, 1.6)); cam.lookAt(P(8.4, 0.6, 1.6)); }
   else { cam.position.copy(P(16.8, 2.55, 1.6)); cam.lookAt(P(8.0, 0.75, 1.4)); }    // as the site photo
