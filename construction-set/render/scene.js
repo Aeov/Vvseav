@@ -424,8 +424,10 @@
   const roofTo = scene.children.length;
   // columns (SHS clad in thermo-ash 200x200, 0.13 above roof) against the low wall + brackets
   for (const x of COLS) {
-    box(x - 0.1, x + 0.1, CY - 0.1, CY + 0.1, 0, COL_TOP, M.wood);
-    box(x - 0.115, x + 0.115, CY - 0.115, CY + 0.115, COL_TOP, COL_TOP + 0.012, M.steel);
+    const topWhite = !!Q.get('coltop');                        // client 08.10: column top painted like the fascia
+    box(x - 0.1, x + 0.1, CY - 0.1, CY + 0.1, 0, topWhite ? SOFFIT : COL_TOP, M.wood);
+    if (topWhite) box(x - 0.1, x + 0.1, CY - 0.1, CY + 0.1, SOFFIT, COL_TOP, M.whiteSmooth);
+    box(x - 0.115, x + 0.115, CY - 0.115, CY + 0.115, COL_TOP, COL_TOP + 0.012, topWhite ? M.whiteSmooth : M.steel);
     for (const s of [-1, 1]) {
       const xf = x + s * 0.1;
       if ((s > 0 && xf > XE - 0.3) || (s < 0 && xf < RX0 + 0.3)) continue;

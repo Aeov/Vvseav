@@ -19,7 +19,7 @@ const fs = require('fs');
     const page = await browser.newPage({ viewport: { width: W, height: H } });
     page.on('console', m => { if (m.type() === 'error') console.log(v, view, 'console:', m.text()); });
     page.on('pageerror', e => console.log(v, view, 'pageerror:', e.message));
-    const url = 'file://' + path.resolve(__dirname, 'scene.html') + `?v=${v}&view=${view}&light=${light}&w=${W}&h=${H}` + (process.env.ROOFL ? `&L=${process.env.ROOFL}` : '') + (process.env.ROOFT ? `&T=${process.env.ROOFT}` : '') + (process.env.ACZ ? `&acz=${process.env.ACZ}` : '');
+    const url = 'file://' + path.resolve(__dirname, 'scene.html') + `?v=${v}&view=${view}&light=${light}&w=${W}&h=${H}` + (process.env.ROOFL ? `&L=${process.env.ROOFL}` : '') + (process.env.ROOFT ? `&T=${process.env.ROOFT}` : '') + (process.env.ACZ ? `&acz=${process.env.ACZ}` : '') + (process.env.COLTOP ? '&coltop=1' : '');
     await page.goto(url);
     await page.waitForFunction('window.__done === true', null, { timeout: 180000 });
     const f = path.join(out, `${v}_${view}_${light}.png`);
