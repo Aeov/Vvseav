@@ -442,7 +442,12 @@
   const flash = !rods ? box(RX0, RX1, WALL_Y0 - 0.04, WALL_Y0, FTOP - 0.05, FTOP + 0.12, M.frame) : null;
 
   // option renders (L given): existing AC box on the tall wall right after the void edge end (verify on site)
-  if (Q.get('L')) box(HOUSE_L + 2.26, HOUSE_L + 3.06, WALL_Y0 - 0.30, WALL_Y0, 2.45, 3.05, M.ac);
+  const ACZ = +(Q.get('acz') || 2.45);                          // AC box underside (acz=3.0: above the roof)
+  if (Q.get('L')) {
+    box(HOUSE_L + 2.26, HOUSE_L + 3.06, WALL_Y0 - 0.30, WALL_Y0, ACZ, ACZ + 0.6, M.ac);
+    if (Q.get('acz')) for (const bx of [HOUSE_L + 2.36, HOUSE_L + 2.96])            // wall brackets under the AC
+      box(bx - 0.02, bx + 0.02, WALL_Y0 - 0.34, WALL_Y0, ACZ - 0.05, ACZ, M.steel);
+  }
 
   // ------------------------------------------------------------------ background trees (existing, behind)
   if (!NOTREES) {
