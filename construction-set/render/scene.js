@@ -17,7 +17,7 @@
   const LATTICE = [HOUSE_W + 0.05, WALL_Y0 - 0.05];
   const LW = [0.0, 0.20], WI = LW[1], KERB = [WI + 0.55, WI + 0.70], KERB_H = 0.25, LW_H = 1.40;   // garden wall = annex side line
   const GX0 = HOUSE_L + 1.00;                                   // planter starts after the 1.00 paved entry space ...
-  const ROOF_L = 3.22, TRI = 1.26, RX0 = HOUSE_L, RX1 = HOUSE_L + ROOF_L, TIP = RX1 + TRI;
+  const ROOF_L = +(Q.get('L') || 3.22), TRI = 1.26, RX0 = HOUSE_L, RX1 = HOUSE_L + ROOF_L, TIP = RX1 + TRI;
   const SOFFIT = 2.36, FASCIA = 0.43, FTOP = SOFFIT + FASCIA, COL_TOP = FTOP + 0.13;
   const XE_ALL = TIP;
   const EDGE = 0;                                               // roof plants edge on the annex side / garden wall line
@@ -27,7 +27,7 @@
   const rods = VER.startsWith('V2');
   const XE = tri ? TIP : RX1;
   const CY = WI + 0.10;
-  const COLS = tri ? [RX0 + (ROOF_L + TRI) / 2, TIP - 0.60] : [RX0 + ROOF_L / 2, RX1 - 0.10];
+  const COLS = tri ? [RX0 + (ROOF_L + TRI) / 2, TIP - 0.60] : [Math.max(RX0 + ROOF_L / 2, GX0 + 0.3), RX1 - 0.10];
   const roofPoly = [[RX0, EDGE], [XE, EDGE], [RX1, RD], [RX0, RD]];
 
   // ------------------------------------------------------------------ renderer / scene
@@ -431,6 +431,9 @@
   }
   // V1 / V1T: ledger flashing line at the tall wall
   if (!rods) box(RX0, RX1, WALL_Y0 - 0.04, WALL_Y0, FTOP - 0.05, FTOP + 0.12, M.frame);
+
+  // option renders (L given): existing AC box on the tall wall right after the void edge end (verify on site)
+  if (Q.get('L')) box(RX1 + 0.06, RX1 + 0.86, WALL_Y0 - 0.30, WALL_Y0, 2.45, 3.05, M.ac);
 
   // ------------------------------------------------------------------ background trees (existing, behind)
   pine(5.5, -5.0, 12, 1); pine(10.5, -6.5, 11, 2); pine(12.5, -9.0, 10, 3); pine(1.5, -3.5, 9, 4);
