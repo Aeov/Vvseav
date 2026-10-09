@@ -13,7 +13,7 @@ const fs = require('fs');
   for (const j of jobs) {
     const page = await browser.newPage({ viewport: { width: W, height: H } });
     page.on('pageerror', e => console.log(j.out, 'pageerror:', e.message));
-    const q = `?v=${j.v}&view=${j.view || 'plan'}&notrees=1&w=${W}&h=${H}&L=${j.L}` + (j.T ? `&T=${j.T}` : '') + `&sunaz=${j.az}&sunalt=${j.alt}`;
+    const q = `?v=${j.v}&view=${j.view || 'plan'}&notrees=1&w=${W}&h=${H}&L=${j.L}` + (j.T ? `&T=${j.T}` : '') + `&sunaz=${j.az}&sunalt=${j.alt}` + (j.extra || '');
     await page.goto('file://' + path.resolve(__dirname, 'scene.html') + q);
     await page.waitForFunction('window.__done === true', null, { timeout: 180000 });
     fs.mkdirSync(path.dirname(j.out), { recursive: true });
