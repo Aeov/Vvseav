@@ -301,6 +301,11 @@ function useLocal() {
   setStatus("Saved on this device only");
 }
 
+// Save any note still being typed if the page is closed or switched away from.
+function flushAllNotes() { for (const id of Object.keys(noteTimers)) flushNote(id); }
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") flushAllNotes(); });
+window.addEventListener("pagehide", flushAllNotes);
+
 build();
 render();
 
