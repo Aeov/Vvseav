@@ -19,12 +19,12 @@ A plain-language guide to all **372 result families** in OpenAI's public [`opena
 | [Number theory](#s-number-theory) (001–031) | 31 | 0/1 | 0/0 |
 | [Algebraic and complex geometry](#s-algebraic-and-complex-geometry) (032–069) | 36 | 0/0 | 0/0 |
 | [Real and complex analysis](#s-real-and-complex-analysis) (071–086) | 16 | 0/0 | 0/0 |
-| [Convex and metric geometry](#s-convex-and-metric-geometry) (087–101) | 15 | 1/3 | 0/3 |
-| [Theoretical computer science](#s-theoretical-computer-science) (102–142) | 40 | 2/10 | 2/10 |
-| [Dynamical systems and ergodic theory](#s-dynamical-systems-and-ergodic-theory) (143–154) | 12 | 0/1 | 0/0 |
-| [Combinatorics](#s-combinatorics) (155–192) | 37 | 0/1 | 0/4 |
+| [Convex and metric geometry](#s-convex-and-metric-geometry) (087–101) | 15 | 0/1 | 0/3 |
+| [Theoretical computer science](#s-theoretical-computer-science) (102–142) | 40 | 0/7 | 2/10 |
+| [Dynamical systems and ergodic theory](#s-dynamical-systems-and-ergodic-theory) (143–154) | 12 | 0/0 | 0/0 |
+| [Combinatorics](#s-combinatorics) (155–192) | 37 | 0/0 | 0/4 |
 | [Algebra](#s-algebra) (193–210) | 18 | 0/0 | 0/0 |
-| [Probability and statistical mechanics](#s-probability-and-statistical-mechanics) (211–239) | 29 | 0/3 | 0/2 |
+| [Probability and statistical mechanics](#s-probability-and-statistical-mechanics) (211–239) | 29 | 0/2 | 0/2 |
 | [Mathematical logic](#s-mathematical-logic) (240–245) | 6 | 0/0 | 0/0 |
 | [Group theory](#s-group-theory) (246–259) | 14 | 0/0 | 0/0 |
 | [Mathematical physics](#s-mathematical-physics) (260–284) | 25 | 0/2 | 0/1 |
@@ -32,7 +32,7 @@ A plain-language guide to all **372 result families** in OpenAI's public [`opena
 | [Topology](#s-topology) (304–321) | 18 | 0/0 | 0/0 |
 | [Functional analysis](#s-functional-analysis) (322–332) | 11 | 0/0 | 0/0 |
 | [Differential geometry](#s-differential-geometry) (333–361) | 29 | 0/0 | 0/0 |
-| [Partial differential equations](#s-partial-differential-equations) (362–377) | 16 | 0/2 | 0/0 |
+| [Partial differential equations](#s-partial-differential-equations) (362–377) | 16 | 0/1 | 0/0 |
 
 <a name="s-number-theory"></a>
 
@@ -148,7 +148,7 @@ Take one elliptic curve and "twist" it by every square-free number d. Goldfeld c
 
 The Liouville function λ(n) is +1 or −1 depending on whether n has an even or odd number of prime factors, and it is believed to behave like fair coin flips. Chowla's conjecture says it has no correlations: knowing λ(n) tells you nothing about λ(n+h). This proves the two-point version (pairs of values) with an explicit rate, and a more general version for other multiplicative functions.
 
-- **Quant trading:** 🟡 *Background.* It is the same question you ask of returns: "does today's sign predict tomorrow's?" The lesson is that a completely deterministic rule can produce up/down sequences whose lag correlations average out to zero. Passing a lag-correlation test is not proof of randomness, and one lag looking "significant" is not proof of an edge. There is no tool to lift directly.
+- **Quant trading:** 🟡 *Background.* The trading lesson is classical, not new: a lag-correlation test can show outcomes are uncorrelated, not that they are independent (volatility clustering is the standard counterexample). The theorem itself covers only pairs of values of one deterministic number-theory sequence. In prop-trio this matters for the bench rule, whose Monte Carlo shuffles single trades as if they were independent; see check 3 in the [NQ playbook](NQ-PROP-TRIO.md).
 - **Politeia:** ⚪ *No practical link.*
 
 <details><summary>Papers (1)</summary>
@@ -1583,7 +1583,7 @@ Not formally verified · 1 paper
 
 Logarithmic Sobolev inequalities control how tightly random quantities concentrate around their averages. This proves a version whose constant does not grow with dimension for log-concave distributions whose one-dimensional views are sub-Gaussian.
 
-- **Quant trading:** 🟡 *Background.* Background for risk modelling: for well-behaved (log-concave, sub-Gaussian) distributions, concentration bounds do not get worse as you add assets. Real returns are fat-tailed, so it mostly tells you which assumptions buy clean concentration.
+- **Quant trading:** ⚪ *No practical link:* Dimension-free concentration was already known for independent coordinates and for linear combinations; the new case is log-concave laws with no curvature bound. NQ returns are fat-tailed and stop/target trade P&L is two-peaked, so neither has this shape.
 - **Politeia:** ⚪ *No practical link.*
 
 <details><summary>Papers (1)</summary>
@@ -1600,7 +1600,7 @@ Logarithmic Sobolev inequalities control how tightly random quantities concentra
 
 Dimension reduction: can n points be squeezed into few dimensions while keeping all distances within a factor D? For ordinary Euclidean distance about log n dimensions suffice (Johnson–Lindenstrauss). For other L_p distances it was unclear. This shows n^{o(1)} dimensions suffice for every 1 < p < ∞.
 
-- **Quant trading:** 🟡 *Background.* Background for compressing large feature sets for "find past days like today" searches under non-Euclidean distances. How practical the construction is remains unclear; random projections are still the tool for ordinary distance.
+- **Quant trading:** ⚪ *No practical link:* The theorem is existential (the paper gives no efficient embedding), its constants are unspecified, and it excludes the L1 case. Nothing usable at trading-data sizes.
 - **Politeia:** ⚪ *No practical link.*
 
 <details><summary>Papers (1)</summary>
@@ -1651,7 +1651,7 @@ Split space into pieces and measure each piece's Gaussian "centre of mass". The 
 
 Take any sequence of arrows (vectors) of length at most 1 in d dimensions. You can pick a + or − for each one, in order, so that every running total stays within C·√d, however long the sequence is. Equivalently, any set of arrows that sums to zero can be put in an order whose running totals all stay within C·√d. The √d size is optimal.
 
-- **Quant trading:** 🟢 *Testable idea.* This is about ordering trades so temporary exposure stays small. A rebalance is a set of trades whose net factor exposures sum to about zero. The theorem says some execution order always keeps the running exposure in every factor within C·√d × (largest single trade), however many trades there are. To test: on real rebalances, compare naive order against a greedy balancing order (each step, execute the trade that keeps running exposure smallest), and measure peak intermediate exposure and slippage. The paper proves such an order exists; the greedy heuristic is what you would actually run.
+- **Quant trading:** 🟡 *Background.* If indivisible trades whose factor exposures net exactly to zero must go out one at a time, some order keeps running exposure within C·√d trade sizes. But the construction is existential (no algorithm), comparable usable bounds already existed (Banaszczyk; Dutta–Jha–Jiang), and real rebalances are sliced and traded in parallel. No use for a single-instrument NQ book.
 - **Politeia:** 🟡 *Background.* For sequential fairness: when approving items one at a time (projects, budget lines) that affect d groups or districts, some order (or choice of which side to fund) keeps every group's running balance within C·√d. Useful framing for a "keep it balanced as we go" allocation view.
 
 <details><summary>Papers (1)</summary>
@@ -1684,7 +1684,7 @@ Sets that look finite-dimensional at every scale ("doubling" sets) still need no
 
 Edit distance (the fewest insertions, deletions and substitutions that turn one string into another) cannot be represented faithfully as an L1 distance. This finds the best possible distortion exactly: exp(Θ(√(log d · log log d))).
 
-- **Quant trading:** 🟡 *Background.* If you encode bars or regimes as symbol strings and compare sequences by edit distance, you cannot turn that into a fast vector (L1) similarity without real distortion. Keep edit distance as a separate re-ranking step on a short list of candidates.
+- **Quant trading:** ⚪ *No practical link:* This pins down the worst-case distortion exactly, but the fact that it must grow was already known, and the lower bound uses specially built strings. Nothing changes for comparing real bar patterns.
 - **Politeia:** ⚪ *No practical link.*
 
 <details><summary>Papers (3)</summary>
@@ -1779,7 +1779,7 @@ L = BPL: anything a computer can solve with randomness and very little memory (l
 
 In mean-payoff games, two players push a token around a graph collecting rewards, and the question is who can guarantee a positive long-run average. Whether this can be solved in polynomial time is a famous open question. This gives quasipolynomial algorithms (2^{O(log² L)} steps) for plain, stochastic, and parity versions, including optimal stationary strategies.
 
-- **Quant trading:** 🟡 *Background.* Background: finite long-run-average games are how you would formally model, say, a liquidity provider against adversarial flow. These results say exact optimal stationary strategies are computable in near-polynomial time for finite models. Real markets are not finite turn-based games, so this is framing, not a tool.
+- **Quant trading:** 🟡 *Background.* A prop challenge is a one-player problem against chance (reach +$3,000 before the trailing drawdown), which ordinary dynamic programming solves exactly; these two-player mean-payoff algorithms are not needed. Checking whether state-dependent sizing could help is check 5 in the [NQ playbook](NQ-PROP-TRIO.md).
 - **Politeia:** ⚪ *No practical link.*
 
 <details><summary>Papers (4)</summary>
@@ -1882,7 +1882,7 @@ This multiplies two n-bit integers in slightly less than n·log n time, disprovi
 
 In the k-server problem, k servers (think repair trucks) must move to serve requests that arrive one at a time at points of a space, keeping total travel close to the best plan made in hindsight. This proves randomized strategies within O(log² k) of hindsight exist on every space, the optimal order. The extra additive travel cost can be enormous.
 
-- **Quant trading:** 🟡 *Background.* Repositioning k resting orders (a ladder or grid) as price moves around is a k-server-like problem. The result says the right benchmark is about log² k times the hindsight-optimal movement. This is framing only; the algorithm is not practical.
+- **Quant trading:** ⚪ *No practical link:* Moving a resting order costs nothing like travel distance, and you do not have to fill at every price, so k-server gives no benchmark for order ladders or grids.
 - **Politeia:** 🟡 *Background.* Dispatching k mobile units (inspectors, repair crews, mobile service vans) to requests that appear over time is literally k-server. Background for any live dispatch view; real dispatch uses simple heuristics such as nearest-available plus rebalancing.
 
 <details><summary>Papers (2)</summary>
@@ -1900,7 +1900,7 @@ In the k-server problem, k servers (think repair trucks) must move to serve requ
 
 In a prophet inequality, values arrive one at a time and you must accept or reject each on the spot, subject to limits on what combination you may keep (a "matroid": for example at most k items, or at most one per category). This shows that seeing just one past sample per item is enough to guarantee a constant fraction of the hindsight optimum, even against an adversary who knows everything. The constant is 2^−310, so it proves possibility rather than giving a usable guarantee.
 
-- **Quant trading:** 🟢 *Testable idea.* This is the setup when you can hold only k positions (or one per sector or instrument) and must decide on each signal as it arrives. Practical version: set each slot's acceptance threshold from one past sample, such as last period's best signal strength for that slot. For a single slot, "take the first signal that beats the best past sample" already has a known 1/2 guarantee. To test on your signal log: compare threshold-from-last-period against fixed thresholds, measured as captured edge versus hindsight-best selection.
+- **Quant trading:** 🟡 *Background.* The setting needs each value to be visible at decision time, independent and non-negative, under a "matroid" limit. A trade's P&L is unknown at entry and can be negative, and prop-trio's binding limits (one position per chart, a shared daily loss limit) are not matroids. For a plain "at most k" cap, usable single-sample rules already existed; the 2^−310 constant only proves existence.
 - **Politeia:** 🟡 *Background.* Proposals or volunteer offers that arrive over time, with caps (budget slots, one per district) and on-the-spot decisions: set thresholds from last cycle's data. Framing for "rolling approval" flows.
 
 <details><summary>Papers (1)</summary>
@@ -1968,7 +1968,7 @@ This gives an efficient randomized approximate counter for the common "bases" of
 
 A contingency table here is a grid of non-negative whole numbers with fixed row totals and fixed column totals. This gives an exact uniformly random sampler, and an efficient approximate counter, for any sizes and any totals.
 
-- **Quant trading:** 🟢 *Testable idea.* Fixed-total tables are the null model for "is this co-occurrence real?" Example: rows are your patterns or signals, columns are market regimes (or sessions or weekdays), and cells count hits. Sample random tables with the same row and column totals to get an exact p-value for "pattern X clusters in regime Y" that accounts for how often each pattern fires and how common each regime is. In practice use existing samplers (sequential importance sampling or MCMC); the new result guarantees exact uniform sampling is efficient for any totals.
+- **Quant trading:** 🟡 *Background.* Careful: the new sampler is uniform over tables with fixed totals, which is not the right null for "does this pattern cluster in this regime?". That null is hypergeometric (shuffle the labels, or use Patefield's sampler). The classical label-shuffle test is worth running on S3's overnight-bias thirds; see check 4 in the [NQ playbook](NQ-PROP-TRIO.md).
 - **Politeia:** 🟢 *Testable idea.* Two strong uses. (1) Privacy: release synthetic tables (say, service use by district × age band) that match the published totals exactly without exposing real records. (2) Audits: test whether a district × option table of votes or usage is surprising given its totals.
 
 <details><summary>Papers (2)</summary>
@@ -2038,7 +2038,7 @@ Bin packing means fitting items into as few bins as possible. This shows the pop
 
 If you compress n random bits into a single yes/no bit, which compression keeps the most information about a noisy copy of the input? Courtade and Kumar conjectured the answer is to just copy one bit (a "dictator"). This proves it, along with the related Hellinger conjecture.
 
-- **Quant trading:** 🟡 *Background.* A counter-intuitive point for signal aggregation: when you squash many noisy binary indicators into one bit, a majority-style vote does not keep more information about the inputs than reading the single best input. If your one-bit "consensus" signal does not beat its best component out of sample, this is part of why. (It concerns information about the inputs, not directly about future returns.)
+- **Quant trading:** ⚪ *No practical link:* Combining noisy indicators of one hidden direction is a different setting (Condorcet): a majority of independent, equally accurate, better-than-chance indicators beats any single one, and with unequal accuracy you weight by log-odds. If a combined signal fails, look at correlation between indicators, unequal accuracy and overfitting.
 - **Politeia:** 🟡 *Background.* This connects to a classic tension in voting theory: majority vote is the most stable summary under noise, yet the summary carrying the most information about individual inputs is the "dictator". Good material for a civic explainer on why one-number summaries of public opinion lose information, and why to show the full distribution.
 
 <details><summary>Papers (2)</summary>
@@ -2158,7 +2158,7 @@ This proves every exact semidefinite description of the perfect-matching polytop
 
 A polynomial threshold function decides yes or no from the sign of a degree-d polynomial in n inputs that are each ±1; a weighted vote is the degree-1 case. This proves that, on average, at most 8d·√n of the n inputs are "pivotal" (flipping that one input changes the outcome). This is the Gotsman–Linial conjecture.
 
-- **Quant trading:** 🟡 *Background.* A linear trading rule over n binary features is a degree-1 threshold function. The bound limits how often single-feature flips change the decision overall, a robustness lens for rule-based systems.
+- **Quant trading:** ⚪ *No practical link:* The linear-rule (degree 1) case was already known (Gotsman–Linial 1994), and the bound assumes inputs are independent fair coin flips, which market features are not. To see how much one condition in a rule matters, drop it and re-run the backtest.
 - **Politeia:** 🟡 *Background.* For any weighted-vote rule over n voters, the expected number of pivotal voters is at most 8√n. So an individual's chance of being decisive in a large vote is typically about 1/√n or less. A crisp, honest fact for civic-education screens.
 
 <details><summary>Papers (1)</summary>
@@ -2226,7 +2226,7 @@ This computes the exact discrete Fourier transform in fewer than n·log n operat
 
 Random networks with a prescribed degree sequence (everyone keeps their number of links) can be generated by repeatedly swapping pairs of edges. This proves the swapping process mixes in polynomial time for every degree sequence (the Kannan–Tetali–Vempala conjecture), and gives an exact uniform sampler.
 
-- **Quant trading:** 🟡 *Background.* This is the standard null model for networks. Are the clusters in your correlation or lead–lag network real, or a side-effect of some assets having many links? Rewire edges while keeping each node's degree, then compare. This result guarantees that rewiring approach is sound for any degree pattern.
+- **Quant trading:** ⚪ *No practical link:* Degree-preserving rewiring is a poor null for thresholded correlation networks: they are more clustered than random graphs with the same degrees (Zalesky, Fornito & Bullmore 2012). Compare against null correlation matrices (for example a one-factor model) and check that clusters are stable across time instead.
 - **Politeia:** 🟡 *Background.* Use the same check for civic networks (who co-signs whose proposals): before showing "communities" or "influencers", compare against degree-preserving random rewiring.
 
 <details><summary>Papers (1)</summary>
@@ -2362,7 +2362,7 @@ Subset Sum (choose numbers from a list that add up to a target) is solved in 2^{
 
 Sampling from log-concave distributions (well-behaved bell-like shapes) using gradient queries: the number of queries can grow more slowly than any power of the dimension, so the optimal exponent is zero.
 
-- **Quant trading:** 🟡 *Background.* For Bayesian parameter uncertainty in strategy models (posterior sampling with Langevin or HMC-type methods), in the well-conditioned case dimension is not the bottleneck. Real posteriors are often badly conditioned, so practical gains need preconditioning.
+- **Quant trading:** ⚪ *No practical link:* It counts gradient queries only, allows unlimited computation between them, and needs a very well-conditioned target with a known minimizer. It does not make Langevin or HMC samplers faster in practice.
 - **Politeia:** ⚪ *No practical link.*
 
 <details><summary>Papers (1)</summary>
@@ -2469,7 +2469,7 @@ Banach's simple Lebesgue spectrum problem: this builds a smooth, volume-preservi
 
 A system is "mixing" if any two events become independent as the time gap between them grows. Rokhlin asked in 1949 whether that automatically makes any finite number of events jointly independent when all their gaps grow ("mixing of all orders"). This proves yes, for a single transformation.
 
-- **Quant trading:** 🟡 *Background.* In stationary-process terms: if any two events become independent as their time gap grows, then all higher-order dependencies fade too. It supports checking pairwise decay in stationary models, but markets are not stationary, so treat it as background.
+- **Quant trading:** ⚪ *No practical link:* The proof gives no rate, so it cannot set a bootstrap block length or an effective sample size, and the usual return models already had this property. Watching autocorrelations die out does not test its hypothesis anyway. For honest pass-rate error bars in prop-trio, see check 6 in the [NQ playbook](NQ-PROP-TRIO.md).
 - **Politeia:** ⚪ *No practical link.*
 
 <details><summary>Papers (1)</summary>
@@ -2617,8 +2617,7 @@ Not formally verified · 4 papers
 
 This proves that multiple ergodic averages (time averages of products like f(Tⁿx)·g(T²ⁿx)·…) converge at almost every point for mixing transformations, with the expected limit.
 
-- **Quant trading:** ⚪ *No practical link:* See [145](#r145) for the related time-series intuition.
-- **Politeia:** ⚪ *No practical link.*
+- **Quant trading / Politeia:** ⚪ no practical link.
 
 <details><summary>Papers (4)</summary>
 
@@ -2707,7 +2706,7 @@ Hadwiger–Nelson problem: how many colours are needed to paint the plane so tha
 
 Erdős's famous conjecture (a \$5,000 Erdős problem): if a set of positive integers has Σ 1/n = ∞, as the primes do, it contains arithmetic progressions of every length. This proves it, with much better (quasipolynomial) bounds in Szemerédi's theorem.
 
-- **Quant trading:** 🟡 *Background.* The Ramsey-theory lesson (also [160](#r160), [164](#r164), [170](#r170), [171](#r171)): any large enough set or colouring must contain regular patterns. Finding a pattern in a large dataset is therefore guaranteed by size alone and is not evidence of an edge. Validate every catalogued pattern out of sample, with multiple-testing corrections.
+- **Quant trading:** ⚪ *No practical link:* These are worst-case existence statements and do not explain spurious backtest patterns: random data contain such runs far below the forcing sizes. Spurious edges come from chance plus the number of things tried, a classical multiple-testing problem. In prop-trio the biggest search is the 728-mix sizing optimizer; see check 2 in the [NQ playbook](NQ-PROP-TRIO.md).
 - **Politeia:** 🟡 *Background.* The same caution applies to civic dashboards: "striking" patterns in large datasets can be inevitable. Add a "could this be chance?" check before highlighting one.
 
 <details><summary>Papers (1)</summary>
@@ -3712,7 +3711,7 @@ Not formally verified · 2 papers
 
 The eigenvalues of a random d-regular graph (every vertex has d neighbours) follow the GOE random-matrix statistics at small scales, even for d = 3 and with weak random disorder added.
 
-- **Quant trading:** 🟡 *Background.* Random-matrix theory is used to clean correlation matrices: eigenvalues inside the "noise band" are treated as noise. Results like this extend "eigenvalue statistics are universal" to sparse structures. Background only; the standard Marchenko–Pastur cleaning workflow is unchanged.
+- **Quant trading:** ⚪ *No practical link:* Correlation-matrix cleaning rests on a different, older result (Marchenko–Pastur, for sample covariance matrices). This one is about the fine-scale spacing of eigenvalues of sparse random graphs and changes nothing there.
 - **Politeia:** ⚪ *No practical link.*
 
 <details><summary>Papers (2)</summary>
@@ -3764,7 +3763,7 @@ The Mézard–Parisi formula from physics gives the free energy of sparse ("dilu
 
 A perceptron is the simplest neural network: a linear yes/no rule. "How many random patterns can it fit?" is a capacity question. This computes exact free energies for Ising and spherical perceptrons, and the "jamming" exponents at the critical density.
 
-- **Quant trading:** 🟡 *Background.* This is the capacity (overfitting) question for linear rules. A linear rule with N features can perfectly fit about 2N random ±1 labels (Cover's classic result), so a backtest classifier with too few samples per feature can "explain" pure noise. These papers give exact formulas for richer versions of this. Rule of thumb: keep samples well above 2 × features, and compare the in-sample fit to the fit you get on shuffled labels.
+- **Quant trading:** 🟡 *Background.* The practical lesson is classical (Cover 1965: a linear rule with N weights can fit about 2N random labels), and these papers do not change it. The prop-trio version of "compare with shuffled labels" is a no-edge baseline: a zero-mean book still passes roughly 12–24% of Apex-style challenges, and S1's +40/−75 bracket alone gives about 65% winners with random entries. See check 1 in the [NQ playbook](NQ-PROP-TRIO.md).
 - **Politeia:** ⚪ *No practical link.*
 
 <details><summary>Papers (4)</summary>
@@ -3895,7 +3894,7 @@ This builds simple distance-based forces between particles in 3D that produce a 
 
 Broadcasting on trees: a symbol is passed down a tree with noise at each step; can you guess the root from the leaves? This proves the exact threshold dλ² > 1 for 3- and 4-state models. Consequence: an exact threshold for detecting 3 communities in sparse networks (the stochastic block model).
 
-- **Quant trading:** 🟡 *Background.* When clustering assets or accounts into 3 groups from a sparse network, below this threshold no method beats random guessing. Check whether your network is above it before trusting cluster labels.
+- **Quant trading:** 🟡 *Background.* A reminder that community labels can be pure noise when the signal is weak. But the exact threshold is for an idealised sparse random network with three groups, so it is not a test you can run on a dense asset-correlation network.
 - **Politeia:** 🟡 *Background.* Before showing "there are 3 camps in this discussion network", check the signal is above the detection threshold (a − b)² > 3(a + 2b), where a and b are the within-group and between-group link rates. Below it, any community map is noise.
 
 <details><summary>Papers (3)</summary>
@@ -6251,7 +6250,7 @@ Not formally verified · 1 paper
 
 The Mumford–Shah model segments an image into smooth regions separated by edges. This proves the planar regularity conjecture: the edge set of an optimal segmentation is locally a smooth curve, a crack tip, or three curves meeting at 120°.
 
-- **Quant trading:** 🟡 *Background.* In one dimension the Mumford–Shah energy means "fit a smooth curve, paying a penalty for each jump": a principled regime-change detector. The new result is about 2D image edges, so it is background, but it confirms the model behaves well.
+- **Quant trading:** ⚪ *No practical link:* The one-dimensional version of this energy (a smooth fit with a penalty per jump) is a classical change-point method already solved exactly by dynamic programming (optimal partitioning, PELT). This 2D result adds nothing to it.
 - **Politeia:** ⚪ *No practical link.*
 
 <details><summary>Papers (1)</summary>
@@ -6381,7 +6380,7 @@ In multi-marginal Coulomb optimal transport (used in density functional theory),
 
 Optimal transport (Brenier) maps move one probability distribution onto another as cheaply as possible. This proves they are only cube-root stable: if the target moves by δ (in Wasserstein distance), the map can move by about δ^(1/3), and that is sharp. It disproves the conjectured square-root bound.
 
-- **Quant trading:** 🟡 *Background.* If you use optimal-transport maps to morph one return distribution into another (quantile mapping across regimes, synthetic-scenario generators, distribution-shift correction), the map can be far more sensitive than the distributions: a small change in the target can move the map by its cube root. Test any OT-based scenario generator by perturbing its inputs and measuring how far the mapped scenarios move.
+- **Quant trading:** 🟡 *Background.* Applies only in two or more dimensions: for 1D quantile mapping of one return series the map moves by exactly the distance, with no cube-root loss. If you ever build a multivariate OT scenario map (say, joint daily P&L of several strategies, or BTC/NQ return pairs), refit it on resampled data and measure how far the scenarios move; in the worst case it is far less stable than the data.
 - **Politeia:** ⚪ *No practical link.*
 
 <details><summary>Papers (1)</summary>

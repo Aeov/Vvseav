@@ -6,6 +6,7 @@ On **October 6, 2026**, OpenAI published [`openai/math`](https://github.com/open
 |---|---|
 | [`EXPLAINED.md`](EXPLAINED.md) | All 372 results, one plain-language entry each, grouped by subject, with links to every paper |
 | [`results.csv`](results.csv) | The same data in a table (filter by subject, Lean status, quant rating, Politeia rating) |
+| [`NQ-PROP-TRIO.md`](NQ-PROP-TRIO.md) | What the release means for your NQ prop-firm strategies: six concrete checks for the prop-trio bench |
 
 ## "377 problems": what the numbers actually are
 
@@ -32,28 +33,32 @@ On **October 6, 2026**, OpenAI published [`openai/math`](https://github.com/open
 
 | | 🟢 Testable idea | 🟡 Background | ⚪ No practical link |
 |---|---:|---:|---:|
-| **Quant trading** | 3 | 23 | 346 |
+| **Quant trading** | 0 | 14 | 358 |
 | **Politeia** | 2 | 20 | 350 |
 
-None of these theorems is a trading edge by itself. What they offer is a handful of sharper tools and some well-founded warnings.
+None of these theorems is a trading edge by itself. For your NQ work, the value is in the classical checks they prompted (below).
 
 ## Quant trading: what's actually useful
 
-**🟢 Worth testing**
+**Short answer: nothing in the release is a new trading tool.** Every result was checked against your actual NQ setup, `prop-trio`: Matteo's three strategies, the challenge simulator and the pre-registered test plan. That check ran in two passes. Five reviewers proposed uses, then five skeptics tried to refute each one against the papers and the bench code. No proposal survived as "testable", and 20 of my first-draft quant notes were corrected or downgraded (see [How this was checked](#how-this-was-checked)).
 
-1. **Order trades so temporary exposure stays small ([097](EXPLAINED.md#r097)).** The Steinitz–Bergström bound says any set of trades that nets to zero can be executed in an order where running exposure in every factor stays within about √(number of factors) × (largest trade), however many trades there are. *Test:* on real rebalances, compare your current execution order against a greedy "next trade = the one that keeps running exposure smallest" order, and measure peak intermediate exposure and slippage.
-2. **Exact significance for "pattern X shows up in regime Y" ([115](EXPLAINED.md#r115)).** Build a patterns × regimes (or sessions) table of hit counts. Shuffle it while keeping every row and column total fixed, then see how extreme the real table is. This controls for "some patterns fire a lot" and "some regimes are common". The result guarantees that exact uniform shuffles of this kind can be computed efficiently.
-3. **On-the-spot signal selection with a position cap ([111](EXPLAINED.md#r111)).** When you can hold only k positions (or one per sector or instrument) and must decide as each signal arrives, set each slot's threshold from last period's best value. For one slot, "take the first signal that beats the best past sample" has a known ½ guarantee. *Caveat:* the paper's own constant is 2⁻³¹⁰, a proof of possibility, not a usable bound.
+The review did surface **six classical checks the prop-trio bench should run before you pay for challenges on real data**. They are written up as concrete bench changes in **[NQ-PROP-TRIO.md](NQ-PROP-TRIO.md)**:
 
-**🟡 Warnings and framing that will change how you test**
+1. **A no-edge baseline for every pass rate.** A zero-edge book still passes roughly 12–24% of Apex challenges, and S1's +40/−75 bracket alone produces about 65% winners from random entries. Matteo's "40% pass" and "67% winners" mean little until compared with that.
+2. **Is the 728-mix sizing search finding noise?** Use a null-optimizer ceiling and a probability-of-backtest-overfitting check.
+3. **Bench rule:** resample whole days, not single trades, because S1 can take three trades on one path.
+4. **Does S3's overnight bias carry information?** Run a permutation test of the thirds.
+5. **Could state-dependent sizing help?** Answer it with a dynamic-programming screen before tuning any rule.
+6. **Honest error bars on pass rates.** Overlapping start days are not independent.
 
-- **Patterns are inevitable in big data ([159](EXPLAINED.md#r159), plus 160, 164, 170, 171).** Ramsey theory proves any large enough set must contain regular patterns. A pattern in your catalog is evidence of nothing until it survives out of sample with multiple-testing corrections.
-- **Overfitting capacity ([222](EXPLAINED.md#r222)).** A linear rule with N features can perfectly fit about 2N random labels. Keep samples well above 2 × features, and always compare against the fit you get on shuffled labels.
-- **Optimal-transport maps are fragile ([374](EXPLAINED.md#r374)).** If you morph return distributions between regimes or generate synthetic scenarios with OT, a small change in the target distribution can move the map by its cube root. Stress-test before trusting it.
-- **Network clusters need a null model ([131](EXPLAINED.md#r131), [229](EXPLAINED.md#r229), [117](EXPLAINED.md#r117)).** Compare correlation-network clusters against degree-preserving rewiring. Below an exact signal threshold, no method can recover communities. Bottleneck splits have no near-optimal guarantee.
-- **Majority votes of noisy binary signals ([119](EXPLAINED.md#r119)).** A one-bit majority does not keep more information about its inputs than the best single input. If your "consensus" signal doesn't beat its best component, that's part of why.
+**🟡 Background worth knowing** (each entry says exactly what is new and what was already classical):
+
+- **Overfitting capacity ([222](EXPLAINED.md#r222)).** A linear rule with N weights can fit about 2N random labels (Cover 1965). These papers sharpen the theory but don't change that rule.
+- **Uncorrelated ≠ independent ([007](EXPLAINED.md#r007)).** This is why the bench rule's single-trade shuffle needs checking.
+- **Pattern-vs-regime tests ([115](EXPLAINED.md#r115)).** The new uniform table sampler is the *wrong* null; shuffle the labels instead.
+- **Optimal-transport scenario maps can be unstable ([374](EXPLAINED.md#r374)).** This only bites in two or more dimensions, for example joint BTC/NQ scenario maps.
 - **Long/short book splitting is Max-Cut ([102](EXPLAINED.md#r102)).** Goemans–Williamson rounding is now provably the best general method (unless P = NP).
-- Also worth a skim: [007](EXPLAINED.md#r007) (deterministic sequences can pass lag-correlation tests), [121](EXPLAINED.md#r121) and [099](EXPLAINED.md#r099) (edit distance for regime-sequence analogues), [125](EXPLAINED.md#r125) (k-medoids for representative days), [366](EXPLAINED.md#r366) (Mumford–Shah-style regime segmentation), [219](EXPLAINED.md#r219) (random-matrix background), [145](EXPLAINED.md#r145), [093](EXPLAINED.md#r093), [094](EXPLAINED.md#r094), [104](EXPLAINED.md#r104), [110](EXPLAINED.md#r110), [127](EXPLAINED.md#r127), [139](EXPLAINED.md#r139).
+- Also: [097](EXPLAINED.md#r097), [104](EXPLAINED.md#r104), [111](EXPLAINED.md#r111), [117](EXPLAINED.md#r117), [121](EXPLAINED.md#r121), [125](EXPLAINED.md#r125), [229](EXPLAINED.md#r229), [279](EXPLAINED.md#r279), [281](EXPLAINED.md#r281).
 
 **Looks useful, isn't (yet)**
 
