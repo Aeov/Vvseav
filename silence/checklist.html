@@ -1,7 +1,7 @@
 <title>Silence Session Sheet</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@125,300;125,500&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@125,300;125,500&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Jost:wght@300;400&display=swap">
 <style>
 /* Layout: one column of three paper strips (Part I–III); each song is a row with three tick boxes: Guitars, Drums, In Silence. */
 :root {
@@ -15,6 +15,8 @@
   --display: "Archivo", "Helvetica Neue", Arial, sans-serif;
   --body: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  /* Title face: Aviano Futura when installed on the device, else Futura, else Jost (an open Futura-style face). */
+  --title: "Aviano Futura", "Aviano Future", "Aviano", "Futura PT", "Futura", "Jost", "Century Gothic", sans-serif;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
@@ -36,9 +38,9 @@ body {
 
 header { display: grid; gap: 14px; }
 h1 {
-  margin: 0; font-family: var(--display); font-weight: 300;
-  font-stretch: 125%; font-size: clamp(2.2rem, 8vw, 3.6rem);
-  letter-spacing: 0.32em; text-transform: uppercase; line-height: 1;
+  margin: 0; font-family: var(--title); font-weight: 300;
+  font-size: clamp(2.4rem, 9vw, 4rem);
+  letter-spacing: 0.3em; text-transform: uppercase; line-height: 1;
 }
 .sub { margin: 0; color: var(--pencil); max-width: 60ch; }
 .status { font-family: var(--mono); font-size: 12px; color: var(--pencil); min-height: 1.2em; }
@@ -93,12 +95,25 @@ li.done { background: var(--mint-soft); }
 .tick input:disabled + label { cursor: default; opacity: .55; }
 .tick label:hover { border-color: var(--graphite); }
 
+.note { grid-column: 1 / -1; padding: 4px 0 2px calc(2ch + 12px); }
+.note textarea {
+  display: block; width: 100%; min-height: 32px; resize: vertical;
+  font: inherit; font-size: 14px; line-height: 1.4; color: var(--graphite);
+  background: transparent; border: 1px dashed var(--rule); border-radius: 3px;
+  padding: 6px 8px; field-sizing: content; max-height: 240px;
+}
+.note textarea::placeholder { color: var(--pencil); opacity: .7; }
+.note textarea:hover { border-color: var(--pencil); }
+.note textarea:focus { outline: none; border-style: solid; border-color: var(--mint); background: var(--strip); }
+.note textarea:read-only { border-color: transparent; resize: none; }
+
 footer { color: var(--pencil); font-size: 13px; }
 
 @media (max-width: 480px) {
   .part-head, li { grid-template-columns: minmax(0, 1fr) repeat(3, 48px); padding-right: 6px; padding-left: 10px; }
   .col { font-size: 10px; letter-spacing: 0.02em; }
   .song { gap: 8px; }
+  .note { padding-left: calc(2ch + 8px); }
   .totals { gap: 10px; }
   .total .num { font-size: 17px; }
 }
@@ -108,7 +123,7 @@ footer { color: var(--pencil); font-size: 13px; }
 <div class="wrap">
   <header>
     <h1>Silence</h1>
-    <p class="sub">Tick each song off for guitars, drums and the In Silence pass, in any order. Ticks save as you go.</p>
+    <p class="sub">Tick each song off for guitars, drums and the In Silence pass, in any order, and keep notes under each song. Everything saves as you go.</p>
     <div class="totals" id="totals"></div>
     <div class="status" id="status" role="status">Loading saved ticks…</div>
   </header>
@@ -177,7 +192,8 @@ function build() {
         LISTS.map(l => {
           const cid = `t-${id}-${l.key}`;
           return `<div class="tick"><input type="checkbox" id="${cid}" data-song="${id}" data-list="${l.key}"><label for="${cid}" title="${l.label}" aria-label="${part.title}, song ${n}: ${l.label}">${CHECK}</label></div>`;
-        }).join("");
+        }).join("") +
+        `<div class="note"><textarea id="n-${id}" data-song="${id}" rows="1" placeholder="Notes" aria-label="${part.title}, song ${n}: notes"></textarea></div>`;
       ol.appendChild(li);
     }
     sec.appendChild(ol);
@@ -186,6 +202,8 @@ function build() {
   const totals = document.getElementById("totals");
   totals.innerHTML = LISTS.map(l => `<div class="total"><span class="lbl">${l.label}</span><span class="num" id="tot-${l.key}">0 <small>/ 47</small></span><div class="bar"><i id="bar-${l.key}"></i></div></div>`).join("");
   host.addEventListener("change", onToggle);
+  host.addEventListener("input", onNoteInput);
+  host.addEventListener("focusout", e => { if (e.target.matches("textarea") && noteTimers[e.target.dataset.song]) flushNote(e.target.dataset.song); });
 }
 
 function render() {
@@ -204,6 +222,9 @@ function render() {
         if (t[l.key]) { partSums[l.key]++; sums[l.key]++; } else all = false;
       }
       document.getElementById("row-" + id).classList.toggle("done", all);
+      const ta = document.getElementById("n-" + id);
+      ta.readOnly = readOnly;
+      if (document.activeElement !== ta && !noteTimers[id] && ta.value !== (t.note || "")) ta.value = t.note || "";
     }
     for (const l of LISTS) document.getElementById(`c-${part.id}-${l.key}`).textContent = `${partSums[l.key]}/${part.songs.length}`;
   }
@@ -213,30 +234,54 @@ function render() {
   }
 }
 
-// One write at a time per song; later clicks wait for the earlier write.
+// One write at a time per song; later edits wait for the earlier write.
 const chains = {};
+const noteTimers = {};
+function blank() { return { guitars: false, drums: false, silence: false, note: "" }; }
+
 function onToggle(e) {
   const box = e.target;
   if (!box.matches("input[type=checkbox]")) return;
   const id = box.dataset.song, key = box.dataset.list;
-  const next = { guitars: false, drums: false, silence: false, ...(ticks[id] || {}) };
+  const next = { ...blank(), ...(ticks[id] || {}) };
   next[key] = box.checked;
   ticks[id] = next;
   render();
+  save(id);
+}
+
+// Notes save after a short pause in typing, or when the box loses focus.
+function onNoteInput(e) {
+  const ta = e.target;
+  if (!ta.matches("textarea")) return;
+  const id = ta.dataset.song;
+  ticks[id] = { ...blank(), ...(ticks[id] || {}), note: ta.value };
+  clearTimeout(noteTimers[id]);
+  noteTimers[id] = setTimeout(() => flushNote(id), 800);
+  setStatus("Typing…");
+}
+function flushNote(id) {
+  clearTimeout(noteTimers[id]);
+  delete noteTimers[id];
+  save(id);
+}
+
+function save(id) {
   if (mode === "db") {
     chains[id] = (chains[id] || Promise.resolve()).then(() =>
       db.doc("ticks/" + id).set({ ...ticks[id] })
     ).then(() => setStatus("Saved"), err => {
       if (err && (err.code === "invalid_argument" || err.code === "not_granted")) {
         readOnly = true;
-        setStatus("You can view these ticks but not change them.", true);
+        render();
+        setStatus("You can view these ticks and notes but not change them.", true);
       } else {
-        setStatus("That tick didn’t save. Check your connection and tick it again.", true);
+        setStatus("That change didn’t save. Check your connection and try again.", true);
       }
     });
   } else {
     try { localStorage.setItem(LOCAL_KEY, JSON.stringify(ticks)); setStatus("Saved on this device only"); }
-    catch (_) { setStatus("Ticks won’t be kept after you close this page.", true); }
+    catch (_) { setStatus("Changes won’t be kept after you close this page.", true); }
   }
 }
 
@@ -257,11 +302,14 @@ render();
   db.collection("ticks").onSnapshot(snap => {
     for (const d of snap.docs) {
       if (chains[d.id] && d.metadata.hasPendingWrites) continue;
-      ticks[d.id] = { ...d.data() };
+      const incoming = { ...blank(), ...d.data() };
+      // Keep a note that is still being typed here.
+      if (noteTimers[d.id] && ticks[d.id]) incoming.note = ticks[d.id].note;
+      ticks[d.id] = incoming;
     }
     for (const ch of snap.docChanges()) if (ch.type === "removed") delete ticks[ch.doc.id];
     render();
-    if (!snap.metadata.fromCache && statusEl.textContent.startsWith("Loading")) setStatus("Ticks are saved to this page");
+    if (!snap.metadata.fromCache && statusEl.textContent.startsWith("Loading")) setStatus("Ticks and notes are saved to this page");
   }, err => {
     setStatus("Live saving stopped. Reload the page to keep ticking.", true);
   });
