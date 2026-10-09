@@ -137,7 +137,7 @@ footer { color: var(--pencil); font-size: 13px; }
     <div class="status" id="status" role="status">Loading saved ticks…</div>
   </header>
   <main id="parts" class="wrap" style="gap:28px;width:100%"></main>
-  <footer>39 songs across three parts, numbered as on the final pencil list. Uncertain names carry a “?”.</footer>
+  <footer>46 songs across three parts, numbered as on the final pencil list. Uncertain names carry a “?”.</footer>
 </div>
 
 <script>
@@ -165,6 +165,8 @@ const PARTS = [
   { id: "a3", title: "Part III", songs: [
     [1, "C7 + Jetfuel? Icarus", "○"], [2, "Pow?", "○"], [3, "Ascension? (intro)", "○"], [4, "", "△"],
     [5, "", "▽"], [6, "Unglaublich? · 69 + 666", "△"], [7, "", "○ · 12 → 7"], [8, "Elder?", ""],
+    [9, "", ""], [10, "", ""], [11, "", ""], [12, "", ""],
+    [13, "", ""], [14, "", ""], [15, "", ""],
   ]},
 ];
 
@@ -207,7 +209,7 @@ function build() {
     host.appendChild(sec);
   }
   const totals = document.getElementById("totals");
-  totals.innerHTML = LISTS.map(l => `<div class="total"><span class="lbl">${l.label}</span><span class="num" id="tot-${l.key}">0 <small>/ 39</small></span><div class="bar"><i id="bar-${l.key}"></i></div></div>`).join("");
+  totals.innerHTML = LISTS.map(l => `<div class="total"><span class="lbl">${l.label}</span><span class="num" id="tot-${l.key}">0 <small>/ 46</small></span><div class="bar"><i id="bar-${l.key}"></i></div></div>`).join("");
   host.addEventListener("change", onToggle);
   host.addEventListener("input", onNoteInput);
   host.addEventListener("focusout", e => { if (e.target.matches("textarea") && noteTimers[e.target.dataset.song]) flushNote(e.target.dataset.song); });
