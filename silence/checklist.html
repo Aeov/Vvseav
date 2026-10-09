@@ -1,0 +1,269 @@
+<title>Silence Session Sheet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@125,300;125,500&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one column of three paper strips (Part I–III); each song is a row with three tick boxes: Guitars, Drums, In Silence. */
+:root {
+  --paper: #f1f3f1;
+  --strip: #fbfcfb;
+  --graphite: #2b2f2e;
+  --pencil: #6f7674;
+  --rule: #d9dedc;
+  --mint: #4f8a74;
+  --mint-soft: #dcebe4;
+  --display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --body: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #141716; --strip: #1c201f; --graphite: #e6eae8; --pencil: #949c99;
+    --rule: #2f3533; --mint: #7cc0a5; --mint-soft: #22362e; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #141716; --strip: #1c201f; --graphite: #e6eae8; --pencil: #949c99;
+  --rule: #2f3533; --mint: #7cc0a5; --mint-soft: #22362e; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--paper); color: var(--graphite);
+  font-family: var(--body); font-size: 15px; line-height: 1.45;
+  padding: 32px 16px 64px;
+}
+.wrap { max-width: 760px; margin: 0 auto; display: grid; gap: 28px; }
+
+header { display: grid; gap: 14px; }
+h1 {
+  margin: 0; font-family: var(--display); font-weight: 300;
+  font-stretch: 125%; font-size: clamp(2.2rem, 8vw, 3.6rem);
+  letter-spacing: 0.32em; text-transform: uppercase; line-height: 1;
+}
+.sub { margin: 0; color: var(--pencil); max-width: 60ch; }
+.status { font-family: var(--mono); font-size: 12px; color: var(--pencil); min-height: 1.2em; }
+.status.err { color: #b4533c; }
+
+.totals { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.total { display: grid; gap: 6px; min-width: 0; }
+.total .lbl { font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--pencil); }
+.total .num { font-family: var(--mono); font-size: 20px; font-variant-numeric: tabular-nums; }
+.total .num small { color: var(--pencil); font-size: 13px; }
+.bar { height: 4px; background: var(--rule); border-radius: 2px; overflow: hidden; }
+.bar i { display: block; height: 100%; width: 0; background: var(--mint); transition: width .25s ease; }
+
+.part { background: var(--strip); border: 1px solid var(--rule); border-radius: 4px; }
+.part-head {
+  display: grid; grid-template-columns: minmax(0, 1fr) repeat(3, 64px);
+  align-items: end; padding: 16px 12px 10px 16px; border-bottom: 1px solid var(--rule);
+  position: sticky; top: env(safe-area-inset-top, 0px); background: var(--strip); z-index: 1;
+  border-radius: 4px 4px 0 0;
+}
+.part-head h2 {
+  margin: 0; font-family: var(--display); font-weight: 500; font-stretch: 125%;
+  font-size: 15px; letter-spacing: 0.18em; text-transform: uppercase;
+}
+.part-head h2 span { color: var(--pencil); font-weight: 300; letter-spacing: 0.05em; margin-left: 8px; font-size: 12px; }
+.col { text-align: center; font-size: 11px; line-height: 1.25; text-transform: uppercase; letter-spacing: 0.06em; color: var(--pencil); }
+.col b { display: block; font-family: var(--mono); font-weight: 500; letter-spacing: 0; color: var(--graphite); font-size: 12px; font-variant-numeric: tabular-nums; }
+
+ol { list-style: none; margin: 0; padding: 0; }
+li {
+  display: grid; grid-template-columns: minmax(0, 1fr) repeat(3, 64px);
+  align-items: center; padding: 6px 12px 6px 16px; border-bottom: 1px solid var(--rule);
+}
+li:last-child { border-bottom: 0; }
+li.done { background: var(--mint-soft); }
+.song { display: flex; align-items: baseline; gap: 12px; min-width: 0; }
+.no { font-family: var(--mono); font-size: 13px; color: var(--pencil); width: 2ch; text-align: right; flex: none; font-variant-numeric: tabular-nums; }
+.name { min-width: 0; overflow-wrap: anywhere; }
+.name em { font-style: normal; color: var(--pencil); }
+.marks { color: var(--pencil); font-size: 13px; margin-left: 6px; white-space: nowrap; }
+
+.tick { display: grid; place-items: center; }
+.tick input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.tick label {
+  width: 30px; height: 30px; border: 1.5px solid var(--pencil); border-radius: 3px;
+  display: grid; place-items: center; cursor: pointer; transition: background .12s, border-color .12s;
+}
+.tick label svg { width: 18px; height: 18px; fill: none; stroke: var(--strip); stroke-width: 2.6; opacity: 0; }
+.tick input:checked + label { background: var(--mint); border-color: var(--mint); }
+.tick input:checked + label svg { opacity: 1; }
+.tick input:focus-visible + label { outline: 2px solid var(--mint); outline-offset: 2px; }
+.tick input:disabled + label { cursor: default; opacity: .55; }
+.tick label:hover { border-color: var(--graphite); }
+
+footer { color: var(--pencil); font-size: 13px; }
+
+@media (max-width: 480px) {
+  .part-head, li { grid-template-columns: minmax(0, 1fr) repeat(3, 48px); padding-right: 6px; padding-left: 10px; }
+  .col { font-size: 10px; letter-spacing: 0.02em; }
+  .song { gap: 8px; }
+  .totals { gap: 10px; }
+  .total .num { font-size: 17px; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Silence</h1>
+    <p class="sub">Tick each song off for guitars, drums and the In Silence pass, in any order. Ticks save as you go.</p>
+    <div class="totals" id="totals"></div>
+    <div class="status" id="status" role="status">Loading saved ticks…</div>
+  </header>
+  <main id="parts" class="wrap" style="gap:28px"></main>
+  <footer>47 songs across three parts, numbered as on the pencil strips. Uncertain names carry a “?”.</footer>
+</div>
+
+<script>
+const LISTS = [
+  { key: "guitars", label: "Guitars" },
+  { key: "drums", label: "Drums" },
+  { key: "silence", label: "In Silence" },
+];
+
+// [number, note, marks]
+const PARTS = [
+  { id: "p1", title: "Part I", songs: [
+    [1, "", "▽"], [2, "Classic", ""], [3, "VA", "□"], [4, "", ""],
+    [5, "Steve…?", ""], [6, "Steer?", ""], [7, "", "△ ▽"], [8, "∞", ""],
+    [9, "", "○"], [10, "", ""], [11, "", ""], [12, "PIC", "○ △"],
+    [13, "PIC P.IT", ""], [14, "", ""], [15, "", ""], [16, "", ""],
+  ]},
+  { id: "p2", title: "Part II", songs: [
+    [1, "", "□ ▽ PH"], [2, "Rock n Rolla", "○"], [3, "", "△"], [4, "", "△"],
+    [5, "", ""], [6, "Medjour?", "○ □"], [7, "Dillinger?", ""], [8, "Classic", ""],
+    [9, "2x New?", ""], [10, "2x New?", "△"], [11, "Classic", ""], [12, "Classic", "Dorisch"],
+    [13, "Rock n Rolla", "△"], [14, "", ""],
+  ]},
+  { id: "p3", title: "Part III", songs: [
+    [1, "", "□ ○"], [2, "", "△"], [3, "", "□□"], [4, "", ""],
+    [5, "Thunder Blend?", "○"], [6, "", ""], [7, "", "△"], [8, "", "○"],
+    [9, "Back n. Fw?", ""], [10, "", "○"], [11, "", "△"], [12, "", ""],
+    [13, "", "▽"], [14, "Alder?", "◇"], [15, "Elder", "△"], [16, "Classic", ""],
+    [17, "", ""],
+  ]},
+];
+
+const CHECK = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+const ticks = {};           // songId -> {guitars, drums, silence}
+let db = null, readOnly = false, mode = "pending";
+const LOCAL_KEY = "silence-ticks-v1";
+const statusEl = document.getElementById("status");
+
+function songId(part, n) { return part.id + "-" + String(n).padStart(2, "0"); }
+function setStatus(text, err) { statusEl.textContent = text; statusEl.classList.toggle("err", !!err); }
+
+function build() {
+  const host = document.getElementById("parts");
+  host.innerHTML = "";
+  for (const part of PARTS) {
+    const sec = document.createElement("section");
+    sec.className = "part";
+    sec.setAttribute("aria-label", part.title);
+    const head = document.createElement("div");
+    head.className = "part-head";
+    head.innerHTML = `<h2>${part.title}<span>${part.songs.length} songs</span></h2>` +
+      LISTS.map(l => `<div class="col">${l.label}<b id="c-${part.id}-${l.key}">0/${part.songs.length}</b></div>`).join("");
+    sec.appendChild(head);
+    const ol = document.createElement("ol");
+    for (const [n, note, marks] of part.songs) {
+      const id = songId(part, n);
+      const li = document.createElement("li");
+      li.id = "row-" + id;
+      const name = note ? note : `<em>Track ${n}</em>`;
+      li.innerHTML = `<div class="song"><span class="no">${n}</span><span class="name">${name}${marks ? `<span class="marks">${marks}</span>` : ""}</span></div>` +
+        LISTS.map(l => {
+          const cid = `t-${id}-${l.key}`;
+          return `<div class="tick"><input type="checkbox" id="${cid}" data-song="${id}" data-list="${l.key}"><label for="${cid}" title="${l.label}" aria-label="${part.title}, song ${n}: ${l.label}">${CHECK}</label></div>`;
+        }).join("");
+      ol.appendChild(li);
+    }
+    sec.appendChild(ol);
+    host.appendChild(sec);
+  }
+  const totals = document.getElementById("totals");
+  totals.innerHTML = LISTS.map(l => `<div class="total"><span class="lbl">${l.label}</span><span class="num" id="tot-${l.key}">0 <small>/ 47</small></span><div class="bar"><i id="bar-${l.key}"></i></div></div>`).join("");
+  host.addEventListener("change", onToggle);
+}
+
+function render() {
+  const total = PARTS.reduce((s, p) => s + p.songs.length, 0);
+  const sums = { guitars: 0, drums: 0, silence: 0 };
+  for (const part of PARTS) {
+    const partSums = { guitars: 0, drums: 0, silence: 0 };
+    for (const [n] of part.songs) {
+      const id = songId(part, n);
+      const t = ticks[id] || {};
+      let all = true;
+      for (const l of LISTS) {
+        const box = document.getElementById(`t-${id}-${l.key}`);
+        box.checked = !!t[l.key];
+        box.disabled = readOnly;
+        if (t[l.key]) { partSums[l.key]++; sums[l.key]++; } else all = false;
+      }
+      document.getElementById("row-" + id).classList.toggle("done", all);
+    }
+    for (const l of LISTS) document.getElementById(`c-${part.id}-${l.key}`).textContent = `${partSums[l.key]}/${part.songs.length}`;
+  }
+  for (const l of LISTS) {
+    document.getElementById("tot-" + l.key).innerHTML = `${sums[l.key]} <small>/ ${total}</small>`;
+    document.getElementById("bar-" + l.key).style.width = (100 * sums[l.key] / total) + "%";
+  }
+}
+
+// One write at a time per song; later clicks wait for the earlier write.
+const chains = {};
+function onToggle(e) {
+  const box = e.target;
+  if (!box.matches("input[type=checkbox]")) return;
+  const id = box.dataset.song, key = box.dataset.list;
+  const next = { guitars: false, drums: false, silence: false, ...(ticks[id] || {}) };
+  next[key] = box.checked;
+  ticks[id] = next;
+  render();
+  if (mode === "db") {
+    chains[id] = (chains[id] || Promise.resolve()).then(() =>
+      db.doc("ticks/" + id).set({ ...ticks[id] })
+    ).then(() => setStatus("Saved"), err => {
+      if (err && (err.code === "invalid_argument" || err.code === "not_granted")) {
+        readOnly = true;
+        setStatus("You can view these ticks but not change them.", true);
+      } else {
+        setStatus("That tick didn’t save. Check your connection and tick it again.", true);
+      }
+    });
+  } else {
+    try { localStorage.setItem(LOCAL_KEY, JSON.stringify(ticks)); setStatus("Saved on this device only"); }
+    catch (_) { setStatus("Ticks won’t be kept after you close this page.", true); }
+  }
+}
+
+function useLocal() {
+  mode = "local";
+  try { Object.assign(ticks, JSON.parse(localStorage.getItem(LOCAL_KEY) || "{}")); } catch (_) {}
+  render();
+  setStatus("Saved on this device only");
+}
+
+build();
+render();
+
+(async () => {
+  try { db = window.claude && window.claude.use ? await window.claude.use("db") : null; } catch (_) { db = null; }
+  if (!db) return useLocal();
+  mode = "db";
+  db.collection("ticks").onSnapshot(snap => {
+    for (const d of snap.docs) {
+      if (chains[d.id] && d.metadata.hasPendingWrites) continue;
+      ticks[d.id] = { ...d.data() };
+    }
+    for (const ch of snap.docChanges()) if (ch.type === "removed") delete ticks[ch.doc.id];
+    render();
+    if (!snap.metadata.fromCache && statusEl.textContent.startsWith("Loading")) setStatus("Ticks are saved to this page");
+  }, err => {
+    setStatus("Live saving stopped. Reload the page to keep ticking.", true);
+  });
+})();
+</script>
